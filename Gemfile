@@ -1,0 +1,58 @@
+source 'https://rubygems.org'
+
+# Core Ruby + Rails gems
+ruby "2.0.0"
+gem 'rails', '4.0.1'
+gem 'sass-rails', '~> 4.0.1'
+gem 'uglifier', '>= 1.3.0'
+gem 'jbuilder', '~> 1.2'
+gem 'turbolinks'
+
+# Front end gems
+gem 'jquery-rails'
+gem 'bootstrap-sass-rails', '~> 3.0'
+
+# Use pg as the database for Active Record
+gem 'pg'
+
+group :doc do
+  # bundle exec rake doc:rails generates the API under doc/api.
+  gem 'sdoc', require: false
+end
+
+
+# Devise
+gem 'devise'
+#gem 'devise_invitable'
+#gem 'omniauth'
+#gem 'omniauth-facebook'
+#gem 'omniauth-twitter'
+#gem 'omniauth-foursquare'
+#gem 'omniauth-instagram'
+
+# Pagination
+#gem 'will_paginate', '~> 3.0.4'
+
+# Data Management
+gem 'rails_admin'
+
+# Testing Setup
+group :development, :test do
+  gem 'thin'
+  gem 'rspec-rails', '~> 2.0'
+  gem 'guard-rspec', require: false
+  gem 'capybara'
+  gem 'capybara-webkit'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
+end
+
+# Heroku
+group :staging, :production do
+  gem 'rails_12factor'
+  gem 'unicorn'
+  # Addon Gems
+  #gem 'newrelic_rpm'
+  #gem 'sentry-raven'
+  #gem 'intercom-rails'
+end
