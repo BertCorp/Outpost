@@ -6,72 +6,46 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title><%= content_for?(:title) ? yield(:title) : "Carry On" %></title>
-    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Outpost - <%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
+    <!--<meta name="description" content="">
     <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-ipad.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-iphone4.png" />
-    <%= stylesheet_link_tag "application", :media => "all" %>
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-iphone4.png" />-->
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
-    <%= yield(:head) %>
     <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" %>
+    <%= yield(:head) %>
   </head>
   <body>
-    <header class="navbar navbar-fixed-top">
-      <div class="navbar-inner" style="background: #222; height: 90px;">
-        <div class="container">
-          <div class="nav-collapse collapse navbar-responsive-collapse">
-            <!--<form class="navbar-search pull-left" action="">
-              <input type="text" class="search-query span2" placeholder="Search">
-            </form>-->
-            <% if current_user %>
-            <ul class="nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-top: 10px; padding: 10px 10px 20px;">
-                  <img src="<%= current_user.avatar %>"> <b class="caret" style="margin-top: 25px;"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="<%= welcome_path %>">Welcome Page</a></li>
-                  <li><a href="<%= profile_path(current_user) %>">View Profile</a></li>
-                  <li><a href="<%= edit_profile_path(current_user) %>">Edit Profile</a></li>
-                  <li class="divider"></li>
-                  <li><%= link_to('Logout', destroy_user_session_path, :method=>'delete') %></li>
-                </ul>
-              </li>
-            <% else %>
-            <ul class="nav" style="margin-top: 25px;">
-              <li><%= link_to "Sign Up", root_path %></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <% connected_apps.each do |app| %>
-                  <li><%= link_to "Login with #{app.to_s.titleize}", user_omniauth_authorize_path(app) %></li>
-                  <% end %>
-                </ul>
-              </li>
-            <% end %>
+    <div class="container">
+			<div class="row">
+				<header>
+					<% if current_user %>
+          <div class="pull-right">
+            <ul class="nav nav-pills">
+              <li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %></li>
             </ul>
-            <a href="<%= root_path %>" style="padding: 33px 20px 32px 10px; font-weight: 400; float: right; font-size: 24px; color: #eeeeee; font-family: Volkhov;">Carry On</a>
-          </div><!-- /.nav-collapse -->
-        </div>
-      </div><!-- /navbar-inner -->
-    </header>
-    <div id="main" role="main">
-      <div class="container">
-        <div class="content">
-            <%= render 'layouts/messages' %>
-            <%= yield %>
-          <footer>
-          </footer>
-        </div>
-      </div> <!--! end of .container -->
-    </div> <!--! end of #main -->
-  </body>
-  <!--<script type="text/javascript">var __tcaExcludeHostedCss=true;</script>
-  <script type="text/javascript" src="http://typecast.com/project_css/RrZFnRVWNw/62251853d5a43.js"></script>-->
-  <%= javascript_include_tag "application" %>
-  <%= render 'layouts/analytics' %>
+          </div>
+        	<% end %>
+					
+          <div class="logo">
+            <%= link_to root_path do %>
+              <%= image_tag 'logo.png' %>
+            <% end %>
+          </div>
+				</header>
+			</div>
+			<div class="content">
+          <%= render 'layouts/messages' %>
+          <%= yield %>
+      </div>
+			<footer>
+      </footer>
+		</div>
+  	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  	<%= render 'layouts/analytics' %>
+	</body>
 </html>

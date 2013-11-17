@@ -1,18 +1,17 @@
-<h2>Sign up</h2>
-
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
-
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
-
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.submit "Sign up" %></div>
+<% content_for :title do %>
+Sign Up
 <% end %>
+
+	<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'form-signup' }) do |f| %>
+  	<h2 class="form-signin-heading">Registration</h2>
+    <%= devise_error_messages! %>
+		
+		<%= f.text_field :company, class: "form-control", placeholder: 'Company Name', required: true, autofocus: true %>
+		<%= f.text_field :name, class: "form-control", placeholder: 'Your Name', required: true %>
+		<%= f.email_field :email, class: "form-control", placeholder: 'Email address', required: true %>
+    <%= f.password_field :password, class: "form-control", placeholder: 'Password', required: true %>
+    <%= f.password_field :password_confirmation, class: "form-control", placeholder: 'Confirm Password', required: true %>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+	<% end %>
 
 <%= render "users/shared/links" %>
