@@ -40,6 +40,9 @@
 			</div>
 			<div class="content">
           <%= render 'layouts/messages' %>
+					
+					<%= render 'layouts/admin_nav' if current_user && current_user.is_admin? %>
+
           <%= yield %>
       </div>
 			<footer>

@@ -14,11 +14,11 @@ Outpost::Application.routes.draw do
 
   devise_scope :user do
     get "/logout" => "devise/sessions#destroy"
-    
-    #authenticated :user do
-    #  root to: 'users#dashboard', as: :authenticated_root
-    #end
+    get "/dashboard" => "users#dashboard", as: :dashboard
   end  
+  
+  resources :users
+  resources :companies
   
   root "pages#index"
   
