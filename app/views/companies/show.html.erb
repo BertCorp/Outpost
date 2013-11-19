@@ -1,6 +1,18 @@
 <p id="notice"><%= notice %></p>
 
-<p><%= @company.name %></P>
+<p>Company Name: <%= @company.name %></P>
+
+<p>Company Users</p>
+
+<table class="table table-bordered table-striped">
+<% @company.users.each do |user| %>
+  <tr>
+    <td><%= user.email %></td>
+    <td><%= link_to 'Edit', edit_user_registration_path(user) %></td>
+    <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
 
 <%= link_to 'Edit', edit_company_path(@company) %> |
 <%= link_to 'Back', companies_path %>

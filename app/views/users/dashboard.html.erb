@@ -19,8 +19,6 @@ Dashboard
 	</ul>
 </div>
 
-<% if current_user.is_admin? %>
-  <%= render partial: "admin_dash" %>
-<% else %>
+<% if !current_user.is_admin? %>
   <%= render partial: "user_dash" %>
 <% end %>
