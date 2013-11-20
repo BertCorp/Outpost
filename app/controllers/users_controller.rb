@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   # GET /dashboard
   def dashboard
-    
+    @user = current_user
   end
 
   # GET /users

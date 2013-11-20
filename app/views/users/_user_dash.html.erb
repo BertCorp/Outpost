@@ -23,21 +23,28 @@
 
 <div class="row">
   <span class="pull-right">
-    <button>
-      Run A Report
-    </button>
+    <%= button_to 'Run A Report', new_report_path, method: :get %>
   </span>
   <h3>Reports</h3>
   <table class="table table-bordered table-striped">
     <tr>
-      <th>Date/Time</th>
+      <th>ID</th>
+      <th>Initiated At</th>
+      <th>Started At</th>
+      <th>Completed At</th>
       <th>Status</th>
-      <th>Execution time</th>
+      <th>
     </tr>
     <tr>
-      <td>2013-11-15 @ 4pm</td>
-      <td>Passed</td>
-      <td>17 minutes</td>
+      <% @user.company.reports.each do |report| %>
+        <td><%= report.id %></td>
+        <td><%= report.initiated_at %></td>
+        <td><%= report.started_at %></td>
+        <td><%= report.completed_at %></td>
+        <td><%= report.status %></td>
+        <td><%= link_to "View Report", report_path(report) %></td>
+      <% end %>
     </tr>
   </table>
 </div>
+ 
