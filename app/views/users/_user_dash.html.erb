@@ -29,22 +29,22 @@
   <table class="table table-bordered table-striped">
     <tr>
       <th>ID</th>
+      <th>Status</th>
       <th>Initiated At</th>
       <th>Started At</th>
       <th>Completed At</th>
-      <th>Status</th>
-      <th>
+      <th></th>
     </tr>
-    <tr>
-      <% @user.company.reports.each do |report| %>
+    <% @user.company.reports.each do |report| %>
+      <tr>
         <td><%= report.id %></td>
+        <td><%= report.status %></td>
         <td><%= report.initiated_at %></td>
         <td><%= report.started_at %></td>
         <td><%= report.completed_at %></td>
-        <td><%= report.status %></td>
         <td><%= link_to "View Report", report_path(report) %></td>
-      <% end %>
-    </tr>
+      </tr>
+    <% end %>
   </table>
 </div>
  

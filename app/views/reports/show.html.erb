@@ -1,5 +1,7 @@
 <p id="notice"><%= notice %></p>
 
+ <h3>Reported generated for <%= @report.company.name %>.</h3>
+
  <p>Test Id: <%= @report.test_suite_id %></p>
  
  <p>Initiated By: <%= @report.initiated_at %></p>
@@ -15,7 +17,6 @@
  <p>Status: <%= @report.status %></p>
  
  <p>Summary: <%= @report.summary %></p>
-
 
 <%= link_to 'Edit', edit_report_path(@report) %> |
 <%= link_to 'Back', reports_path %>
