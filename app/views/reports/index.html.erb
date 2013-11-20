@@ -1,9 +1,14 @@
-<h1>Listing reports</h1>
+<h1>All Reports</h1>
 
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
       <th>Report ID</th>
+      <th>Company</th>
+      <th>Status</th>
+      <th>Initiated At</th>
+      <th>Started At</th>
+      <th>Completed At</th>
       <th></th>
       <th></th>
       <th></th>
@@ -14,6 +19,11 @@
     <% @reports.each do |report| %>
       <tr>
         <td><%= report.id %></td>
+        <td><%= report.company.name %></td>
+        <td><%= report.status %></td>
+        <td><%= report.initiated_at %></td>
+        <td><%= report.started_at %></td>
+        <td><%= report.completed_at %></td>
         <td><%= link_to 'Show', report %></td>
         <td><%= link_to 'Edit', edit_report_path(report) %></td>
         <td><%= link_to 'Destroy', report, method: :delete, data: { confirm: 'Are you sure?' } %></td>

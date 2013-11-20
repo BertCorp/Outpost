@@ -5,7 +5,11 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th></th>
+      <th># of Tests</th>
+      <th>Current Status</th>
+      <th>Most Recent</th>
+      <th>Initial Suite</th>
+      <th>
       <th></th>
       <th></th>
     </tr>
@@ -15,6 +19,10 @@
     <% @companies.each do |company| %>
       <tr>
         <td><%= company.name %></td>
+        <td><%= company.test_cases.count %></td>
+        <td>To Do</td>
+        <td>To Do</td>
+        <td>To Do</td>
         <td><%= link_to 'Show', company %></td>
         <td><%= link_to 'Edit', edit_company_path(company) %></td>
         <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
