@@ -17,11 +17,9 @@ Outpost::Application.routes.draw do
     get "/dashboard" => "users#dashboard", as: :dashboard
   end  
   
-  resources :users
-  resources :companies
-  resources :reports
-  resources :test_suites
-  resources :test_cases
+  resources :users, :companies, :reports, :test_suites, :test_cases, :pages
+  
+  get 'new_marketing' => 'pages#new_marketing', as: 'new_marketing'
   
   root "pages#index"
   
