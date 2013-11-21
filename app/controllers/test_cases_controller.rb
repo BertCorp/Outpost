@@ -25,6 +25,8 @@ class TestCasesController < ApplicationController
   # POST /test_cases.json
   def create
     @test_case = TestCase.new(test_case_params)
+    @test_case.company_id = current_user.company_id
+    @test_case.test_suite_id = current_user.company.test_suite.id
 
     respond_to do |format|
       if @test_case.save
