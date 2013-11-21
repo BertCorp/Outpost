@@ -1,0 +1,10 @@
+<p id="notice"><%= notice %></p>
+
+<p><%= @test_suite.title %></p>
+
+<% @test_suite.test_cases.each do |test_case| %>
+  <%= test_case.title %>
+<% end %>
+
+<%= link_to 'Edit', edit_test_suite_path(@test_suite) %> |
+<%= link_to 'Back', test_suites_path %>
