@@ -1,0 +1,35 @@
+<%= form_for(@test_case) do |f| %>
+  <% if @test_case.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@test_case.errors.count, "error") %> prohibited this test_case from being saved:</h2>
+
+      <ul>
+      <% @test_case.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.hidden_field :company_id, value: current_user.company_id %> 
+  <%= f.hidden_field :test_suite_id, :value => params[:test_suite_id] %>
+  
+  <div><%= f.label :title %><br />
+  <%= f.text_field :title %></div>
+
+  <div><%= f.label :description %><br />
+  <%= f.text_field :description %></div>
+
+  <div><%= f.label :setup_started_at %><br />
+  <%= f.text_field :setup_started_at %></div>
+
+  <div><%= f.label :setup_completed_at %><br />
+  <%= f.text_field :setup_completed_at %></div>
+
+  <div><%= f.label :pending_message %><br />
+  <%= f.text_field :pending_message %></div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+  <p>Company ID: <%= @test_case.company_id %></p>
+
+  <p>Test Suite ID: <%= @test_case.test_suite_id %></p>
+
+  <p>Title: <%= @test_case.title %></p>
+
+  <p>Description: <%= @test_case.description %></p>
+
+  <p>Setup Started At: <%= @test_case.setup_started_at %></p>
+
+  <p>Setup Completed At:<%= @test_case.setup_completed_at %></p>
+
+  <p>Pending Message: <%= @test_case.pending_message %></p>
+
+<%= link_to 'Edit', edit_test_case_path(@test_case) %> |
+<%= link_to 'Back', test_cases_path %>

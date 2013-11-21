@@ -6,12 +6,14 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @test_suites.each do |test_suite| %>
       <tr>
+        <td><%= test_suite.id %></td>
         <td><%= link_to 'Show', test_suite %></td>
         <td><%= link_to 'Edit', edit_test_suite_path(test_suite) %></td>
         <td><%= link_to 'Destroy', test_suite, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -21,6 +21,7 @@ Outpost::Application.routes.draw do
   resources :companies
   resources :reports
   resources :test_suites
+  resources :test_cases
   
   root "pages#index"
   
