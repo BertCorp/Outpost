@@ -19,6 +19,8 @@ Outpost::Application.routes.draw do
   
   resources :users, :companies, :reports, :test_suites, :test_cases, :pages
   
+  resources :test_results 
+  
   get 'new_marketing' => 'pages#new_marketing', as: 'new_marketing'
   
   root "pages#index"

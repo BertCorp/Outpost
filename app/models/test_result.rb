@@ -1,4 +1,4 @@
-class TestResults < ActiveRecord::Base
+class TestResult < ActiveRecord::Base
   
   belongs_to :report
   belongs_to :test_case
