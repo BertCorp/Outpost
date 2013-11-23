@@ -20,15 +20,17 @@
  
 <table class="table table-bordered tabel-striped">
   <tr>
+    <th>Test Case Id</th>
     <th>Test Case Title</th>
-    <th>Test Case Description</th>
     <th>Status</th>
+    <th>Summary</th>
   </tr>
  <% @report.results.each do |result| %>
    <tr>
+     <td><%= result.test_case.id %></td>
      <td><%= result.test_case.title %></td>
-     <td><%= result.test_case.description %></td>
      <td><%= result.status %></td>
+     <td><%= result.summary %></td>
    </tr>
  <% end %>
 </table>
