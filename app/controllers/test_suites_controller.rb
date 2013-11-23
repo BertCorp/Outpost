@@ -69,6 +69,6 @@ class TestSuitesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def test_suite_params
-      params.require(:test_suite).permit(:title, :created_at, :updated_at, :company_id, :description)
+      params.require(:test_suite).permit(:setup_video_url, :title, :created_at, :updated_at, :company_id, :description)
     end
 end
