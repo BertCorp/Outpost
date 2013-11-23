@@ -16,7 +16,6 @@ class ReportsController < ApplicationController
   # GET /reports/new
   def new
     @report = Report.new
-    @test_cases = @report.test_cases
   end
 
   # GET /reports/1/edit
@@ -27,6 +26,11 @@ class ReportsController < ApplicationController
   # POST /reports.json
   def create
     @report = Report.new(report_params)
+    @test_cases = @report.test_cases
+    
+    @test_cases.each do |test_case|
+      @results = TestResult.new(test_case_id: test_case.id, report_id: @report)
+    end
 
     respond_to do |format|
       if @report.save

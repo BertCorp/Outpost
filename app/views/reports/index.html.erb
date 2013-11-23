@@ -6,6 +6,7 @@
       <th>Report ID</th>
       <th>Company</th>
       <th>Status</th>
+      <th># of Test Cases</th>
       <th>Initiated At</th>
       <th>Started At</th>
       <th>Completed At</th>
@@ -21,6 +22,7 @@
         <td><%= report.id %></td>
         <td><%= report.company.name %></td>
         <td><%= report.status %></td>
+        <td><%= report.test_cases.count %></td>
         <td><%= report.initiated_at %></td>
         <td><%= report.started_at %></td>
         <td><%= report.completed_at %></td>
