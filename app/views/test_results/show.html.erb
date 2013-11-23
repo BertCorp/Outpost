@@ -1,13 +1,13 @@
 <p id="notice"><%= notice %></p>
 
 <p>Report Id: <%= @test_result.report_id %></p>
-<p><%= @test_result.test_case_id %></p>
-<p><%= @test_result.started_at %></p>
-<p><%= @test_result.ended_at %></p>
-<p><%= @test_result.status %></p>
-<p><%= @test_result.summary %></p>
-<p><%= @test_result.created_at %></p>
-<p><%= @test_result.updated_at %></p>
+<p>Test Case ID: <%= @test_result.test_case_id %></p>
+<p>Started At: <%= @test_result.started_at %></p>
+<p>Ended At: <%= @test_result.ended_at %></p>
+<p>Status: <%= @test_result.status %></p>
+<p>Summary: <%= @test_result.summary %></p>
+<p>Created At: <%= @test_result.created_at %></p>
+<p>Updated At: <%= @test_result.updated_at %></p>
 
 <%= link_to 'Edit', edit_test_result_path(@test_result) %> |
 <%= link_to 'Back', test_results_path %>
