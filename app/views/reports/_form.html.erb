@@ -12,9 +12,6 @@
   <% end %>
 
   <div class="actions">
-    <%= f.hidden_field :company_id, value: current_user.company.id %>
-    <%= f.hidden_field :initiated_by, value: current_user.id %> 
-    <%= f.hidden_field :initiated_at, value: Time.now.to_datetime %>
     
     Test Suite: <%= f.text_field :test_suite_id %>
     

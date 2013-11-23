@@ -2,7 +2,7 @@
 
  <h3>Reported generated for <%= @report.company.name %>.</h3>
 
- <p>Test Id: <%= @report.test_suite_id %></p>
+ <p>Test Suite Id: <%= @report.test_suite_id %></p>
  
  <p>Initiated At: <%= @report.initiated_at %></p>
  
@@ -17,20 +17,18 @@
  <p>Status: <%= @report.status %></p>
  
  <p>Summary: <%= @report.summary %></p>
- 
+
 <table class="table table-bordered tabel-striped">
   <tr>
     <th>Test Case Id</th>
     <th>Test Case Title</th>
-    <th>Status</th>
-    <th>Summary</th>
+    <th>Test Case Results ID</th>
   </tr>
- <% @report.results.each do |result| %>
+ <% @report.test_suite.test_cases.each do |test_case| %>
    <tr>
-     <td><%= result.test_case.id %></td>
-     <td><%= result.test_case.title %></td>
-     <td><%= result.status %></td>
-     <td><%= result.summary %></td>
+     <td><%= test_case.id %></td>
+     <td><%= test_case.title %></td>
+     <td><%= test_case.results.present? %></td>
    </tr>
  <% end %>
 </table>

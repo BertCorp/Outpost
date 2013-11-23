@@ -1,10 +1,34 @@
 <p id="notice"><%= notice %></p>
 
-<p><%= @test_suite.title %></p>
+<p>Company: <%= @test_suite.company.name %>, ID# <%= @test_suite.company_id %></p>
 
-<% @test_suite.test_cases.each do |test_case| %>
-  <%= test_case.title %>
-<% end %>
+<p>Test Suite Name: <%= @test_suite.title %>, ID# <%= @test_suite.id %>  </p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @test_suite.test_cases.each do |test_case| %>
+      <tr>
+        <td><%= test_case.id %></td>
+        <td><%= test_case.title %></td>
+        <td><%= test_case.description %></td>
+        <td><%= link_to 'Show', test_case %></td>
+        <td><%= link_to 'Edit', edit_test_case_path(test_case) %></td>
+        <td><%= link_to 'Destroy', test_case, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= link_to 'Edit', edit_test_suite_path(@test_suite) %> |
 <%= link_to 'Back', test_suites_path %>

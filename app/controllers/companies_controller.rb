@@ -15,6 +15,7 @@ class CompaniesController < ApplicationController
   # GET /companies/new
   def new
     @company = Company.new
+    @test_suite = TestSuite.new
   end
 
   # GET /companies/1/edit

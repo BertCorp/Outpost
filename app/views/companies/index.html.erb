@@ -4,6 +4,7 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Name</th>
       <th># of Tests</th>
       <th>Current Status</th>
@@ -18,6 +19,7 @@
   <tbody>
     <% @companies.each do |company| %>
       <tr>
+        <td><%= company.id %></td>
         <td><%= company.name %></td>
         <td><%= company.test_cases.count %></td>
         <td>To Do</td>
