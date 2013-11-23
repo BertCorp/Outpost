@@ -10,6 +10,24 @@
       </ul>
     </div>
   <% end %>
+   
+   <div><%= f.label :report_id %><br />
+   <%= f.text_field :report_id %></div>
+   
+   <div><%= f.label :test_case_id %><br />
+   <%= f.text_field :test_case_id %></div>
+   
+   <div><%= f.label :started_at %><br />
+   <%= f.text_field :started_at %></div>
+   
+   <div><%= f.label :ended_at %><br />
+   <%= f.text_field :ended_at %></div>
+   
+   <div><%= f.label :status %><br />
+   <%= f.text_field :status %></div>
+   
+   <div><%= f.label :summary %><br />
+   <%= f.text_field :summary %></div>
 
   <div class="actions">
     <%= f.submit %>
