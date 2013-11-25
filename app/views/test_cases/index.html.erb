@@ -1,8 +1,12 @@
 <h1>Listing test_cases</h1>
 
-<table>
+<table class="table table-bordered table-striped">
   <thead>
     <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Test Suite</th>
+      <th>Conpany</th>
       <th></th>
       <th></th>
       <th></th>
@@ -12,6 +16,10 @@
   <tbody>
     <% @test_cases.each do |test_case| %>
       <tr>
+        <td><%= test_case.id %></td>
+        <td><%= test_case.title %></td>
+        <td><%= test_case.test_suite_id %></td>
+        <td><%= test_case.company.id %></td>
         <td><%= link_to 'Show', test_case %></td>
         <td><%= link_to 'Edit', edit_test_case_path(test_case) %></td>
         <td><%= link_to 'Destroy', test_case, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -13,7 +13,11 @@
 
   <div class="actions">
     
-    Test Suite: <%= f.text_field :test_suite_id %>
+    <div><%= f.label :test_suite_id %><br />
+    <%= f.text_field :test_suite_id %></div>
+    
+    <div><%= f.label :company_id %><br />
+    <%= f.text_field :company_id %></div>
     
     <%= f.submit %>
   </div>
