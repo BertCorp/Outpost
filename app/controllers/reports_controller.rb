@@ -26,11 +26,15 @@ class ReportsController < ApplicationController
   # POST /reports
   # POST /reports.json
   def create
-    @report = Report.build(report_params)
-    @test_result = TestResult.create({ status: 'pending', report_id: @report })
+    @report = Report.new(report_params)
 
     respond_to do |format|
       if @report.save
+        
+        @report.test_suite.test_cases.each do |test_case|
+          @report.results.create({ status: 'pending', report_id: @report, test_case_id: test_case.id})
+        end
+        
         format.html { redirect_to @report, notice: 'Report was successfully created.' }
         format.json { render action: 'show', status: :created, location: @report }
       else
