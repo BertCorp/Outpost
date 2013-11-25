@@ -15,6 +15,16 @@
   <p>Setup Completed At:<%= @test_case.setup_completed_at %></p>
 
   <p>Pending Message: <%= @test_case.pending_message %></p>
+  
+<table class="table table-bordered table-striped">
+  <% @test_case.results.each do |results| %>
+  <tr>
+    <td><%= results.id %></td>
+    <td><%= results.status %></td>
+    <td><%= results.report_id %></td>
+  </tr>
+  <% end %>
+</table>
 
 <%= link_to 'Edit', edit_test_case_path(@test_case) %> |
 <%= link_to 'Back', test_cases_path %>

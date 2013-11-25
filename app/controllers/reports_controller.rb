@@ -16,6 +16,7 @@ class ReportsController < ApplicationController
   # GET /reports/new
   def new
     @report = Report.new
+    @test_result = TestResult.new
   end
 
   # GET /reports/1/edit
@@ -25,12 +26,8 @@ class ReportsController < ApplicationController
   # POST /reports
   # POST /reports.json
   def create
-    @report = Report.new(report_params)
-    @test_cases = @report.test_cases
-    
-    @test_cases.each do |test_case|
-      @results = TestResult.new(test_case_id: test_case.id, report_id: @report)
-    end
+    @report = Report.build(report_params)
+    @test_result = TestResult.create({ status: 'pending', report_id: @report })
 
     respond_to do |format|
       if @report.save
@@ -75,6 +72,7 @@ class ReportsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def report_params
-      params.require(:report).permit(:company_id, :test_suite_id, :initiated_at, :initiated_by, :started_at, :completed_at, :monitored_by, :status, :summary, :created_at, :updated_at)
+      params.require(:report).permit(:company_id, :test_suite_id, :initiated_at, :initiated_by, :started_at, :completed_at, :monitored_by, :status, :summary, :created_at, :updated_at, 
+      test_results_attributes: [:id, :report_id, :test_case_id, :status])
     end
 end
