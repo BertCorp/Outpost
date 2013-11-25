@@ -10,7 +10,7 @@ class ReportsController < ApplicationController
   # GET /reports/1
   # GET /reports/1.json
   def show
-    @test_case = @report.test_cases
+    @results = @report.results
   end
 
   # GET /reports/new

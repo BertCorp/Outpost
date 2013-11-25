@@ -22,14 +22,16 @@
   <tr>
     <th>Test Case Id</th>
     <th>Test Case Title</th>
-    <th>Test Case Results ID</th>
+    <th>Test Results ID</th>
+    <th>Summary</th>
   </tr>
  
- <% @report.test_suite.test_cases.each do |test_case| %>
+ <% @results.each do |results| %>
    <tr>
-     <td><%= test_case.id %></td>
-     <td><%= test_case.title %></td>
-     <td><%= test_case.results.present? %></td>
+     <td><%= results.id %></td>
+     <td><%= results.test_case.title %></td>
+     <td><%= results.status %></td>
+     <td><%= results.summary %></td>
    </tr>
  <% end %>
 </table>
