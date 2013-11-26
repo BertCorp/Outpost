@@ -8,6 +8,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
     @company = Company.find_or_create_by(name: params[:user][:company])
+    @test_suite = TestSuite.create(company_id: @company.id)
     params[:user][:company_id] = @company.id
     
     super
