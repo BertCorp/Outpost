@@ -1,7 +1,12 @@
 <% content_for :title do %>
 Dashboard
 <% end %>
-	
+
+<div class="row">
+  <h3>Hi, <%= @user.name %>!</h3><!--Remove Me-->
+  <h5>Your company is <%= @user.company.name %>, and your test suite id is, <%= @user.company.test_suite.id %>.</h5>
+</div>
+
 <div class="row">
 	<p>This is your dashboard. There are many like it, but this one is yours.</p>
 	<p>Admin's will be able to edit and manage all user/company info. They will be able to manage all reports from here.</p>

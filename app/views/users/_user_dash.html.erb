@@ -1,7 +1,4 @@
-<h2><%= @user.name %></h2><!--Remove Me-->
-<h3><%= @user.company.name %> - Test Suite ID: <%= @user.company.test_suite.id %></h3>
-
-<% if @user.company.test_suite.test_cases %>
+<% if @user.company.test_suite.test_cases.present? %>
   <div class="row">
     <span class="pull-right">
       <%= button_to 'Add A New Test', new_test_case_path, method: :get %>
@@ -22,38 +19,42 @@
       <% end %>
     </table>
   </div>
+  
+  <div class="row">  
+    <%= render partial: "reports/report_start" %>
+
+    <h3>Last 5 Reports</h3>
+    <p><%= link_to "View All Reports", reports_path %>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Initiated At</th>
+        <th>Started At</th>
+        <th>Completed At</th>
+        <th></th>
+      </tr>
+      <% @reports.each do |report| %>
+        <tr>
+          <td><%= report.id %></td>
+          <td><%= report.status %></td>
+          <td><%= report.initiated_at %></td>
+          <td><%= report.started_at %></td>
+          <td><%= report.completed_at %></td>
+          <td><%= link_to "View Report", report_path(report) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
 <% else %>
   <div class="row">
-    <h3>Looks like you don't have any test cases yet.</h3>
-    <%= button_to 'Create Your First Test', new_test_case_path, method: :get %>
+    <hr>
+    <div class="text-center">
+      <h3>Looks like you don't have any test cases yet.</h3>
+      <p>Lets get you started with your first test.</p>
+      <%= button_to 'Create Your First Test', new_test_case_path, method: :get, class: "btn btn-lg btn-primary" %>
+    </div>
+    <hr>
   </div>
 <% end %>
-
-<div class="row">
-  
-  <%= render partial: "reports/report_start" %>
-
-  <h3>Last 5 Reports</h3>
-  <p><%= link_to "View All Reports", reports_path %>
-  <table class="table table-bordered table-striped">
-    <tr>
-      <th>ID</th>
-      <th>Status</th>
-      <th>Initiated At</th>
-      <th>Started At</th>
-      <th>Completed At</th>
-      <th></th>
-    </tr>
-    <% @reports.each do |report| %>
-      <tr>
-        <td><%= report.id %></td>
-        <td><%= report.status %></td>
-        <td><%= report.initiated_at %></td>
-        <td><%= report.started_at %></td>
-        <td><%= report.completed_at %></td>
-        <td><%= link_to "View Report", report_path(report) %></td>
-      </tr>
-    <% end %>
-  </table>
-</div>
  
