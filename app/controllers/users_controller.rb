@@ -6,6 +6,8 @@ class UsersController < ApplicationController
   # GET /dashboard
   def dashboard
     @user = current_user
+    @report = Report.new
+    @reports = @user.company.reports.find(:all, :order => "id desc", :limit => 5)
   end
 
   # GET /users

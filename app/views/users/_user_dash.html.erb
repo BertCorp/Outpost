@@ -22,10 +22,11 @@
 </div>
 
 <div class="row">
-  <span class="pull-right">
-    <%= button_to 'Run A Report', new_report_path, method: :get %>
-  </span>
-  <h3>Reports</h3>
+  
+  <%= render partial: "reports/report_start" %>
+
+  <h3>Last 5 Reports</h3>
+  <p><%= link_to "View All Reports", reports_path %>
   <table class="table table-bordered table-striped">
     <tr>
       <th>ID</th>
@@ -35,7 +36,7 @@
       <th>Completed At</th>
       <th></th>
     </tr>
-    <% @user.company.reports.each do |report| %>
+    <% @reports.each do |report| %>
       <tr>
         <td><%= report.id %></td>
         <td><%= report.status %></td>
