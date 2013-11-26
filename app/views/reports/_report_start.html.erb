@@ -1,5 +1,5 @@
 <% if current_user.is_admin? %>
-  <span class="pull-right"><%= button_to 'New Report', new_report_path, method: :get %></span>
+  <span class="pull-right"><%= button_to 'New Report', new_report_path, method: :get, class: "btn btn-lg btn-primary" %></span>
 <% else %>
   <div class="pull-right">
     <%= form_for(@report) do |f| %>
@@ -18,7 +18,7 @@
       <%= f.hidden_field :company_id, value: current_user.company.id %>
       <%= f.hidden_field :initiated_by, value: current_user.id %>
       <%= f.hidden_field :initiated_at, value: DateTime.now %>
-      <%= f.submit %>
+      <%= f.submit 'Start A Report', class: "btn btn-primary" %>
     <% end %>
   </div>
 <% end %>

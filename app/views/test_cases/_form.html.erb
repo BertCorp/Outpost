@@ -13,17 +13,17 @@
   
   <div><%= f.label :title %><br />
   <%= f.text_field :title %></div>
-  
-  <div><%= f.label :test_suite_id %><br />
-  <%= f.text_field :test_suite_id %></div>
-  
-  <div><%= f.label :company_id %><br />
-  <%= f.text_field :company_id %></div>
 
   <div><%= f.label :description %><br />
   <%= f.text_area :description %></div>
 
 <% if current_user.is_admin? %>
+  <div><%= f.label :test_suite_id %><br />
+  <%= f.text_field :test_suite_id %></div>
+  
+  <div><%= f.label :company_id %><br />
+  <%= f.text_field :company_id %></div>
+  
   <div><%= f.label :setup_started_at %><br />
   <%= f.text_field :setup_started_at %></div>
 
@@ -32,9 +32,13 @@
 
   <div><%= f.label :pending_message %><br />
   <%= f.text_field :pending_message %></div>
+  
+<% else %>
+  <%= f.hidden_field :test_suite_id, value: current_user.company.test_suite.id %>
+  <%= f.hidden_field :company_id, value: current_user.company.id %>
 <% end %>
 
   <div class="actions"><br />
-    <%= f.submit %>
+    <%= f.submit 'Create Test Case', class: "btn btn-lg btn-primary" %>
   </div>
 <% end %>

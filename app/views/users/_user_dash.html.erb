@@ -1,7 +1,7 @@
 <% if @user.company.test_suite.test_cases.present? %>
   <div class="row">
     <span class="pull-right">
-      <%= button_to 'Add A New Test', new_test_case_path, method: :get %>
+      <%= button_to 'New Test', new_test_case_path, method: :get, class: "btn btn-primary" %>
     </span>
     <h3>Your Tests</h3>
     <table class="table table-bordered table-striped">
@@ -52,7 +52,7 @@
     <div class="text-center">
       <h3>Looks like you don't have any test cases yet.</h3>
       <p>Lets get you started with your first test.</p>
-      <%= button_to 'Create Your First Test', new_test_case_path, method: :get, class: "btn btn-lg btn-primary" %>
+      <%= button_to 'Create Your First Test', new_test_case_path, method: :get, class: "btn btn-lg btn-primary btn-block" %>
     </div>
     <hr>
   </div>
