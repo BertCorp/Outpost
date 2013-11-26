@@ -1,60 +1,21 @@
 <% if @user.company.test_suite.test_cases.present? %>
   <div class="row">
-    <span class="pull-right">
-      <%= button_to 'New Test', new_test_case_path, method: :get, class: "btn btn-primary" %>
-    </span>
-    <h3>Your Tests</h3>
-    <table class="table table-bordered table-striped">
-      <tr>
-        <th>Name</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-      <% @user.company.test_suite.test_cases.each do |test_case| %>
-        <tr>
-          <td><%= test_case.title %></td>
-          <td><%= test_case.status %></td>
-          <td><%= link_to '(edit)', edit_test_case_path(test_case) %></td>
-        </tr>
-      <% end %>
-    </table>
+   <%= render partial: "test_cases" %>
   </div>
   
   <div class="row">  
-    <%= render partial: "reports/report_start" %>
-
-    <h3>Last 5 Reports</h3>
-    <p><%= link_to "View All Reports", reports_path %>
-    <table class="table table-bordered table-striped">
-      <tr>
-        <th>ID</th>
-        <th>Status</th>
-        <th>Initiated At</th>
-        <th>Started At</th>
-        <th>Completed At</th>
-        <th></th>
-      </tr>
-      <% @reports.each do |report| %>
-        <tr>
-          <td><%= report.id %></td>
-          <td><%= report.status %></td>
-          <td><%= report.initiated_at %></td>
-          <td><%= report.started_at %></td>
-          <td><%= report.completed_at %></td>
-          <td><%= link_to "View Report", report_path(report) %></td>
-        </tr>
-      <% end %>
-    </table>
+    <% if @user.company.reports.present? %>
+    <div class="pull-right">
+      <%= render partial: "reports/report_start" %>
+    </div>
+      <%= render partial: "reports" %>
+    <% else %>
+      <%= render partial: "first_report" %>
+    <% end  %>
   </div>
 <% else %>
   <div class="row">
-    <hr>
-    <div class="text-center">
-      <h3>Looks like you don't have any test cases yet.</h3>
-      <p>Lets get you started with your first test.</p>
-      <%= button_to 'Create Your First Test', new_test_case_path, method: :get, class: "btn btn-lg btn-primary" %>
-    </div>
-    <hr>
+    <%= render partial: "test_case_setup" %>
   </div>
 <% end %>
  
