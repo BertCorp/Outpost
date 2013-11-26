@@ -18,6 +18,8 @@
     </tr>
   </thead>
 
+<%= will_paginate @reports %>
+
   <tbody>
     <% @reports.each do |report| %>
       <tr>
@@ -35,3 +37,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @reports %>

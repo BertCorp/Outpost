@@ -10,4 +10,5 @@ class Report < ActiveRecord::Base
 
   #Attributes: initiated_at, initiated_by (who clicked the “run test” button), started_at, completed_at, monitored_by (user_id -- Outpost employee), status, summary
   accepts_nested_attributes_for :results
+  scope :user_reports, ->(user) { where(company_id: user.company_id) }  
 end

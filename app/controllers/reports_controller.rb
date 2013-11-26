@@ -4,7 +4,11 @@ class ReportsController < ApplicationController
   # GET /reports
   # GET /reports.json
   def index
-    @reports = Report.all
+    if current_user.is_admin?
+      @reports = Report.all.paginate(page: params[:page], per_page: 10)
+    else
+      @reports = Report.user_reports(current_user).paginate(page: params[:page], per_page: 10)
+    end
     @report = Report.new(report_params)
   end
 
