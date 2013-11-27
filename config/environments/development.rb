@@ -14,7 +14,18 @@ Outpost::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'outpostqa.com',
+    user_name:            'email',
+    password:             'secret',
+    authentication:       'plain',
+    enable_starttls_auto: true  
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -27,7 +38,6 @@ Outpost::Application.configure do
   # number of complex assets.
   config.assets.debug = true
   
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   Rails.application.routes.default_url_options = { :host => 'localhost:3000' }
   
 end

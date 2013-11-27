@@ -40,6 +40,8 @@ class ReportsController < ApplicationController
           @report.results.create({ status: 'pending', report_id: @report, test_case_id: test_case.id})
         end
         
+        ReportMailer.new_report_email(@report).deliver
+        
         format.html { redirect_to @report, notice: 'Report was successfully created.' }
         format.json { render action: 'show', status: :created, location: @report }
       else

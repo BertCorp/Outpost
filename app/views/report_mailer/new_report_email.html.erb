@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>A new report has been created for <%= @report.company.name %>!</p>
+    
+    <p>Well, what are you waiting for?! Hop to it! <%= link_to "Click Me", report_path(@report) %></p>
+  </body>
+</html>
