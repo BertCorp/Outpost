@@ -16,7 +16,7 @@
     <div><%= f.label :company_id %><br />
     <%= f.select :company_id, Company.all.collect {|c| [ c.name, c.id ] }, include_blank: true %></div>
     
-    <div><%= f.label :company_id %><br />
+    <div><%= f.label :test_suite_id %><br />
     <%= f.select :test_suite_id, TestSuite.all.collect {|t_s| [ t_s.id ] }, include_blank: true %></div>
     
     <br />
