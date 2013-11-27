@@ -12,13 +12,17 @@
   <% end %>
 
   <div class="actions">
-    
-    <div><%= f.label :test_suite_id %><br />
-    <%= f.text_field :test_suite_id, class: "form-control" %></div>
+  
+    <div><%= f.label :company_id %><br />
+    <%= f.select :company_id, Company.all.collect {|c| [ c.name, c.id ] }, include_blank: true %></div>
     
     <div><%= f.label :company_id %><br />
-    <%= f.text_field :company_id, class: "form-control" %></div>
+    <%= f.select :test_suite_id, TestSuite.all.collect {|t_s| [ t_s.id ] }, include_blank: true %></div>
     
-    <%= f.submit %>
+    <br />
+    
+    <div class="actions">
+      <%= f.submit 'Create Report', class: "btn btn-lg btn-primary" %>
+    </div>
   </div>
 <% end %>
