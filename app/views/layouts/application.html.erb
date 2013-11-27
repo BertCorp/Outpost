@@ -31,6 +31,7 @@
           <div class="pull-right">
             <ul class="nav nav-pills">
               <li><%= link_to 'My Dashboard', dashboard_path %>
+              <li><%= link_to 'Edit Company', edit_company_path(current_user.company) %>
               <li><%= link_to 'Edit Profile', edit_user_registration_path %>
               <li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %></li>
             </ul>
