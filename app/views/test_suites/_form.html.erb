@@ -1,4 +1,4 @@
-<%= form_for(@test_suite) do |f| %>
+<%= form_for(@test_suite, html: { class: 'form-standard' }) do |f| %>
   <% if @test_suite.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@test_suite.errors.count, "error") %> prohibited this test_suite from being saved:</h2>
@@ -12,18 +12,20 @@
   <% end %>
   
   <div><%= f.label :company_id %><br />
-  <%= f.text_field :company_id %></div>
+  <%= f.text_field :company_id, class: "form-control" %></div>
 
   <div><%= f.label :title %><br />
-  <%= f.text_field :title %></div>
+  <%= f.text_field :title, class: "form-control" %></div>
 
   <div><%= f.label :description %><br />
-  <%= f.text_field :description %></div>
+  <%= f.text_area :description, class: "form-control" %></div>
 
   <div><%= f.label :setup_video_url %><br />
-  <%= f.text_field :setup_video_url %></div>
+  <%= f.text_field :setup_video_url, class: "form-control" %></div>
 
+  <br />
+  
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Create Test Suite', class: "btn btn-lg btn-primary" %>
   </div>
 <% end %>

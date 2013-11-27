@@ -3,7 +3,7 @@
  <h3>Reported generated for <%= @report.company.name %>.</h3>
  
  <p>
-  <%= link_to 'Back', reports_path %>
+  <%= link_to 'Back', :back %>
     <% if current_user.is_admin? %>
     | <%= link_to 'Edit Report', edit_report_path(@report) %> 
     <% end %>
@@ -25,7 +25,7 @@
  
  <p>Test Summary: <%= @report.summary %></p>
 
-<table class="table table-bordered tabel-striped">
+<table class="table table-bordered table-striped">
   <tr>
     <th>Test Case Id</th>
     <th>Test Case Title</th>
@@ -39,7 +39,13 @@
      <td><%= results.status %></td>
    </tr>
    <tr>
-     <td colspan="3">Summary: <%= results.summary %></td>
+     <td colspan="3">Summary: 
+     <% if results.summary.present? %>
+       <%= results.summary %>
+     <% else %>
+       <i>No notes given.</i>
+     <% end%>
+     </td>
    </tr>
  <% end %>
 </table>

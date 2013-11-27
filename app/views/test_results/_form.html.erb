@@ -1,4 +1,4 @@
-<%= form_for(@test_result) do |f| %>
+<%= form_for(@test_result, html: { class: 'form-standard' }) do |f| %>
   <% if @test_result.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@test_result.errors.count, "error") %> prohibited this test_result from being saved:</h2>
@@ -12,24 +12,26 @@
   <% end %>
    
    <div><%= f.label :report_id %><br />
-   <%= f.text_field :report_id %></div>
+   <%= f.text_field :report_id, class: "form-control" %></div>
    
    <div><%= f.label :test_case_id %><br />
-   <%= f.text_field :test_case_id %></div>
+   <%= f.text_field :test_case_id, class: "form-control" %></div>
    
    <div><%= f.label :started_at %><br />
-   <%= f.text_field :started_at %></div>
+   <%= f.text_field :started_at, class: "form-control" %></div>
    
    <div><%= f.label :ended_at %><br />
-   <%= f.text_field :ended_at %></div>
+   <%= f.text_field :ended_at, class: "form-control" %></div>
    
    <div><%= f.label :status %><br />
-   <%= f.text_field :status %></div>
+   <%= f.text_field :status, class: "form-control" %></div>
    
    <div><%= f.label :summary %><br />
-   <%= f.text_field :summary %></div>
+   <%= f.text_area :summary, class: "form-control" %></div>
+   
+   <br />
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Create Test Result', class: "btn btn-lg btn-primary" %>
   </div>
 <% end %>

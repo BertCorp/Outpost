@@ -11,6 +11,7 @@
  */
 
 @import 'twitter/bootstrap';
+@import 'twitter/bootstrap/forms';
 
 /* Devise forms: /login & /signup */
 .form-signin, .form-signup {
@@ -71,7 +72,12 @@
   border-bottom-right-radius: 4px;	
 }
 
+/* Standard Forms */
 
+.form-standard {
+  max-width: 330px;
+  padding: 15px;
+}
 
 .container {
 	max-width: 860px;
@@ -82,7 +88,6 @@
 		text-align: center;
 		clear: both;
 	}
-	
 }
 
 .flat .plan {
