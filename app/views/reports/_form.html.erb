@@ -19,9 +19,27 @@
     <div><%= f.label :test_suite_id %><br />
     <%= f.select :test_suite_id, TestSuite.all.collect {|t_s| [ t_s.id ] }, include_blank: true %></div>
     
-    <div><%= f.label :test_suite_id %><br />
-    <%= f.text_field :status %></div>
+    <div><%= f.label :initiated_at %><br />
+    <%= f.datetime_select :initiated_at %></div>
     
+    <div><%= f.label :initiated_by %><br />
+    <%= f.text_field :initiated_by %></div>
+    
+    <div><%= f.label :started_at %><br />
+    <%= f.datetime_select :started_at %></div>
+    
+    <div><%= f.label :completed_at %><br />
+    <%= f.datetime_select :completed_at %></div>
+    
+    <div><%= f.label :monitored_by %><br />
+    <%= f.text_field :monitored_by %></div>
+    
+    <div><%= f.label :status %><br />
+    <%= f.select :status, options_for_select(['Queued', 'Running', 'Completed With Failures', 'Completed']) %></div>
+      
+    <div><%= f.label :summary %><br />
+    <%= f.text_area :summary %></div>
+      
     <br />
     
     <div class="actions">
