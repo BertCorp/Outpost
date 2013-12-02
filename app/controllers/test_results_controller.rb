@@ -1,5 +1,6 @@
 class TestResultsController < ApplicationController
   before_action :set_test_result, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_admin!
 
   # GET /test_results
   # GET /test_results.json
