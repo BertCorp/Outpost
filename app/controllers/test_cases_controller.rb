@@ -1,5 +1,6 @@
 class TestCasesController < ApplicationController
   before_action :set_test_case, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /test_cases
   # GET /test_cases.json

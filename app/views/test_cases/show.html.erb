@@ -1,12 +1,14 @@
 <p id="notice"><%= notice %></p>
+<%= link_to 'Edit', edit_test_case_path(@test_case) %> |
+<%= link_to 'Back', test_cases_path %>
+
+  <p><b>Title: <%= @test_case.title %></b></p>
+  
+  <p>Description: <%= @test_case.description %></p>
 
   <p>Company ID: <%= @test_case.company_id %></p>
 
   <p>Test Suite ID: <%= @test_case.test_suite_id %></p>
-
-  <p>Title: <%= @test_case.title %></p>
-
-  <p>Description: <%= @test_case.description %></p>
   
   <p>Status: <%= @test_case.status %></p>
 
@@ -25,6 +27,3 @@
   </tr>
   <% end %>
 </table>
-
-<%= link_to 'Edit', edit_test_case_path(@test_case) %> |
-<%= link_to 'Back', test_cases_path %>

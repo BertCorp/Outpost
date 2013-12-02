@@ -14,7 +14,7 @@
     <tr>
       <td><%= test_case.title %></td>
       <td><%= test_case.status %></td>
-      <td><%= link_to '(edit)', edit_test_case_path(test_case) %></td>
+      <td><%= link_to 'View Test Case', test_case_path(test_case) %></td>
     </tr>
   <% end %>
 </table>
