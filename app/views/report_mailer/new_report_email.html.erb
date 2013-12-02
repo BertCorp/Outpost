@@ -6,6 +6,6 @@
   <body>
     <p>A new report has been created for <%= @report.company.name %>!</p>
     
-    <p>Well, what are you waiting for?! Hop to it! <%= link_to "Click Me", report_path(@report) %></p>
+    <p>Well, what are you waiting for?! Hop to it! <%= link_to "Click Me", report_url(@report) %></p>
   </body>
 </html>
