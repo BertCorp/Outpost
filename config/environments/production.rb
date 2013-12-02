@@ -79,5 +79,14 @@ Outpost::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
   
   config.action_mailer.default_url_options = { :host => 'outpostqa.com' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'outpostqa.com',
+    user_name:            ENV["EMAIL"],
+    password:             ENV["PASSWORD"]
+    authentication:       'plain',
+    enable_starttls_auto: true  }
   
 end
