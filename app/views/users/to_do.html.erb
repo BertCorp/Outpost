@@ -1,0 +1,43 @@
+<p>To Do Items</p>
+
+<span class="pull-right">
+  <%= button_to 'New Test', new_test_case_path, method: :get, class: "btn btn-primary" %>
+</span>
+<h3>Pending Test Cases</h3>
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+  <% @test_cases.each do |test_case| %>
+    <tr>
+      <td><%= test_case.title %></td>
+      <td><%= test_case.status %></td>
+      <td><%= link_to '(edit)', edit_test_case_path(test_case) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<h3>Pending Reports</h3>
+<p><%= link_to "View All Reports", reports_path %>
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>ID</th>
+    <th>Status</th>
+    <th>Initiated At</th>
+    <th>Started At</th>
+    <th>Completed At</th>
+    <th></th>
+  </tr>
+  <% @reports.each do |report| %>
+    <tr>
+      <td><%= report.id %></td>
+      <td><%= report.status %></td>
+      <td><%= report.initiated_at %></td>
+      <td><%= report.started_at %></td>
+      <td><%= report.completed_at %></td>
+      <td><%= link_to "View Report", report_path(report) %></td>
+    </tr>
+  <% end %>
+</table>

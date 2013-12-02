@@ -19,6 +19,9 @@
     <div><%= f.label :test_suite_id %><br />
     <%= f.select :test_suite_id, TestSuite.all.collect {|t_s| [ t_s.id ] }, include_blank: true %></div>
     
+    <div><%= f.label :test_suite_id %><br />
+    <%= f.text_field :status %></div>
+    
     <br />
     
     <div class="actions">

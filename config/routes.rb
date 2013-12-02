@@ -15,6 +15,7 @@ Outpost::Application.routes.draw do
   devise_scope :user do
     get "/logout" => "devise/sessions#destroy"
     get "/dashboard" => "users#dashboard", as: :dashboard
+    get "/to_do" => "users#to_do", as: :to_do
   end  
   
   resources :users, :companies, :reports, :test_suites, :reports, :test_cases, :pages, :test_results

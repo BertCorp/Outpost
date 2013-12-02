@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, except: [:dashboard, :index]
+  before_action :set_user, except: [:dashboard, :index, :to_do]
   before_action :authenticate_admin!, except: [:dashboard]
   before_action :authenticate_user!, only: [:dashboard]
 
@@ -8,6 +8,11 @@ class UsersController < ApplicationController
     @user = current_user
     @report = Report.new
     @reports = @user.company.reports.find(:all, :order => "id desc", :limit => 5)
+  end
+  
+  def to_do
+    @test_cases = TestCase.where(setup_completed_at: nil)
+    @reports = Report.where(status: 'queued')
   end
 
   # GET /users

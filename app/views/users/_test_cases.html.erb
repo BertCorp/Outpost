@@ -8,7 +8,7 @@
     <th>Status</th>
     <th></th>
   </tr>
-  <% @user.company.test_suite.test_cases.each do |test_case| %>
+  <% current_user.company.test_suite.test_cases.each do |test_case| %>
     <tr>
       <td><%= test_case.title %></td>
       <td><%= test_case.status %></td>
