@@ -1,6 +1,7 @@
 class TestSuitesController < ApplicationController
   before_action :set_test_suite, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_admin!, only: [:index, :show, :destroy]
+  before_action :authenticate_admin!, only: [:index, :show, :destroy]
+  before_action :authenticate_user!
 
   # GET /test_suites
   # GET /test_suites.json
