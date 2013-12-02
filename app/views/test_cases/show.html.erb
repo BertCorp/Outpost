@@ -18,12 +18,27 @@
 
   <p>Pending Message: <%= @test_case.pending_message %></p>
   
+  <h3>Previous Test Results</h3>
+
 <table class="table table-bordered table-striped">
+  <tr>
+    <th>ID #</th>
+    <th>Status</th>
+    <th>Report ID</th>
+    <th>Started At</th>
+    <th>Ended At</th>
+    <th>Summary</th>
+    <th></th>
+  </tr>
   <% @test_case.results.each do |results| %>
   <tr>
     <td><%= results.id %></td>
     <td><%= results.status %></td>
     <td><%= results.report_id %></td>
+    <td><%= results.started_at %></td>
+    <td><%= results.ended_at %></td>
+    <td><%= results.summary %></td>
+    <td><%= link_to "View Original Report", report_path(results.report) %></td>
   </tr>
   <% end %>
 </table>

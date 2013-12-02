@@ -2,18 +2,25 @@
 
 <p>Company Name: <%= @company.name %></p>
 
-<p>Test Suite ID#: <%= @company.test_suite.id %> </p>
+<p>Test Suite ID#: <%= @company.test_suite.id %> <%= link_to "View Test Suite", test_suite_path(@company.test_suite) %></p>
 
 <p>Company Users</p>
 
 <table class="table table-bordered table-striped">
-<% @company.users.each do |user| %>
-  <tr>
-    <td><%= user.email %></td>
-    <td><%= link_to 'Edit', edit_user_registration_path(user) %></td>
-    <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @company.users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= link_to 'Edit', edit_user_registration_path(user) %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <%= link_to 'Edit', edit_company_path(@company) %> |

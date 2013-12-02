@@ -1,9 +1,16 @@
-<p>To Do Items</p>
+<div class="row">
+  <h1>To Do Items</h1>
+</div>
 
-<span class="pull-right">
-  <%= button_to 'New Test', new_test_case_path, method: :get, class: "btn btn-primary" %>
-</span>
-<h3>Pending Test Cases</h3>
+<div class="row">
+  <span class="pull-right">
+    <%= button_to 'New Test', new_test_case_path, method: :get, class: "btn btn-primary" %>
+  </span>
+
+  <h3>Pending Test Cases</h3>
+  <p>Test cases to setup.</p>
+</div>
+
 <table class="table table-bordered table-striped">
   <tr>
     <th>Name</th>
@@ -19,8 +26,11 @@
   <% end %>
 </table>
 
-<h3>Pending Reports</h3>
-<p><%= link_to "View All Reports", reports_path %>
+<div class="row">
+  <h3>Pending Reports</h3>
+  <p>Reports ready to run</p>
+</div>
+
 <table class="table table-bordered table-striped">
   <tr>
     <th>ID</th>
