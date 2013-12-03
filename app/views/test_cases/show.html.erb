@@ -6,15 +6,15 @@
 
 <p><b>Title:</b> <%= @test_case.title %></p>
 
-<p>Description: <%= @test_case.description %></p>
+<p><b>Description:</b> <%= @test_case.description %></p>
 
-<p>Status: <%= @test_case.status %></p>
+<p><b>Setup Started At:</b> <%= @test_case.setup_started_at %></p>
 
-<p>Setup Started At: <%= @test_case.setup_started_at %></p>
+<p><b>Setup Completed At:</b> <%= @test_case.setup_completed_at %></p>
 
-<p>Setup Completed At:<%= @test_case.setup_completed_at %></p>
+<p><b>Pending Message:</b> <%= @test_case.pending_message %></p>
 
-<p>Pending Message: <%= @test_case.pending_message %></p>
+<p><b>Current Status:</b> <%= @test_case.status %></p>
 
 <p><%= link_to 'Update Test Case', edit_test_case_path(@test_case) %> </p>
 

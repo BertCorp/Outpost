@@ -6,10 +6,10 @@ class TestCase < ActiveRecord::Base
   
   
   def status
-    return "ready" if setup_completed_at.present?
-    return "pending" if pending_message.present?
-    return "being setup" if setup_started_at.present?    
-    'awaiting setup'
+    return "Ready" if setup_completed_at.present?
+    return "Pending" if pending_message.present?
+    return "Being Setup" if setup_started_at.present?    
+    'Awaiting Setup'
   end
   
 end
