@@ -11,6 +11,9 @@
     </div>
   <% end %>
   
+   
+   <h3>Test Case Info</h3>
+  
    <p><b>Title:</b> <%= @test_result.test_case.title %></p>
 
    <p><b>Description:</b> <%= @test_result.test_case.description %></p>
@@ -18,10 +21,10 @@
    <hr>
    
    <div><%= f.label :started_at %><br />
-   <%= f.datetime_select :started_at, class: "form-control" %></div>
+   <%= f.text_field :started_at, class: "form-control", placeholder: "YYYY-MM-DD HH:MM" %></div>
    
    <div><%= f.label :ended_at %><br />
-   <%= f.datetime_select :ended_at, class: "form-control" %></div>
+   <%= f.text_field :ended_at, class: "form-control", placeholder: "YYYY-MM-DD HH:MM" %></div>
    
    <hr>
    

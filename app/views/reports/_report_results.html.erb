@@ -1,0 +1,58 @@
+<% if @report.status == "Queued" %>
+  <hr>
+  <%= form_for(@report, html: { class: 'form-standard' }) do |f| %>
+    <% if @report.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
+
+        <ul>
+        <% @report.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="actions">
+      <%= f.hidden_field :status, value: "Running" %>
+      <%= f.hidden_field :started_at, value: DateTime.now %>
+      <%= f.hidden_field :monitored_by, value: current_user.id %>
+    
+      <div class="actions">
+        <%= f.submit 'Mark Report As Running', class: "btn btn-lg btn-success" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @report.status == "Running" %>
+  <hr>
+  <h3>Finished up with the report?</h3>
+  <p>Update the status and include notes a specific not for the client.</p>
+  <%= form_for(@report, html: { class: 'form-standard' }) do |f| %>
+    <% if @report.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
+
+        <ul>
+        <% @report.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="actions">
+      <%= f.hidden_field :completed_at, value: DateTime.now %>
+      <div><%= f.label :status %><br />
+      <%= f.select :status, options_for_select(['Completed', 'Completed With Failures']), include_blank: true %></div>
+    
+      <div><%= f.label :summary %><br />
+      <%= f.text_area :summary, class: "form-control" %></div>
+    
+      <div class="actions"><br />
+        <%= f.submit 'Mark Report Complete', class: "btn btn-lg btn-danger" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

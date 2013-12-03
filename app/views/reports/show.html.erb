@@ -1,56 +1,60 @@
 <p id="notice"><%= notice %></p>
 
- <h3>Reported generated for <%= @report.company.name %>.</h3>
- 
- <p>
-  <%= link_to 'Back', :back %>
+<div class="row">
+    <h3>Reported generated for <%= @report.company.name %>.</h3>
+
+    <p><%= link_to 'Back', :back %></p>
+
+    <p>Initiated At: <%= @report.initiated_at %></p>
+
+    <p>Initiated By: <%= @report.initiated_by %></p>
+
+    <p>Started At: <%= @report.started_at %></p>
+
+    <p>Completed At: <%= @report.completed_at %></p>
+
+    <p>Monitored By: <%= @report.monitored_by %></p>
+
+    <p>Test Summary: <%= @report.summary %></p>
+
+    <p><b>Current Status:</b> <%= @report.status %></p>
+    
     <% if current_user.is_admin? %>
-    | <%= link_to 'Edit Report', edit_report_path(@report) %> 
+      <%= render partial: "report_results" %>
+      <p><%= link_to 'Let me edit the full report', edit_report_path(@report) %></p>
     <% end %>
- </p>
+</div>
 
- <p>Test Suite Id: <%= @report.test_suite_id %></p>
+<hr>
+<div class="row">
+  <h3>Test Results</h3>
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th>Test Case Id</th>
+      <th>Test Case Title</th>
+      <th>Test Results ID</th>
+    </tr>
  
- <p>Initiated At: <%= @report.initiated_at %></p>
- 
- <p>Initiated By: <%= @report.initiated_by %></p>
- 
- <p>Started At: <%= @report.started_at %></p>
- 
- <p>Completed At: <%= @report.completed_at %></p>
- 
- <p>Monitored By: <%= @report.monitored_by %></p>
- 
- <p>Current Status: <%= @report.status %></p>
- 
- <p>Test Summary: <%= @report.summary %></p>
-
-<table class="table table-bordered table-striped">
-  <tr>
-    <th>Test Case Id</th>
-    <th>Test Case Title</th>
-    <th>Test Results ID</th>
-  </tr>
- 
- <% @results.each do |result| %>
-   <tr>
-     <td><%= result.id %></td>
-     <td><%= result.test_case.title %></td>
-     <td><%= result.status %></td>
-   </tr>
-   <tr>
-     <td colspan="3">Summary: 
-     <% if result.summary.present? %>
-       <%= result.summary %>
-     <% else %>
-       <i>No notes given.</i>
-     <% end%>
-     </td>
-   </tr>
-   <% if current_user.is_admin? %>
-   <tr>
-     <td colspan="3"><%= link_to "Update Test Result", test_result_path(result) %></td>
-   </tr>
+   <% @results.each do |result| %>
+     <tr>
+       <td><%= result.id %></td>
+       <td><%= result.test_case.title %></td>
+       <td><%= result.status %></td>
+     </tr>
+     <tr>
+       <td colspan="3">Summary: 
+       <% if result.summary.present? %>
+         <%= result.summary %>
+       <% else %>
+         <i>No notes given.</i>
+       <% end%>
+       </td>
+     </tr>
+     <% if current_user.is_admin? %>
+     <tr>
+       <td colspan="3"><%= link_to "Record Test Result", edit_test_result_path(result) %></td>
+     </tr>
+     <% end %>
    <% end %>
- <% end %>
-</table>
+  </table>
+</div>
