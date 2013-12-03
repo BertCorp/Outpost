@@ -20,8 +20,8 @@
     <p><b>Current Status:</b> <%= @report.status %></p>
     
     <% if current_user.is_admin? %>
-      <%= render partial: "report_results" %>
       <p><%= link_to 'Let me edit the full report', edit_report_path(@report) %></p>
+      <%= render partial: "start_report" %>
     <% end %>
 </div>
 
@@ -32,7 +32,7 @@
     <tr>
       <th>Test Case Id</th>
       <th>Test Case Title</th>
-      <th>Test Results ID</th>
+      <th>Test Results</th>
     </tr>
  
    <% @results.each do |result| %>
@@ -42,7 +42,7 @@
        <td><%= result.status %></td>
      </tr>
      <tr>
-       <td colspan="3">Summary: 
+       <td colspan="3">Results Summary: 
        <% if result.summary.present? %>
          <%= result.summary %>
        <% else %>
@@ -50,11 +50,15 @@
        <% end%>
        </td>
      </tr>
-     <% if current_user.is_admin? %>
+     <% if current_user.is_admin? && @report.status == "Running" %>
      <tr>
-       <td colspan="3"><%= link_to "Record Test Result", edit_test_result_path(result) %></td>
+       <td colspan="3"><%= button_to "Record Test Result", edit_test_result_path(result), method: :get, class: "btn btn-success" %></td>
      </tr>
      <% end %>
    <% end %>
   </table>
+</div>
+
+<div class="row">
+  <%= render partial: "complete_report" %>
 </div>

@@ -76,6 +76,10 @@ a:hover {
   color: #555;
 }
 
+.center {
+	text-align: center;
+}
+
 @media only screen and (max-width: 961px) {
   .main-container {
     background-color: rgba(208,208,208, .9);
