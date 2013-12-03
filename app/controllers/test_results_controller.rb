@@ -44,7 +44,7 @@ class TestResultsController < ApplicationController
   def update
     respond_to do |format|
       if @test_result.update(test_result_params)
-        format.html { redirect_to @test_result, notice: 'Test result was successfully updated.' }
+        format.html { redirect_to @test_result.report, notice: 'Test result was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

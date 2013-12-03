@@ -34,7 +34,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     if successfully_updated
       sign_in @user, :bypass => true
-      redirect_to root_path, notice: 'User was successfully updated.'
+      redirect_to dashboard_path, notice: 'User was successfully updated.'
     else
       render 'edit'
     end

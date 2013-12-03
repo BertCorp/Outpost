@@ -1,24 +1,26 @@
 <p id="notice"><%= notice %></p>
-<%= link_to 'Edit', edit_test_case_path(@test_case) %> |
-<%= link_to 'Back', test_cases_path %>
 
-  <p><b>Title: <%= @test_case.title %></b></p>
-  
-  <p>Description: <%= @test_case.description %></p>
+<span><h3>Test Case For <%= @test_case.company.name %></h3></span>
 
-  <p>Company ID: <%= @test_case.company_id %></p>
+<p><%= link_to 'Back', test_cases_path %> | <%= link_to "View Company", company_path(@test_case.company) %></p>
 
-  <p>Test Suite ID: <%= @test_case.test_suite_id %></p>
-  
-  <p>Status: <%= @test_case.status %></p>
+<p><b>Title:</b> <%= @test_case.title %></p>
 
-  <p>Setup Started At: <%= @test_case.setup_started_at %></p>
+<p>Description: <%= @test_case.description %></p>
 
-  <p>Setup Completed At:<%= @test_case.setup_completed_at %></p>
+<p>Status: <%= @test_case.status %></p>
 
-  <p>Pending Message: <%= @test_case.pending_message %></p>
-  
-  <h3>Previous Test Results</h3>
+<p>Setup Started At: <%= @test_case.setup_started_at %></p>
+
+<p>Setup Completed At:<%= @test_case.setup_completed_at %></p>
+
+<p>Pending Message: <%= @test_case.pending_message %></p>
+
+<p><%= link_to 'Update Test Case', edit_test_case_path(@test_case) %> </p>
+
+<hr>
+
+<h3>Previous Test Results</h3>
 
 <table class="table table-bordered table-striped">
   <tr>

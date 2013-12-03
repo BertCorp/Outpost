@@ -32,20 +32,25 @@
     <th>Test Results ID</th>
   </tr>
  
- <% @results.each do |results| %>
+ <% @results.each do |result| %>
    <tr>
-     <td><%= results.id %></td>
-     <td><%= results.test_case.title %></td>
-     <td><%= results.status %></td>
+     <td><%= result.id %></td>
+     <td><%= result.test_case.title %></td>
+     <td><%= result.status %></td>
    </tr>
    <tr>
      <td colspan="3">Summary: 
-     <% if results.summary.present? %>
-       <%= results.summary %>
+     <% if result.summary.present? %>
+       <%= result.summary %>
      <% else %>
        <i>No notes given.</i>
      <% end%>
      </td>
    </tr>
+   <% if current_user.is_admin? %>
+   <tr>
+     <td colspan="3"><%= link_to "Update Test Result", test_result_path(result) %></td>
+   </tr>
+   <% end %>
  <% end %>
 </table>

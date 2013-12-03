@@ -10,21 +10,23 @@
       </ul>
     </div>
   <% end %>
+  
+   <p><b>Title:</b> <%= @test_result.test_case.title %></p>
+
+   <p><b>Description:</b> <%= @test_result.test_case.description %></p>
    
-   <div><%= f.label :report_id %><br />
-   <%= f.text_field :report_id, class: "form-control" %></div>
-   
-   <div><%= f.label :test_case_id %><br />
-   <%= f.text_field :test_case_id, class: "form-control" %></div>
+   <hr>
    
    <div><%= f.label :started_at %><br />
-   <%= f.text_field :started_at, class: "form-control" %></div>
+   <%= f.datetime_select :started_at, class: "form-control" %></div>
    
    <div><%= f.label :ended_at %><br />
-   <%= f.text_field :ended_at, class: "form-control" %></div>
+   <%= f.datetime_select :ended_at, class: "form-control" %></div>
+   
+   <hr>
    
    <div><%= f.label :status %><br />
-   <%= f.text_field :status, class: "form-control" %></div>
+   <%= f.select :status, options_for_select(["Pending", "Running", "Pass", "Fail", "Skipped"]), class: "form-control" %></div>
    
    <div><%= f.label :summary %><br />
    <%= f.text_area :summary, class: "form-control" %></div>
