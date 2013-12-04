@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>Hi, <%= @initiator.name %>!</p>
+    
+    <p>Your report has been queued and will be run shortly. You can always <%= link_to "check your report status.", report_url(@report) %> but we will notify you when results are ready.</p>
+    
+    <p>Thanks,</p>
+    
+    <p>Mark & Zack</p>
+  </body>
+</html>
