@@ -4,11 +4,11 @@
 
 <div class="row">
   <h3>Pending Test Cases</h3>
-  <p>Test cases to setup.</p>
+  <p>New test cases that still need to be setup. Client are waiting on these...</p>
 </div>
 
 <% if @test_cases.count == 0 %>
-  <h5>Look at your hot shot, all the test cases have been setup.</h5>
+  <h5>Look at you hot shot, all the test cases have been setup.</h5>
 <% else %>
   <table class="table table-bordered table-striped">
     <tr>
@@ -26,9 +26,11 @@
   </table>
 <% end %>
 
+<hr>
+
 <div class="row">
   <h3>Pending Reports</h3>
-  <p>Reports ready to run</p>
+  <p>Reports that are waiting to be run.</p>
 </div>
 
 <% if @reports.count == 0 %>
@@ -50,7 +52,7 @@
         <td><%= report.initiated_at %></td>
         <td><%= report.started_at %></td>
         <td><%= report.completed_at %></td>
-        <td><%= link_to "Start Report", report_path(report) %></td>
+        <td><%= button_to "Start Report", report_path(report), method: :get, class: "btn btn-success" %></td>
       </tr>
     <% end %>
   </table>

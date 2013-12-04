@@ -31,6 +31,7 @@ class CompaniesController < ApplicationController
 
     respond_to do |format|
       if @company.save
+        @test_suite = TestSuite.create(company_id: @company.id)
         format.html { redirect_to @company, notice: 'Company was successfully created.' }
         format.json { render action: 'show', status: :created, location: @company }
       else

@@ -1,5 +1,9 @@
 <div class="pull-right">
-  <%= render partial: "report_start" %>
+  <% if current_user.is_admin? %>
+    <%= button_to "Create a Report", new_report_path, method: :get, class: "btn btn-primary" %>
+  <% else %>
+    <%= render partial: "report_start" %>
+  <% end %>
 </div>
 
 <h1>All Reports</h1>

@@ -8,7 +8,7 @@ class CreateReports < ActiveRecord::Migration
       t.datetime  :started_at
       t.datetime  :completed_at
       t.integer   :monitored_by
-      t.string    :status,          null: false, default: 'queued'
+      t.string    :status,          null: false, default: 'Queued'
       t.text      :summary
       
       t.timestamps

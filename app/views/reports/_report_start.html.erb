@@ -14,5 +14,5 @@
   <%= f.hidden_field :company_id, value: current_user.company.id %>
   <%= f.hidden_field :initiated_by, value: current_user.id %>
   <%= f.hidden_field :initiated_at, value: DateTime.now %>
-  <%= f.submit 'Start A Report', class: "btn btn-primary" %>
+  <%= f.submit 'Run A Report', class: "btn btn-primary" %>
 <% end %>

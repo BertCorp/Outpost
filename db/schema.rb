@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20131117220906) do
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "monitored_by"
-    t.string   "status",        default: "queued", null: false
+    t.string   "status",        default: "Queued", null: false
     t.text     "summary"
     t.datetime "created_at"
     t.datetime "updated_at"
