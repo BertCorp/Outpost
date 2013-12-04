@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   
   def to_do
     @test_cases = TestCase.where(setup_completed_at: nil)
-    @reports = Report.where(status: 'Queued')
+    @reports = Report.where(status: 'queued')
   end
 
   # GET /users

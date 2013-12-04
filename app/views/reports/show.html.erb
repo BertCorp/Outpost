@@ -7,13 +7,13 @@
 
     <p>Initiated At: <%= @report.initiated_at %></p>
 
-    <p>Initiated By: <%= @report.initiated_by %></p>
+    <p>Initiated By: <%= @report.initiator.name %></p>
 
     <p>Started At: <%= @report.started_at %></p>
 
     <p>Completed At: <%= @report.completed_at %></p>
 
-    <p>Monitored By: <%= @report.monitored_by %></p>
+    <p>Monitored By: <%= @report.monitorer.name if @report.monitorer.present? %></p>
 
     <p>Test Summary: <%= @report.summary %></p>
 

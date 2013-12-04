@@ -7,43 +7,51 @@
   <p>Test cases to setup.</p>
 </div>
 
-<table class="table table-bordered table-striped">
-  <tr>
-    <th>Name</th>
-    <th>Status</th>
-    <th></th>
-  </tr>
-  <% @test_cases.each do |test_case| %>
+<% if @test_cases.count == 0 %>
+  <h5>Look at your hot shot, all the test cases have been setup.</h5>
+<% else %>
+  <table class="table table-bordered table-striped">
     <tr>
-      <td><%= test_case.title %></td>
-      <td><%= test_case.status %></td>
-      <td><%= link_to 'View Test Case', test_case_path(test_case) %></td>
+      <th>Name</th>
+      <th>Status</th>
+      <th></th>
     </tr>
-  <% end %>
-</table>
+    <% @test_cases.each do |test_case| %>
+      <tr>
+        <td><%= test_case.title %></td>
+        <td><%= test_case.status %></td>
+        <td><%= link_to 'Setup Test Case', test_case_path(test_case) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
 
 <div class="row">
   <h3>Pending Reports</h3>
   <p>Reports ready to run</p>
 </div>
 
-<table class="table table-bordered table-striped">
-  <tr>
-    <th>ID</th>
-    <th>Status</th>
-    <th>Initiated At</th>
-    <th>Started At</th>
-    <th>Completed At</th>
-    <th></th>
-  </tr>
-  <% @reports.each do |report| %>
+<% if @reports.count == 0 %>
+  <h5>Looks like there are no reports to run. Good work kiddo!</h5>
+<% else %>
+  <table class="table table-bordered table-striped">
     <tr>
-      <td><%= report.id %></td>
-      <td><%= report.status %></td>
-      <td><%= report.initiated_at %></td>
-      <td><%= report.started_at %></td>
-      <td><%= report.completed_at %></td>
-      <td><%= link_to "Start Report", report_path(report) %></td>
+      <th>ID</th>
+      <th>Status</th>
+      <th>Initiated At</th>
+      <th>Started At</th>
+      <th>Completed At</th>
+      <th></th>
     </tr>
-  <% end %>
-</table>
+    <% @reports.each do |report| %>
+      <tr>
+        <td><%= report.id %></td>
+        <td><%= report.status %></td>
+        <td><%= report.initiated_at %></td>
+        <td><%= report.started_at %></td>
+        <td><%= report.completed_at %></td>
+        <td><%= link_to "Start Report", report_path(report) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
