@@ -5,6 +5,11 @@ class PagesController < ApplicationController
   end
   
   def new_marketing
+    render layout: "marketing"
+  end
+  
+  def new_client_confirmation
+    render layout: "marketing"
   end
 
 end
