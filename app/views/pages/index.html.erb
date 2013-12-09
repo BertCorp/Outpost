@@ -1,30 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Outpost - Automated User Testing and Quality Assurance for Mobile and Web Applications.</title>
-    <meta name="author" content="Mark Bertrand">
-		<meta name="viewport" content="width=600">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link href="http://fonts.googleapis.com/css?family=Radley:400italic,400" rel="stylesheet" type="text/css">
-    <%= stylesheet_link_tag "pages-index", :media => "all" %>
-  </head>
-  <body>
-    <div class="main-container">
-      <div class="main-text">
-        <div class="logo">
-          <h1>Outpost.</h1>
-        </div>
-        <div class="tagline">
-          <h2>You can't fix it if you don't know it's broken.</h2>
-        </div>
-        <div>
-          <p>Need help testing your application?<a href="mailto:info@outpostqa.com" target="_blank"> Email Us.</a></p>
-        </div>
-        <div class="twitter">
-          <p><a href="http://twitter.com/OutpostQA" target="_blank" title="Follow us on Twitter: @OutpostQA">&nbsp;</a></p>
-        </div>
+<div id="marketing-page">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="center-block tagline">
+        <h1>You can't fix it if you don't know it's broken.</h1>
       </div>
     </div>
-	  <%= render 'layouts/analytics' %>
-  </body>
-</html>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 center-block title">
+      <hr>
+      <h3>What is Outpost?</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <p>Outpost writes, runs and manages automated testing suites for your application by converting your plain
+      english user flows into a fully automated test suite. By managing user flow changes to and providing manual
+      reviews of any test failure Outpost allows you to get back to what is important, building.</p>
+
+      <p class="center-block"><a href="#get_started" class="btn btn-success" id="get_started_link">Get Started</a></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 center-block title">
+      <hr>
+      <h3>How does it work?</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-1">
+      <p>1.)</p>
+    </div>
+    <div class="col-md-11">
+      <p>Define - Define each test case in plain
+      english. (i.e. Test a user can purchase a
+      widget)</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+      <p>2.)</p>
+    </div>
+    <div class="col-md-11">
+      <p>Review - Outpost writes your tests and
+      provides a video</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-1">
+      <p>3.)</p>
+    </div>
+    <div class="col-md-11">
+      <p>Test - Run the tests on-demand. Outpost runs
+      your full test suite as needed. Just log in to
+      your dashboard and kick off a report. We’ll then
+      run the test and notify you when the report is
+      ready</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
+      <p>4.)</p>
+    </div>
+    <div class="col-md-11">
+      <p>Reports - When you receive your report you’ll
+      see status for each test case. In the event a
+      test fails one of the Outpost team members
+      manually reviews the failure to determine the
+      cause and include a detailed note</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <hr>
+    <div class="col-md-12 center-block title">
+      <h3>How much does it cost?</h3>
+    </div>
+  </div>
+
+  <%= render partial: 'pricing_matrix' %>
+  
+  <div class="row">
+    <div class="col-md-12 center-block">
+      <p class="note">Don’t see something that works for your team? We have custom plans as well. <%= mail_to "mark@outpostqa.com", "Let’s talk." %></p>
+    </div>
+  </div>
+
+  <div class="row" id="get_started">
+    <div class="col-md-12 center-block title">
+      <hr>
+      <h3>Let's Start Testing Your App</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <p class="center-block">We are now accepting new clients. To get on the list, fill out the following quick form:</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 center-block">
+      <form action="http://bertcorp.createsend.com/t/i/s/awki/" method="post" class="form-signup">
+          <p>
+              <input id="fieldName" name="cm-name" type="text" placeholder="Your Name" class="form-control" />
+          </p>
+          <p>
+              <input id="fieldEmail" name="cm-awki-awki" type="email" placeholder="Email" class="form-control" required />
+          </p>
+          <p>
+              <input id="fieldklyky" name="cm-f-klyky" type="text" placeholder="Company" class="form-control" />
+          </p>
+          <p>
+              <button type="submit" class="btn btn-success">Get Started</button>
+          </p>
+      </form>
+    </div>
+  </div>
+</div><!--marketing-page-->

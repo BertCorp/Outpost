@@ -19,8 +19,7 @@ Outpost::Application.routes.draw do
   end  
   
   resources :users, :companies, :reports, :test_suites, :reports, :test_cases, :pages, :test_results
-  
-  get 'new_marketing' => 'pages#new_marketing', as: 'new_marketing'
+
   get 'new_client_confirmation' => 'pages#new_client_confirmation', as: 'new_client_confirmation'
   
   root "pages#index"

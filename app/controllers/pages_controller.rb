@@ -1,10 +1,6 @@
 class PagesController < ApplicationController
-
-  def index
-    render layout: false
-  end
   
-  def new_marketing
+  def index
     render layout: "marketing"
   end
   
