@@ -85,7 +85,7 @@ Outpost::Application.configure do
     port:                 587,
     domain:               'outpostqa.com',
     user_name:            ENV["EMAIL"],
-    password:             ENV["PASSWORD"]
+    password:             ENV["PASSWORD"],
     authentication:       'plain',
     enable_starttls_auto: true  }
   
