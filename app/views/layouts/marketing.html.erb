@@ -39,9 +39,7 @@
       
       <%= yield %>
     
-			<footer>
-			  <hr>
-      </footer>
+			<%= render partial: 'footer' %>
 		</div>
   	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   	<%= render 'layouts/analytics' %>
