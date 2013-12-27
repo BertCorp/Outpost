@@ -15,4 +15,4 @@
 //= require turbolinks
 //= require pages
 //= require twitter/bootstrap
-//= require_tree .
+// require_tree .
