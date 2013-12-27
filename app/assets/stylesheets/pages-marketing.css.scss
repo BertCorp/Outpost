@@ -47,10 +47,6 @@ p {
   margin: 0 auto;
 }
 
-.title {
-  margin: 0 0 20px 0;
-}
-
 .form-contact {
   max-width: 200px;
   position: relative;
@@ -122,4 +118,17 @@ p {
   /*.plan:hover li.plan-name {
     background: #000;
   }*/
+}
+
+#get_started {
+	.title {
+		h3 {
+			margin: 0px;
+		}
+		
+		p {
+			font-size: 16px;
+			margin: 0px;
+		}
+	}
 }
