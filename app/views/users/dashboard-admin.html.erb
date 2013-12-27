@@ -1,13 +1,13 @@
-<div class="row">
-  <h1>To Do Items</h1>
-</div>
+<% content_for :title do %>
+Admin Dashboard
+<% end %>
 
 <div class="row">
   <h3>Pending Test Cases</h3>
   <p>New test cases that still need to be setup. Client are waiting on these...</p>
 </div>
 
-<% if @test_cases.count == 0 %>
+<% if @test_cases.any? %>
   <h5>Look at you hot shot, all the test cases have been setup.</h5>
 <% else %>
   <table class="table table-bordered table-striped">

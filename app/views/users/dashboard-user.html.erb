@@ -1,10 +1,14 @@
-<% if @user.company.test_suite.test_cases.present? %>
+<% content_for :title do %>
+Dashboard
+<% end %>
+
+<% if current_user.company.test_suite.test_cases.present? %>
   <div class="row">
    <%= render partial: "test_cases" %>
   </div>
   
   <div class="row">  
-    <% if @user.company.reports.present? %>
+    <% if current_user.company.reports.present? %>
     <div class="pull-right">
       <%= render partial: "reports/report_start" %>
     </div>
@@ -18,4 +22,3 @@
     <%= render partial: "test_case_setup" %>
   </div>
 <% end %>
- 

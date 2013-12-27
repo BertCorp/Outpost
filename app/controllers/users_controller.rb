@@ -4,15 +4,16 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, only: [:dashboard]
 
   # GET /dashboard
-  def dashboard
-    @user = current_user
-    @report = Report.new
-    @reports = @user.company.reports.find(:all, :order => "id desc", :limit => 5)
-  end
-  
-  def to_do
-    @test_cases = TestCase.where(setup_completed_at: nil)
-    @reports = Report.where(status: 'Queued')
+  def dashboard    
+    if current_user.is_admin? 
+      @test_cases = TestCase.where(setup_completed_at: nil)
+      @reports = Report.where(status: 'Queued')    
+      render 'dashboard-admin'
+    else
+      @report = Report.new
+      @reports = current_user.company.reports.find(:all, :order => "id desc", :limit => 5)
+      render 'dashboard-user'
+    end
   end
 
   # GET /users
