@@ -1,3 +1,4 @@
+
 <div id="marketing-page">
   <div class="row">
     <div class="col-md-12">
@@ -7,91 +8,130 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12 center-block title">
-      <hr>
-      <h3>What is Outpost?</h3>
-    </div>
-  </div>
+  <hr>
 
   <div class="row">
     <div class="col-md-12">
+      <h3>What is Outpost?</h3>
+
       <p>Outpost helps you write, run and manage automated tests for your application by converting your plain
       english user flows into a fully automated test suite. By managing user flow changes and providing manual
       reviews of any test failures, Outpost allows you to get back to what is important: building.</p>
 
-      <p class="center-block"><a href="#get_started" class="btn btn-success" id="get_started_link">Get Started</a></p>
+      <p class="center-block"><a href="#get-started" class="btn btn-success" id="get_started_link">Get Started</a></p>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12 center-block title">
-      <hr>
-      <h3>How does it work?</h3>
-    </div>
+  <hr>
+
+  <div class="row how-it-works">
+    <div class="col-md-12">
+			<h3>How does it work?</h3>
+	    
+			<ol>
+				<li>Define - Define each test case in plain english. (i.e. Test a user can purchase a widget).</li>
+				<li>Review - Outpost writes your tests and provides a video.</li>
+				<li>Test - Run the tests when needed or on a recurring schedule. Just log in to your dashboard and tell us when you want to run your tests. We'll take it from there and notify you when the report is ready.</li>
+				<li>Reports - When you receive your report you'll see status for each test case. In the event a test fails one of the Outpost team members manually reviews the failure to determine the cause and include a detailed note.</li>
+			</ol>
+		</div>
   </div>
 
-  <div class="row">
-    <div class="col-md-1">
-      <p>1.</p>
-    </div>
-    <div class="col-md-11">
-      <p>Define - Define each test case in plain
-      english. (i.e. Test a user can purchase a
-      widget)</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-1">
-      <p>2.</p>
-    </div>
-    <div class="col-md-11">
-      <p>Review - Outpost writes your tests and
-      provides a video</p>
-    </div>
-  </div>
+	<hr>
 
   <div class="row">
-    <div class="col-md-1">
-      <p>3.</p>
-    </div>
-    <div class="col-md-11">
-      <p>Test - Run the tests on-demand. Outpost runs
-      your full test suite as needed. Just log in to
-      your dashboard and kick off a report. We’ll then
-      run the test and notify you when the report is
-      ready</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-1">
-      <p>4.</p>
-    </div>
-    <div class="col-md-11">
-      <p>Reports - When you receive your report you’ll
-      see status for each test case. In the event a
-      test fails one of the Outpost team members
-      manually reviews the failure to determine the
-      cause and include a detailed note</p>
-    </div>
-  </div>
-
-  <div class="row">
-    <hr>
-    <div class="col-md-12 center-block title">
+    <div class="col-md-12 flat">
       <h3>How much does it cost?</h3>
-    </div>
-  </div>
-
-  <%= render partial: 'pricing_matrix' %>
   
-  <div class="row">
-    <div class="col-md-12 center-block">
+			<div class="col-lg-4 col-md-4 col-xs-12">
+      	<ul class="plan plan1">
+					<li class="plan-name">
+               Project
+           </li>
+           <li>
+               <strong>Free Setup</strong>
+           </li>
+           <li>
+               monitor up to <strong>5</strong> User Flows
+           </li>
+           <li>
+           		up to <strong>10</strong> Reports
+           </li>
+           <li>
+               <strong>On-Demand<br/>Reports</strong>
+           </li>
+           <li>
+               <strong>Email Support</strong>
+           </li>
+           <li class="plan-price">
+               <h3><strong>$100</strong></h3>
+               <p>per month</p>
+           </li>
+        </ul>
+			</div>
+
+			<div class="col-lg-4 col-md-4 col-xs-12">
+				<ul class="plan plan2">
+					<li class="plan-name">
+              Seed
+          </li>
+          <li>
+              <strong>Free Setup</strong>
+          </li>
+          <li>
+              <strong>15</strong> Test Cases
+          </li>
+          <li>
+              up to <strong>15</strong> Reports
+          </li>
+          <li>
+              <strong>On-Demand &amp; Scheduled<br/>Reports</strong>
+          </li>
+          <li>
+              <strong>Email &amp; Chat Support</strong>
+          </li>
+          <li class="plan-price">
+              <h3><strong>$275</strong></h3>
+              <p>per month</p>
+          </li>
+        </ul>
+			</div>
+
+			<div class="col-lg-4 col-md-4 col-xs-12">
+	    	<ul class="plan plan3">
+					<li class="plan-name">
+	             Funded
+	         </li>
+	         <li>
+	             <strong>Free Setup</strong>
+	         </li>
+	         <li>
+	             <strong>30</strong> Test Cases
+	         </li>
+	         <li>
+	             up to <strong>20</strong> Reports
+	         </li>
+	         <li>
+	             <strong>On-Demand &amp; Scheduled<br/>Reports</strong>
+	         </li>
+	         <li>
+	             <strong>Email &amp; Chat Support</strong>
+	         </li>
+	         <li class="plan-price">
+	             <h3><strong>$500</strong></h3>
+	             <p>per month</p>
+	         </li>
+				</ul>
+			</div>
+    </div>
+
+		<div class="col-md-12 center-block">
       <p class="note">Don’t see something that works for your team? We have custom plans as well. <%= mail_to "mark@outpostqa.com", "Let’s talk." %></p>
     </div>
+
   </div>
 
-  <div class="row" id="get_started">
+  <div class="row" id="get-started">
     <div class="col-md-12 center-block title">
       <hr>
       <h3>We are currently accepting new clients.</h3>

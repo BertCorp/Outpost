@@ -11,11 +11,13 @@
     </div>
   <% end %>
 
-  <div><%= f.label :name %><br />
-  <%= f.text_field :name, class: "form-control" %></div>
-  <span class="help-block">(This will create an associated Test Suite)</span>
+  <div>
+		<%= f.label :name %><br />
+  	<%= f.text_field :name, class: "form-control" %>
+		<span class="help-block">(This will create an associated Test Suite)</span>
+	</div>
   
-  <div class="actions"><br />
-  <%= f.submit 'Create New Company', class: "btn btn-lg btn-primary" %>
+  <div class="actions">
+  	<%= f.submit 'Save Company', class: "btn btn-lg btn-primary" %>
   </div>
 <% end %>

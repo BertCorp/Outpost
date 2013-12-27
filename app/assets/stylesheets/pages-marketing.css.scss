@@ -18,6 +18,7 @@ h3 {
   font-weight: bold;
   margin-top: 20px;
   font-size: 28px;
+	text-align: center;
 }
 
 p {
@@ -120,7 +121,14 @@ p {
   }*/
 }
 
-#get_started {
+.how-it-works {
+	ol li {
+		font-size: 18px;
+		margin: 20px 0px 20px 0px;
+	}
+}
+
+#get-started {
 	.title {
 		h3 {
 			margin: 0px;

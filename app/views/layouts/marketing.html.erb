@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Outpost - <%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
+    <title>Outpost - Automated User Testing Made Easy</title>
     <!--<meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="/favicon.ico">
@@ -26,15 +26,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="row">
-        <div class="col-md-16">
-          <div>
-            <%= link_to root_path do %>
-              <%= image_tag 'logo.png', class: 'img-responsive' %>
-            <% end %>
-          </div>
-        </div>
-      </div>
+			<%= render 'layouts/header' %>      
       
       <%= yield %>
     
