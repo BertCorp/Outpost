@@ -77,7 +77,8 @@ p {
 
   .plan li {
     padding: 10px 15px;
-    color: #999;
+    /*color: #999;*/
+		color: #000;
     -webkit-transition: 300ms;
     transition: 300ms;
   }
@@ -88,6 +89,14 @@ p {
     margin-left: auto;
     margin-right: auto;
     color: #000;
+
+		h3 {
+			margin-bottom: 0px;
+		}
+
+		p {
+			margin: 0px;
+		}
   }
 
   .plan li.plan-name {
@@ -110,7 +119,7 @@ p {
     border-top: 0;
   }
   
-  .plan:hover li.plan-name {
+  /*.plan:hover li.plan-name {
     background: #000;
-  }
+  }*/
 }
