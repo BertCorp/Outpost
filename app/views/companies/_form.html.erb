@@ -1,4 +1,4 @@
-<%= form_for(@company, html: { class: 'form-horizontal', role: 'form' }) do |f| %>
+<%= form_for(@company, html: { class: 'form-horizontal form-standard', role: 'form' }) do |f| %>
   <% if @company.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@company.errors.count, "error") %> prohibited this company from being saved:</h2>
@@ -12,11 +12,28 @@
   <% end %>
 
   <div class="form-group">
-		<%= f.label :name, class: 'control-label' %>
-  	<%= f.text_field :name, class: "form-control" %>
+		<%= f.label :name, "Company Name", class: 'col-sm-3 control-label' %>
+  	<div class="col-sm-9">
+			<%= f.text_field :name, class: "form-control", placeholder: "Acme Company" %>
+		</div>
+	</div>
+		
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Users</label>
+		<div class="col-sm-9">
+		<% @company.users.each do |user| %>
+			<%= f.fields_for :users do |u| %>
+			<%= render partial: 'companies/user', locals: { user: user } %>
+			<% end %>
+		<% end %>
+			<!-- TODO: Ability to add multiple users -->
+			<!--<%= link_to "Add User", "javascript:void(0);", class: 'btn btn-primary pull-right', onclick: "$.get('/companies/new-user', function(data) { $(this).before(data); }); return false;" %>-->
+		</div>
 	</div>
   
-  <div class="actions">
-  	<%= f.submit 'Save Company', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", companies_path, class: "btn btn-danger", confirm: "Are you sure?" %>
+  <div class="actions col-sm-offset-6">
+  	<%= f.submit 'Save Company', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", companies_path, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+
+		<%= link_to 'Delete', @company, method: :delete, data: { confirm: 'Are you sure you want to delete this company, its users and tests?' }, class: 'btn btn-link delete' if @company.id.present? %>
   </div>
 <% end %>
