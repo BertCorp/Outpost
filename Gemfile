@@ -6,11 +6,11 @@ gem 'rails', '4.0.1'
 gem 'sass-rails', '~> 4.0.1'
 gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 1.2'
-gem 'turbolinks'
+#gem 'turbolinks'
 
 # Front end gems
-gem 'jquery-rails'
-gem 'bootstrap-sass-rails', '~> 3.0'
+#gem 'jquery-rails'
+#gem 'bootstrap-sass-rails', '~> 3.0'
 
 # Use pg as the database for Active Record
 gem 'pg'

@@ -1,8 +1,7 @@
 <div id="admin-nav-container" class="row" style="margin-bottom: 20px;">
   <ul class="nav nav-tabs">
     <li<%= raw(' class="active"') if (params[:controller] == 'users') && (params[:action] == 'dashboard') %>><%= link_to 'Home', dashboard_path %></li>
-    <li<%= raw(' class="active"') if (params[:controller] == 'users') && (params[:action] != 'dashboard') %>><%= link_to 'Users', users_path %></li>
-    <li<%= raw(' class="active"') if params[:controller] == 'companies' %>><%= link_to 'Companies', companies_path %></li>
+    <li<%= raw(' class="active"') if params[:controller] == 'companies' || ((params[:controller] == 'users') && (params[:action] != 'dashboard')) %>><%= link_to 'Companies', companies_path %></li>
     <li<%= raw(' class="active"') if params[:controller] == 'reports' %>><%= link_to 'Reports', reports_path %></li>
   </ul>
 </div>

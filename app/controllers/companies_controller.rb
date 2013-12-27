@@ -1,12 +1,11 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_admin!, only: [:index, :show]
-  before_action :authenticate_user!
+  before_action :authenticate_admin!
 
   # GET /companies
   # GET /companies.json
   def index
-    @companies = Company.all
+    @companies = Company.where("name != 'Outpost'")
   end
 
   # GET /companies/1

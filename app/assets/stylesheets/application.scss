@@ -8,10 +8,12 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require bootstrap-3.0.2.min
+ *= require bootstrap-theme-3.0.2.min
  */
 
-@import 'twitter/bootstrap';
-@import 'twitter/bootstrap/forms';
+/*@import 'twitter/bootstrap';
+@import 'twitter/bootstrap/forms';*/
 @import 'pages-marketing';
 
 /* Devise forms: /login & /signup */
