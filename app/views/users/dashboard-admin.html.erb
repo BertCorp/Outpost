@@ -2,40 +2,10 @@
 Admin Dashboard
 <% end %>
 
-<div class="row">
-  <h3>Pending Test Cases</h3>
-  <p>New test cases that still need to be setup. Client are waiting on these...</p>
-</div>
-
-<% if @test_cases.any? %>
-  <h5>Look at you hot shot, all the test cases have been setup.</h5>
-<% else %>
-  <table class="table table-bordered table-striped">
-    <tr>
-      <th>Name</th>
-      <th>Status</th>
-      <th></th>
-    </tr>
-    <% @test_cases.each do |test_case| %>
-      <tr>
-        <td><%= test_case.title %></td>
-        <td><%= test_case.status %></td>
-        <td><%= link_to 'Setup Test Case', test_case_path(test_case) %></td>
-      </tr>
-    <% end %>
-  </table>
-<% end %>
-
-<hr>
-
+<% if @reports.any? %>
 <div class="row">
   <h3>Pending Reports</h3>
   <p>Reports that are waiting to be run.</p>
-</div>
-
-<% if @reports.count == 0 %>
-  <h5>Looks like there are no reports to run. Good work kiddo!</h5>
-<% else %>
   <table class="table table-bordered table-striped">
     <tr>
       <th>ID</th>
@@ -56,4 +26,38 @@ Admin Dashboard
       </tr>
     <% end %>
   </table>
+</div>
+
+<hr/>
+<% end %>
+<% if @test_cases.any? %>
+<div class="row">
+  <h3>Tests Needing Setup</h3>
+  <p>New test cases that still need to be setup. Client are waiting on these...</p>
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    <% @test_cases.each do |test_case| %>
+      <tr>
+        <td><%= test_case.title %></td>
+        <td><%= test_case.status %></td>
+        <td><%= link_to 'Setup Test Case', test_case_path(test_case) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<% end %>
+<% unless @test_cases.any? && @reports.any? %>
+<div class="row" style="text-align: center;">
+	<h3>All Done! Nothing Pending!</h3>
+	<p>
+		<img src="http://i.imgur.com/Jdvdr.gif"><br/>
+		<img src="http://i.imgur.com/kQWV2.gif"><br/>
+		<img src="http://cl.ly/image/1Q1z2Y302u3M/Image%202014.01.06%202%3A36%3A00%20PM.gif"><br/>
+		<img src="http://i.imgur.com/wZuxj.gif"><br/>
+	</p>
+</div>
 <% end %>
