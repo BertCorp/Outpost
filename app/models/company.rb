@@ -1,8 +1,8 @@
 class Company < ActiveRecord::Base
   
   has_many :reports
-  has_one :test_suite
-  has_many :test_cases, through: :test_suite
+  has_many :test_suites
+  has_many :test_cases
   
   has_many :users
   accepts_nested_attributes_for :users

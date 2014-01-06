@@ -20,7 +20,7 @@
       <td>To Do</td>
       <td>To Do</td>
       <td>To Do</td>
-      <td><%= link_to 'Edit', edit_company_path(company) %> <%= link_to 'Delete', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <td><%= link_to 'Edit', edit_company_path(company), class: 'btn btn-primary btn-xs' %></td>
     </tr>
     <% end %>
 		<% if @companies.count < 1 %>

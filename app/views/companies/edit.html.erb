@@ -5,3 +5,7 @@ Edit Company
 <h1>Edit Company</h1>
 
 <%= render 'form' %>
+
+<hr/>
+
+<%= link_to 'Delete Company & Tests', @company, method: :delete, data: { confirm: 'Are you sure you want to delete this company, its users and tests?' }, class: 'btn btn-block btn-danger' %>

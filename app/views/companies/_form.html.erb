@@ -19,7 +19,7 @@
 	</div>
 		
 	<div class="form-group">
-		<label class="col-sm-3 control-label">Users</label>
+		<label class="col-sm-3 control-label">User(s)</label>
 		<div class="col-sm-9">
 		<% @company.users.each do |user| %>
 			<%= f.fields_for :users do |u| %>
@@ -32,8 +32,6 @@
 	</div>
   
   <div class="actions col-sm-offset-6">
-  	<%= f.submit 'Save Company', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", companies_path, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
-
-		<%= link_to 'Delete', @company, method: :delete, data: { confirm: 'Are you sure you want to delete this company, its users and tests?' }, class: 'btn btn-link delete' if @company.id.present? %>
+  	<%= f.submit 'Save Company', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", companies_path, class: "btn btn-danger" %>
   </div>
 <% end %>
