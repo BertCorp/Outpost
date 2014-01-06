@@ -6,6 +6,7 @@
     <tr>
       <th>Name</th>
       <th># of Tests</th>
+			<th># of Reports</th>
       <th>Current Status</th>
       <th>Most Recent</th>
       <th>Initial Suite</th>
@@ -17,9 +18,10 @@
     <tr>
       <td><%= link_to company.name, company %></td>
       <td><%= company.test_cases.count %></td>
-      <td>To Do</td>
-      <td>To Do</td>
-      <td>To Do</td>
+			<td><%= company.reports.count %></td>
+      <td><%= company.status %></td>
+      <td>To Do</td><!-- What is this for? -->
+      <td>To Do</td><!-- What is this for? -->
       <td><%= link_to 'Edit', edit_company_path(company), class: 'btn btn-primary btn-xs' %></td>
     </tr>
     <% end %>
