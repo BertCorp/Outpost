@@ -13,5 +13,16 @@ class TestResult < ActiveRecord::Base
   Failed - Test failed.
   Pass - Test passed.
 =end  
+
+  def statuses
+    [
+			["Queued - In the queue to be run.", "Queued"],
+	  	["Skipped - Test was skipped.", "Skipped"],
+	  	["Canceled - Test was canceled.", "Canceled"],
+	  	["Running - Test currently running.", "Running"],
+	  	["Failed - Test failed.", "Failed"],
+	  	["Passed - Test passed.", "Passed"]
+		]
+  end
   
 end

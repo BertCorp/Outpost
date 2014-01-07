@@ -1,4 +1,4 @@
-<%= form_for(@report, html: { class: 'form-standard' }) do |f| %>
+<%= form_for(@report, html: { class: 'form-horizontal form-standard', role: 'form' }) do |f| %>
   <% if @report.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
@@ -11,39 +11,85 @@
     </div>
   <% end %>
 
-  <div class="actions">
-  
-    <div><%= f.label :company_id %><br />
-    <%= f.select :company_id, Company.all.collect {|c| [ c.name, c.id ] }, include_blank: true %></div>
-    
-    <div><%= f.label :test_suite_id %><br />
-    <%= f.select :test_suite_id, TestSuite.all.collect {|t_s| [ t_s.id ] }, include_blank: true %></div>
-    
-    <div><%= f.label :initiated_at %><br />
-    <%= f.text_field :initiated_at, class: "form-control", placeholder: "YYYY-MM-DD HH:MM" %></div>
-    
-    <div><%= f.label :initiated_by %><br />
-    <%= f.text_field :initiated_by, class: "form-control" %></div>
-    
-    <div><%= f.label :started_at %><br />
-    <%= f.text_field :started_at, class: "form-control", placeholder: "YYYY-MM-DD HH:MM" %></div>
-    
-    <div><%= f.label :completed_at %><br />
-    <%= f.text_field :completed_at, class: "form-control", placeholder: "YYYY-MM-DD HH:MM" %></div>
-    
-    <div><%= f.label :monitored_by %><br />
-    <%= f.select :monitored_by,  options_for_select(['Mark Bertrand', 'Zack Gilbert']), include_blank: true, class: "form-control" %></div>
-    
-    <div><%= f.label :status %><br />
-    <%= f.select :status, options_for_select(['Queued', 'Running', 'Completed With Failures', 'Completed']), include_blank: true %></div>
-      
-    <div><%= f.label :summary %><br />
-    <%= f.text_area :summary, class: "form-control" %></div>
-      
-    <br />
-    
-    <div class="actions">
-      <%= f.submit 'Create Report', class: "btn btn-lg btn-primary" %>
+  <div class="form-group">
+		<%= f.label :company_id, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+      <%= f.select :company_id, Company.where("name != 'Outpost'").collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
     </div>
-  </div>
+	</div>
+
+	<% if @report.company.test_suites.count > 1 %>
+  <div class="form-group">
+		<%= f.label :test_suite_id, "Test Suite", class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+    	<%= f.select :test_suite_id, @report.company.test_suites.collect {|t_s| [ (t_s.title.present? ? t_s.title : "Tests"), t_s.id ] }, { include_blank: true }, { class: 'form-control' } %>
+		</div>
+	</div>
+	<% else %>
+		<%= f.hidden_field :test_suite_id %>
+	<% end %>
+
+	<% if @report.initiated_at.present? || !@report.started_at.present? %>
+	<div class="form-group">
+		<%= f.label :initiated_at, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<% unless @report.initiated_at.present? %>
+			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
+			<%= f.text_field :initiated_at, class: "form-control datetimepicker", style: 'width: 360px', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<%= f.label :initiated_by, 'Initiated By', class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+      <%= f.select :initiated_by, User.where("(email LIKE '%@outpostqa.com') OR (company_id = #{@report.company_id})").collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
+    </div>
+	</div>
+  <% end %>
+
+	<div class="form-group">
+		<%= f.label :started_at, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<% unless @report.started_at.present? %>
+			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
+			<%= f.text_field :started_at, class: "form-control datetimepicker", style: 'width: 360px', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
+		</div>
+	</div>
+		
+	<div class="form-group">
+		<%= f.label :completed_at, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<% unless @report.completed_at.present? %>
+			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
+			<%= f.text_field :completed_at, class: "form-control datetimepicker", style: 'width: 360px', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<%= f.label :monitored_by, 'Monitored By', class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+      <%= f.select :monitored_by, User.where("email LIKE '%@outpostqa.com'").collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
+    </div>
+	</div>
+	
+	<div class="form-group">
+		<%= f.label :status, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+      <%= f.select :status, options_for_select(['Queued', 'Running', 'Completed With Failures', 'Completed']), { include_blank: true }, { class: 'form-control' } %>
+    </div>
+	</div>
+
+	<div class="form-group">
+		<%= f.label :summary, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+		  <%= f.text_area :summary, class: "form-control", placeholder: "Detail the results of the report." %>
+		</div>
+	</div>      
+	
+	<div class="actions col-sm-offset-6">
+		<%= f.submit 'Save Report', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", dashboard_path, class: "btn btn-danger" %>
+	</div>
 <% end %>

@@ -11,15 +11,13 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th>Report ID</th>
+      <th>ID</th>
       <th>Company</th>
       <th>Status</th>
-      <th># of Test Cases</th>
-      <th>Initiated At</th>
-      <th>Started At</th>
-      <th>Completed At</th>
-      <th></th>
-      <th></th>
+      <th># of Tests</th>
+      <th>Initiated</th>
+      <th>Started</th>
+      <th>Completed</th>
       <th></th>
     </tr>
   </thead>
@@ -29,16 +27,16 @@
   <tbody>
     <% @reports.each do |report| %>
       <tr>
-        <td><%= report.id %></td>
-        <td><%= report.company.name %></td>
+        <td><%= link_to report.id, report %></td>
+        <td><%= link_to report.company.name, report.company %></td>
         <td><%= report.status %></td>
-        <td><%= report.test_cases.count %></td>
+        <td><%= link_to report.test_cases.count, report %></td>
         <td><%= report.initiated_at %></td>
         <td><%= report.started_at %></td>
         <td><%= report.completed_at %></td>
-        <td><%= link_to 'Show', report %></td>
-        <td><%= link_to 'Edit', edit_report_path(report) %></td>
-        <td><%= link_to 'Destroy', report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+					<%= button_to "View Report", report_path(report), method: :get, class: "btn btn-success" %>
+				</td>
       </tr>
     <% end %>
   </tbody>

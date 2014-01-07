@@ -5,14 +5,9 @@
 
 <hr/>
 
-<% if @company.test_cases.any? %>
-<%= link_to "Run Report", new_report_path(@company), class: 'btn btn-primary btn-block' %>
-<hr/>
-<% end %>
-
 <% @company.test_suites.each do |suite| %>
-<%= link_to "Add Test", new_test_case_path(company: @company.id, test_suite: suite.id), class: 'btn btn-primary btn-sm pull-right' if suite.test_cases.any? %>
-<h3><%= suite.title.present? ? suite.title : "Tests" %></h3>
+<%= link_to "Add Test", new_test_case_path(company: @company.id, suite: suite.id), class: 'btn btn-primary btn-sm pull-right' if suite.test_cases.any? %>
+<h3><%= suite.title.present? ? suite.title : "Tests" %><%= link_to "Run New Report", new_report_path(company: @company.id, suite: suite.id), class: 'btn btn-primary btn-sm', style: 'margin-left: 20px;' if suite.test_cases.any? %></h3>
 
 <% if suite.test_cases.any? %>
 <table class="table table-bordered table-striped">

@@ -1,7 +1,7 @@
-<%= form_for(@test_result, html: { class: 'form-standard' }) do |f| %>
+<%= form_for(@test_result, html: { class: 'form-horizontal form-standard', role: 'form' }) do |f| %>
   <% if @test_result.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@test_result.errors.count, "error") %> prohibited this test_result from being saved:</h2>
+      <h2><%= pluralize(@test_result.errors.count, "error") %> prohibited this test result from being saved:</h2>
 
       <ul>
       <% @test_result.errors.full_messages.each do |msg| %>
@@ -10,33 +10,54 @@
       </ul>
     </div>
   <% end %>
+   
+  <h3>Test Case Info</h3>
   
-   
-   <h3>Test Case Info</h3>
+  <p><b>Title:</b> <%= @test_result.test_case.title %></p>
+
+	<% if @test_result.test_case.description.present? %>
+  <p><b>Description:</b> <%= @test_result.test_case.description %></p>
+  <% end %>
+
+  <hr/>
   
-   <p><b>Title:</b> <%= @test_result.test_case.title %></p>
+ 	<div class="form-group">
+		<%= f.label :started_at, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<% unless @test_result.started_at.present? %>
+			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
+			<%= f.text_field :started_at, class: "form-control datetimepicker", style: 'width: 360px', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<%= f.label :ended_at, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<% unless @test_result.ended_at.present? %>
+			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
+			<%= f.text_field :ended_at, class: "form-control datetimepicker", style: 'width: 360px', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
+		</div>
+	</div>
+	      
+  <hr/>
+  
+	<div class="form-group">
+		<%= f.label :status, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+      <%= f.select :status, @test_result.statuses, { include_blank: true }, { class: 'form-control' } %>
+    </div>
+	</div>
+ 	
+	<div class="form-group">
+		<%= f.label :summary, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+		  <%= f.text_area :summary, class: "form-control", placeholder: "Brief summary of results of test." %>
+		</div>
+	</div>
 
-   <p><b>Description:</b> <%= @test_result.test_case.description %></p>
-   
-   <hr>
-   
-   <div><%= f.label :started_at %><br />
-   <%= f.text_field :started_at, class: "form-control", placeholder: "YYYY-MM-DD HH:MM" %></div>
-   
-   <div><%= f.label :ended_at %><br />
-   <%= f.text_field :ended_at, class: "form-control", placeholder: "YYYY-MM-DD HH:MM" %></div>
-   
-   <hr>
-   
-   <div><%= f.label :status %><br />
-   <%= f.select :status, options_for_select(["Pending", "Running", "Pass", "Fail", "Skipped"]), class: "form-control" %></div>
-   
-   <div><%= f.label :summary %><br />
-   <%= f.text_area :summary, class: "form-control" %></div>
-   
-   <br />
-
-  <div class="actions">
-    <%= f.submit 'Create Test Result', class: "btn btn-lg btn-primary" %>
-  </div>
+	<div class="actions col-sm-offset-6">
+		<%= f.submit 'Save Result', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", report_path(@test_result.report), class: "btn btn-danger" %>
+	</div>
 <% end %>

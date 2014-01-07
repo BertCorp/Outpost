@@ -5,7 +5,7 @@
 <hr/>
 
 <% if @test_case.setup_completed_at.present? %>
-	<%= link_to "Run Report", new_report_path(@test_case.company), class: 'btn btn-primary btn-block' %>
+	<%= link_to "Run Report", new_report_path(company: @test_case.company.id, suite: @test_case.test_suite.id), class: 'btn btn-primary btn-block' %>
 <% elsif @test_case.setup_started_at.present? %>
 	<%= link_to "Finish Setup", finish_setup_test_case_path(@test_case), class: 'btn btn-block btn-warning', method: :put %>
 <% else %>

@@ -17,7 +17,7 @@ class TestCasesController < ApplicationController
   def new
     @test_case = TestCase.new
     @test_case.company_id = params[:company] if params[:company].present?
-    @test_case.test_suite_id = params[:test_suite] if params[:test_suite].present?
+    @test_case.test_suite_id = params[:suite] if params[:suite].present?
     #@test_case.setup_started_at = Time.zone.now
   end
 

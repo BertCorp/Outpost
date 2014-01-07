@@ -1,7 +1,7 @@
 <%= form_for(@test_case, html: { class: 'form-horizontal form-standard', role: 'form' }) do |f| %>
   <% if @test_case.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@test_case.errors.count, "error") %> prohibited this test_case from being saved:</h2>
+      <h2><%= pluralize(@test_case.errors.count, "error") %> prohibited this test from being saved:</h2>
 
       <ul>
       <% @test_case.errors.full_messages.each do |msg| %>
@@ -33,7 +33,7 @@
   <div class="form-group">
 		<%= f.label :company_id, class: 'col-sm-3 control-label' %>
 		<div class="col-sm-9">
-      <%= f.select :company_id, Company.where("name != 'Outpost'").collect {|c| [ c.name, c.id ] }, include_blank: true %>
+      <%= f.select :company_id, Company.where("name != 'Outpost'").collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
     </div>
 	</div>
 
@@ -41,7 +41,7 @@
     <div class="form-group">
 			<%= f.label :test_suite_id, "Test Suite", class: 'col-sm-3 control-label' %>
 			<div class="col-sm-9">
-      	<%= f.select :test_suite_id, @test_case.company.test_suites.collect {|t_s| [ (t_s.title.present? ? t_s.title : "Tests"), t_s.id ] }, include_blank: true %>
+      	<%= f.select :test_suite_id, @test_case.company.test_suites.collect {|t_s| [ (t_s.title.present? ? t_s.title : "Tests"), t_s.id ] }, { include_blank: true }, { class: 'form-control' } %>
 			</div>
 		</div>
 		<% else %>

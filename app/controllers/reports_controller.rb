@@ -23,7 +23,17 @@ class ReportsController < ApplicationController
   # GET /reports/new
   def new
     @report = Report.new
-    @test_result = TestResult.new
+    if params[:company]
+      @company = Company.find(params[:company])
+      @report.company = @company
+    end
+    if params[:suite]
+      @test_suite = TestSuite.find(params[:suite])
+      @company = @test_suite.company
+      @report.company = @company
+      @report.test_suite = @test_suite
+    end
+    @report.monitored_by = current_user.id if current_user.is_admin?
   end
 
   # GET /reports/1/edit

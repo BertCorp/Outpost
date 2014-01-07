@@ -28,6 +28,7 @@ Outpost::Application.routes.draw do
   
   resources :reports
   resources :pages
+  resources :test_results, path: 'results'
 
   get 'new_client_confirmation' => 'pages#new_client_confirmation', as: 'new_client_confirmation'
   
