@@ -51,7 +51,9 @@
 	<div class="form-group">
 		<%= f.label :setup_started_at, class: 'col-sm-3 control-label' %>
 		<div class="col-sm-9">
+			<% unless @test_case.setup_started_at.present? %>
 			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
 			<%= f.text_field :setup_started_at, class: "form-control datetimepicker", style: 'width: 360px', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
 		</div>
 	</div>
@@ -59,7 +61,9 @@
   <div class="form-group">
 		<%= f.label :setup_completed_at, class: 'col-sm-3 control-label' %>
 		<div class="col-sm-9">
+			<% unless @test_case.setup_completed_at.present? %>
 			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
 			<%= f.text_field :setup_completed_at, class: "form-control datetimepicker", style: 'width: 360px;', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
 		</div>
 	</div>
