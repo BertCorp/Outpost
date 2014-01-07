@@ -1,12 +1,26 @@
-<p id="notice"><%= notice %></p>
+<%= link_to 'Edit', edit_test_case_path(@test_case), class: 'pull-right btn btn-primary' %>
 
-<span><h3>Test Case For <%= @test_case.company.name %></h3></span>
+<h2>Test for <%= link_to @test_case.company.name, company_path(@test_case.company) %></h2>
 
-<p><%= link_to 'Back', test_cases_path %> | <%= link_to "View Company", company_path(@test_case.company) %></p>
+<hr/>
+
+<% if @test_case.setup_completed_at.present? %>
+	<%= link_to "Run Report", new_report_path(@test_case.company), class: 'btn btn-primary btn-block' %>
+<% elsif @test_case.setup_started_at.present? %>
+	<%= link_to "Finish Setup", finish_setup_test_case_path(@test_case), class: 'btn btn-block btn-warning', method: :put %>
+<% else %>
+	<%= link_to "Start Setup", start_setup_test_case_path(@test_case), class: 'btn btn-block btn-success', method: :post %>
+<% end %>
+
+<hr/>
 
 <p><b>Title:</b> <%= @test_case.title %></p>
 
+<p><b>Current Status:</b> <%= @test_case.status %></p>
+
+<% if @test_case.description.present? %>
 <p><b>Description:</b> <%= @test_case.description %></p>
+<% end %>
 
 <p><b>Setup Started At:</b> <%= @test_case.setup_started_at %></p>
 
@@ -14,33 +28,25 @@
 
 <p><b>Pending Message:</b> <%= @test_case.pending_message %></p>
 
-<p><b>Current Status:</b> <%= @test_case.status %></p>
-
-<p><%= link_to 'Update Test Case', edit_test_case_path(@test_case) %> </p>
-
 <hr>
 
 <h3>Previous Test Results</h3>
 
 <table class="table table-bordered table-striped">
   <tr>
-    <th>ID #</th>
     <th>Status</th>
-    <th>Report ID</th>
+    <th>Report</th>
     <th>Started At</th>
     <th>Ended At</th>
     <th>Summary</th>
-    <th></th>
   </tr>
-  <% @test_case.results.each do |results| %>
+  <% @test_case.results.order('started_at DESC').each do |results| %>
   <tr>
-    <td><%= results.id %></td>
     <td><%= results.status %></td>
-    <td><%= results.report_id %></td>
+    <td><%= link_to results.report.started_at.strftime('%Y-%m-%d'), report_path(results.report) %></td>
     <td><%= results.started_at %></td>
     <td><%= results.ended_at %></td>
     <td><%= results.summary %></td>
-    <td><%= link_to "View Original Report", report_path(results.report) %></td>
   </tr>
   <% end %>
 </table>

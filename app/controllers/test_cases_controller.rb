@@ -1,5 +1,5 @@
 class TestCasesController < ApplicationController
-  before_action :set_test_case, only: [:show, :edit, :update, :destroy]
+  before_action :set_test_case, only: [:show, :edit, :update, :destroy, :start, :finish]
   before_action :authenticate_user!
 
   # GET /test_cases
@@ -33,7 +33,7 @@ class TestCasesController < ApplicationController
 
     respond_to do |format|
       if @test_case.save
-        format.html { redirect_to '/dashboard', notice: 'Test case was successfully created.' }
+        format.html { redirect_to @test_case, notice: 'Test was successfully created.' }
         format.json { render action: 'show', status: :created, location: @test_case }
       else
         format.html { render action: 'new' }
@@ -47,7 +47,7 @@ class TestCasesController < ApplicationController
   def update
     respond_to do |format|
       if @test_case.update(test_case_params)
-        format.html { redirect_to @test_case, notice: 'Test case was successfully updated.' }
+        format.html { redirect_to @test_case, notice: 'Test was successfully saved.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -65,6 +65,37 @@ class TestCasesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  # POST /tests/1/start
+  # POST /tests/1/start.json
+  def start
+    @test_case.setup_started_at = Time.now
+    respond_to do |format|
+      if @test_case.save
+        format.html { redirect_to @test_case, notice: 'Setup of test was successfully started.' }
+        format.json { render action: 'show', status: :created, location: @test_case }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @test_case.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  # PUT /tests/1/finish
+  # PUT /tests/1/finish.json
+  def finish
+    @test_case.setup_completed_at = Time.now
+    respond_to do |format|
+      if @test_case.save
+        format.html { redirect_to @test_case, notice: 'Setup of test was successfully finished.' }
+        format.json { render action: 'show', status: :created, location: @test_case }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @test_case.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.

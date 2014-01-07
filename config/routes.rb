@@ -20,7 +20,12 @@ Outpost::Application.routes.draw do
   resources :users
   resources :companies
   resources :test_suites # not sure if we need this...
-  resources :test_cases, path: 'tests'
+  
+  resources :test_cases, path: 'tests' do
+    post "start" => "test_cases#start", as: :start_setup, on: :member
+    put "finish" => "test_cases#finish", as: :finish_setup, on: :member
+  end
+  
   resources :reports
   resources :pages
 

@@ -36,21 +36,23 @@ Admin Dashboard
   <p>New test cases that still need to be setup. Client are waiting on these...</p>
   <table class="table table-bordered table-striped">
     <tr>
-      <th>Name</th>
+			<th>Company</th>
+      <th>Test</th>
       <th>Status</th>
       <th></th>
     </tr>
     <% @test_cases.each do |test_case| %>
       <tr>
+				<td><%= link_to test_case.company.name, test_case.company %></td>
         <td><%= test_case.title %></td>
-        <td><%= test_case.status %></td>
+				<td><%= (test_case.status != 'Pending') ? test_case.status : "#{test_case.status}: #{test_case.pending_message}" %></td>
         <td><%= link_to 'Setup Test Case', test_case_path(test_case) %></td>
       </tr>
     <% end %>
   </table>
 </div>
 <% end %>
-<% unless @test_cases.any? && @reports.any? %>
+<% unless @test_cases.any? || @reports.any? %>
 <div class="row" style="text-align: center;">
 	<h3>All Done! Nothing Pending!</h3>
 	<p>

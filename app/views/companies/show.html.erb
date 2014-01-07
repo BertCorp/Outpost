@@ -11,19 +11,24 @@
 <% end %>
 
 <% @company.test_suites.each do |suite| %>
-<%= link_to "Add Test", new_test_case_path(@company, suite), class: 'btn btn-primary btn-sm pull-right' if suite.test_cases.any? %>
+<%= link_to "Add Test", new_test_case_path(company: @company.id, test_suite: suite.id), class: 'btn btn-primary btn-sm pull-right' if suite.test_cases.any? %>
 <h3><%= suite.title.present? ? suite.title : "Tests" %></h3>
 
 <% if suite.test_cases.any? %>
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
-			<th>Name</th>
-      <th>Email</th>
-      <th></th>
+			<th>Test</th>
+			<th>Status</th>
     </tr>
   </thead>
   <tbody>
+	<% suite.test_cases.each do |test| %>
+		<tr>
+			<td><%= test.title %></td>
+			<td><%= link_to (test.status != 'Pending') ? test.status : "#{test.status}: #{test.pending_message}", test_case_path(test) %></td>
+		</tr>
+	<% end %>
 	</tbody>
 </table>
 <% else %>
