@@ -16,10 +16,14 @@ class TestCasesController < ApplicationController
   # GET /test_cases/new
   def new
     @test_case = TestCase.new
+    @test_case.company_id = params[:company] if params[:company].present?
+    @test_case.test_suite_id = params[:test_suite] if params[:test_suite].present?
+    @test_case.setup_started_at = Time.zone.now
   end
 
   # GET /test_cases/1/edit
   def edit
+    @test_case.setup_started_at = Time.zone.now unless @test_case.setup_started_at.present?
   end
 
   # POST /test_cases

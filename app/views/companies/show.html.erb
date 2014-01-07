@@ -5,9 +5,13 @@
 
 <hr/>
 
+<% if @company.test_cases.any? %>
+<%= link_to "Run Report", new_report_path(@company), class: 'btn btn-primary btn-block' %>
+<hr/>
+<% end %>
 
 <% @company.test_suites.each do |suite| %>
-<%= link_to "Add Test", "#", class: 'btn btn-primary btn-sm pull-right' if suite.test_cases.any? %>
+<%= link_to "Add Test", new_test_path(@company, suite), class: 'btn btn-primary btn-sm pull-right' if suite.test_cases.any? %>
 <h3><%= suite.title.present? ? suite.title : "Tests" %></h3>
 
 <% if suite.test_cases.any? %>
@@ -23,7 +27,7 @@
 	</tbody>
 </table>
 <% else %>
-<p style="text-align: center; font-size: 14px;">No tests yet. <%= link_to "Add A New Test", "#" %></p>
+<p style="text-align: center; font-size: 14px;">No tests yet. <%= link_to "Add A New Test", new_test_path(company: @company.id, test_suite: suite.id) %></p>
 <% end %>
 
 <hr/>

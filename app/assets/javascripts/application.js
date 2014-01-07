@@ -16,4 +16,24 @@
 //= require pages
 // require twitter/bootstrap
 //= require bootstrap-3.0.2.min
+// require moment-2.4.0
+// require bootstrap-datetimepicker-2.1.20
 // require_tree .
+
+/*$(function() {
+	$('.datetimepicker').datetimepicker();
+});*/
+
+
+function formatTime(d) {
+	var y = d.getFullYear();
+	var m = d.getMonth();
+	var day = d.getDate();
+	var hr = d.getHours();
+	var min = d.getMinutes();
+	var sec = d.getSeconds();
+	m = m+1;
+	if (m<10) m = "0" + m;
+	if (day<10) day = "0" + day;
+	return y + "-" + m + "-" + day + " " + hr + ":" + min + ":" + sec;
+} //formatTime

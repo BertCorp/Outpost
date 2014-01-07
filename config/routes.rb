@@ -17,7 +17,12 @@ Outpost::Application.routes.draw do
     get "/dashboard" => "users#dashboard", as: :dashboard
   end  
   
-  resources :users, :companies, :reports, :test_suites, :reports, :test_cases, :pages, :test_results
+  resources :users
+  resources :companies
+  resources :test_suites # not sure if we need this...
+  resources :test_cases, path: 'tests'
+  resources :reports
+  resources :pages
 
   get 'new_client_confirmation' => 'pages#new_client_confirmation', as: 'new_client_confirmation'
   
