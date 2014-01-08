@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Outpost - <%= content_for?(:title) ? yield(:title) : "Automated User Testing Made Easy" %></title>
+    <title>Outpost Admin Panel - <%= content_for?(:title) ? yield(:title) : "Automated User Testing Made Easy" %></title>
     <!--<meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="/favicon.ico">
@@ -31,6 +31,8 @@
 			<div class="content">
           <%= render 'layouts/messages' %>
 					
+					<%= render 'layouts/admin_nav' %>
+
           <%= yield %>
       </div>
 

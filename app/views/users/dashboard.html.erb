@@ -1,0 +1,44 @@
+<% content_for :title do %>
+Dashboard
+<% end %>
+
+<% current_user.company.test_suites.each do |suite| %>
+  <% if suite.test_cases.any? %>
+	<div class="row">
+   	<span class="pull-right">
+		  <%= button_to 'New Test', new_test_case_path, method: :get, class: "btn btn-primary" %>
+		</span>
+		<h3>Your Tests</h3>
+		<table class="table table-bordered table-striped">
+		  <tr>
+		    <th>Name</th>
+		    <th>Status</th>
+		    <th></th>
+		  </tr>
+		  <% suite.test_cases.each do |test_case| %>
+		    <tr>
+		      <td><%= test_case.title %></td>
+		      <td><%= test_case.status %></td>
+		      <td><%= link_to 'View Test Case',test_case_path(test_case) %></td>
+		    </tr>
+		  <% end %>
+		</table>
+  </div>
+  
+  <div class="row">  
+    <% if suite.reports.present? %>
+    <div class="pull-right">
+      <%= render partial: "reports/report_start", locals: { suite: suite } %>
+    </div>
+      <%= render partial: "reports" %>
+    <% else %>
+      <%= render partial: "first_report", locals: { suite: suite } %>
+    <% end  %>
+  </div>
+	<% end %>
+<% end %>
+<% unless current_user.company.test_cases.any? %>
+  <div class="row">
+    <%= render partial: "test_case_setup" %>
+  </div>
+<% end %>

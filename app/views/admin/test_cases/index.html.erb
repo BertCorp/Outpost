@@ -1,16 +1,12 @@
-<p id="notice"><%= notice %></p>
+<h1>Listing test_cases</h1>
 
-<p>Company: <%= @test_suite.company.name %> </p>
-
-<p>Test Suite ID: <%= @test_suite.id %>  </p>
-
-<h3>Test Cases</h3>
-<table class="table table-striped table-bordered">
+<table class="table table-bordered table-striped">
   <thead>
     <tr>
       <th>ID</th>
       <th>Title</th>
-      <th>Description</th>
+      <th>Test Suite</th>
+      <th>Conpany</th>
       <th></th>
       <th></th>
       <th></th>
@@ -18,11 +14,12 @@
   </thead>
 
   <tbody>
-    <% @test_suite.test_cases.each do |test_case| %>
+    <% @test_cases.each do |test_case| %>
       <tr>
         <td><%= test_case.id %></td>
         <td><%= test_case.title %></td>
-        <td><%= test_case.description %></td>
+        <td><%= test_case.test_suite_id %></td>
+        <td><%= test_case.company.id %></td>
         <td><%= link_to 'Show', test_case %></td>
         <td><%= link_to 'Edit', edit_test_case_path(test_case) %></td>
         <td><%= link_to 'Destroy', test_case, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -31,5 +28,6 @@
   </tbody>
 </table>
 
-<%= link_to 'Edit', edit_test_suite_path(@test_suite) %> |
-<%= link_to 'Back', test_suites_path %>
+<br>
+
+<%= link_to 'New Test case', new_test_case_path %>

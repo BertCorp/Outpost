@@ -1,9 +1,12 @@
-	<header class="row">
+	<header class="row" style="margin-top: -5px;">
 		<% if current_user %>
     <div class="pull-right">
       <ul class="nav nav-pills">
-        <li><%= link_to 'Dashboard', dashboard_path unless current_user.is_admin? %>
-        <li><%= link_to 'Account', edit_user_registration_path %>
+				<% if current_user.is_admin? %>
+				<li<%= raw(' class="active"') if request.fullpath[0..5] == '/admin' %>><%= link_to 'Admin', admin_root_path %></li>
+				<% end %>
+        <li<%= raw(' class="active"') if request.fullpath == '/dashboard' %>><%= link_to 'Dashboard', dashboard_path %></li>
+        <li<%= raw(' class="active"') if request.fullpath == '/account' %>><%= link_to 'Account', account_path %></li>
         <li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %></li>
       </ul>
     </div>

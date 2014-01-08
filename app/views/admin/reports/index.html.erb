@@ -1,0 +1,41 @@
+<div class="pull-right">
+  <%= button_to "Create a Report", new_admin_report_path, method: :get, class: "btn btn-primary" %>
+</div>
+
+<h1>All Reports</h1>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Company</th>
+      <th>Status</th>
+      <th># of Tests</th>
+      <th>Initiated</th>
+      <th>Started</th>
+      <th>Completed</th>
+      <th></th>
+    </tr>
+  </thead>
+
+<%= will_paginate @reports %>
+
+  <tbody>
+    <% @reports.each do |report| %>
+      <tr>
+        <td><%= link_to report.id, [:admin, report] %></td>
+        <td><%= link_to report.company.name, [:admin, report.company] %></td>
+        <td><%= report.status %></td>
+        <td><%= link_to report.test_cases.count, [:admin, report] %></td>
+        <td><%= report.initiated_at %></td>
+        <td><%= report.started_at %></td>
+        <td><%= report.completed_at %></td>
+        <td>
+					<%= button_to "View Report", admin_report_path(report), method: :get, class: "btn btn-success" %>
+				</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @reports %>

@@ -1,0 +1,88 @@
+<%= form_for([:admin, @test_case], html: { class: 'form-horizontal form-standard', role: 'form' }) do |f| %>
+  <% if @test_case.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@test_case.errors.count, "error") %> prohibited this test from being saved:</h2>
+
+      <ul>
+      <% @test_case.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="form-group">
+		<%= f.label :title, "Test Summary", class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<%= f.text_field :title, class: "form-control", placeholder: "Test a user can signup." %>
+		</div>
+	</div>
+
+  <div class="form-group">
+		<%= f.label :description, "Additional Instructions", class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<%= f.text_area :description, class: "form-control", placeholder: "ie. This can only be done on staging." %>
+	    <span class="help-block">Provide any additional info on how to complete task.</span>
+		</div>
+	</div>
+	
+  <% if current_user.is_admin? %>
+  <hr/>
+  <span class="help-block">Admin Only Fields</span>
+    
+  <div class="form-group">
+		<%= f.label :company_id, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+      <%= f.select :company_id, Company.where("name != 'Outpost'").collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
+    </div>
+	</div>
+
+		<% if @test_case.company.test_suites.count > 1 %>
+    <div class="form-group">
+			<%= f.label :test_suite_id, "Test Suite", class: 'col-sm-3 control-label' %>
+			<div class="col-sm-9">
+      	<%= f.select :test_suite_id, @test_case.company.test_suites.collect {|t_s| [ (t_s.title.present? ? t_s.title : "Tests"), t_s.id ] }, { include_blank: true }, { class: 'form-control' } %>
+			</div>
+		</div>
+		<% else %>
+			<%= f.hidden_field :test_suite_id %>
+		<% end %>
+  
+	<div class="form-group">
+		<%= f.label :setup_started_at, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<% unless @test_case.setup_started_at.present? %>
+			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
+			<%= f.text_field :setup_started_at, class: "form-control datetimepicker", style: 'width: 360px', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
+		</div>
+	</div>
+	
+  <div class="form-group">
+		<%= f.label :setup_completed_at, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<% unless @test_case.setup_completed_at.present? %>
+			<button type="button" class="btn btn-default pull-right" onclick="$(this).parent().find('input:first').val(formatTime(new Date()));">Now</button>
+			<% end %>
+			<%= f.text_field :setup_completed_at, class: "form-control datetimepicker", style: 'width: 360px;', data: { format: "YYYY-MM-DD HH:mm:ss"}, placeholder: "YYYY-MM-DD HH:MM" %>
+		</div>
+	</div>
+	
+  <div class="form-group">
+		<%= f.label :pending_message, class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+		  <%= f.text_area :pending_message, class: "form-control", placeholder: "Test not setup, What seems to be the holdup?" %>
+		</div>
+	</div>
+
+  <% else %>
+  <div>
+  	<%= f.hidden_field :test_suite_id, value: current_user.company.test_suites.first.id %>
+    <%= f.hidden_field :company_id, value: current_user.company.id %>
+	</div>
+  <% end %>
+
+	<div class="actions col-sm-offset-6">
+		<%= f.submit 'Save Test', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", :back, class: "btn btn-danger" %>
+	</div>
+  <% end %>
