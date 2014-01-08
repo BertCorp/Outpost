@@ -6,6 +6,7 @@ class TestCase < ActiveRecord::Base
   
   
   def status
+    return results.last.status if results.any?
     return "Ready" if setup_completed_at.present?
     return "Pending" if pending_message.present?
     return "Being Setup" if setup_started_at.present?    

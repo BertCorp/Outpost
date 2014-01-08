@@ -7,7 +7,7 @@
 
 <% @company.test_suites.each do |suite| %>
 <%= link_to "Add Test", new_test_case_path(company: @company.id, suite: suite.id), class: 'btn btn-primary btn-sm pull-right' if suite.test_cases.any? %>
-<h3><%= suite.title.present? ? suite.title : "Tests" %><%= link_to "Run New Report", new_report_path(company: @company.id, suite: suite.id), class: 'btn btn-primary btn-sm', style: 'margin-left: 20px;' if suite.test_cases.any? %></h3>
+<h3><%= suite.title.present? ? suite.title : "Tests" %></h3>
 
 <% if suite.test_cases.any? %>
 <table class="table table-bordered table-striped">
@@ -15,13 +15,15 @@
     <tr>
 			<th>Test</th>
 			<th>Status</th>
+			<th>Last Run</th>
     </tr>
   </thead>
   <tbody>
-	<% suite.test_cases.each do |test| %>
+	<% suite.test_cases.order('created_at ASC').each do |test| %>
 		<tr>
 			<td><%= test.title %></td>
 			<td><%= link_to (test.status != 'Pending') ? test.status : "#{test.status}: #{test.pending_message}", test_case_path(test) %></td>
+			<td><%= test.results.order('started_at DESC').last.started_at.strftime('%Y-%m-%d %T') %></td>
 		</tr>
 	<% end %>
 	</tbody>
@@ -31,6 +33,41 @@
 <% end %>
 
 <hr/>
+
+<% if suite.reports.any? %>
+<%= link_to "Run New Report", new_report_path(company: @company.id, suite: suite.id), class: 'btn btn-primary btn-sm pull-right' %>
+<h3><%= suite.title.present? ? "#{suite.title} Reports" : "Reports" %></h3>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+			<th>Initiation</th>
+			<th>Started</th>
+			<th>Completed</th>
+			<th>Monitored By</th>
+			<th>Status</th>
+			<th>Summary</th>
+    </tr>
+  </thead>
+  <tbody>
+	<% suite.reports.order('created_at DESC').each do |report| %>
+		<tr>
+			<td><% if report.initiated_by.present? %><%= report.initiated_at.strftime('%Y-%m-%d %T') %> by <%= report.initiator.name %><% end %></td>
+			<td><%= report.started_at.strftime('%Y-%m-%d %T') %></td>
+			<td><%= report.completed_at.strftime('%Y-%m-%d %T') %></td>
+			<td><%= report.monitorer.name %></td>
+			<td><%= link_to report.status, report %></td>
+			<td><%= report.summary %></td>
+		</tr>
+	<% end %>
+	</tbody>
+</table>
+
+<hr/>
+<% else %>
+<p style="text-align: center; font-size: 14px;">No reports yet. <%= link_to "Run A New Report", new_report_path(company: @company.id, suite: suite.id) %></p>
+<% end %>
+
 <% end %>
 
 <!-- TODO: Ability to add a new user to company -->
