@@ -1,3 +1,7 @@
+<% content_for :title do %>
+Report for <%= @company.company.name %> - <%= @report.created_at %>
+<% end %>
+
 <%= link_to "< Back to Dashboard", dashboard_path %>
 
 <h2>Report generated for <%= @report.company.name %></h2>

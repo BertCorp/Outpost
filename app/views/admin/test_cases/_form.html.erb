@@ -26,7 +26,6 @@
 		</div>
 	</div>
 	
-  <% if current_user.is_admin? %>
   <hr/>
   <span class="help-block">Admin Only Fields</span>
     
@@ -74,13 +73,6 @@
 		  <%= f.text_area :pending_message, class: "form-control", placeholder: "Test not setup, What seems to be the holdup?" %>
 		</div>
 	</div>
-
-  <% else %>
-  <div>
-  	<%= f.hidden_field :test_suite_id, value: current_user.company.test_suites.first.id %>
-    <%= f.hidden_field :company_id, value: current_user.company.id %>
-	</div>
-  <% end %>
 
 	<div class="actions col-sm-offset-6">
 		<%= f.submit 'Save Test', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", :back, class: "btn btn-danger" %>

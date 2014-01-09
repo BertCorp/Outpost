@@ -1,3 +1,9 @@
+<% content_for :title do %>
+Edit Report
+<% end %>
+
+<%= link_to 'Delete Report', [:admin, @report], method: :delete, data: { confirm: 'Are you sure you want to delete this report and its results?' }, class: 'btn btn-danger pull-right' %>
+
 <h1>Edit Report</h1>
 
 <%= render 'form' %>
