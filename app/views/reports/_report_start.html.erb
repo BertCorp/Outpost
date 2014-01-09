@@ -1,15 +1,4 @@
 <%= form_for(@report) do |f| %>
-  <% if @report.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
-
-      <ul>
-      <% @report.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
   <%= f.hidden_field :test_suite_id, value: suite.id %>
   <%= f.hidden_field :company_id, value: current_user.company.id %>
   <%= f.hidden_field :initiated_by, value: current_user.id %>

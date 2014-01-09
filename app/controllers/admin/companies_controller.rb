@@ -6,7 +6,7 @@ class Admin::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @companies = Company.where("name != 'Outpost'")
+    @companies = Company.order('name ASC')
   end
 
   # GET /companies/1

@@ -10,15 +10,20 @@
 
 <p>Initiated By: <%= @report.initiator.name %></p>
 
+<% if @report.started_at.present? %>
 <p>Started At: <%= @report.started_at %></p>
 
 <p>Completed At: <%= @report.completed_at %></p>
 
 <p>Monitored By: <%= @report.monitorer.name if @report.monitorer.present? %></p>
 
-<p>Test Summary: <%= simple_format(urlify(@report.summary)) %></p>
+	<% if @report.summary.present? %>
+	<p>Test Summary: <%= simple_format(urlify(@report.summary)) %></p>
+	<% end %>
+	
+<% end %>
 
-<%= render partial: "admin_run_report" if current_user.is_admin? %>
+<%= render partial: "admin_run_report" if @report.status.downcase == 'queued' %>
 
 <hr>
 
@@ -29,28 +34,36 @@
     <th>Test</th>
     <th>Results</th>
   </tr>
-
- <% @results.order('id ASC').each do |result| %>
-   <tr>
-     <td><%= result.id %></td>
-     <td><%= result.test_case.title %></td>
-     <td><%= link_to result.status, [:admin, result] %></td>
-   </tr>
-   <tr>
-     <td colspan="3">Results Summary: 
-     <% if result.summary.present? %>
-       <%= simple_format(urlify(result.summary)) %>
-     <% else %>
-       <i>No notes given.</i>
-     <% end%>
+	<% @results.order('id ASC').each do |result| %>
+  <tr>
+    <td><%= result.id %></td>
+    <td><%= result.test_case.title %></td>
+  	<td><%= link_to result.status, [:admin, result] %></td>
+  </tr>
+	<% if result.status != 'Pending' %>
+  <tr>
+  	<td colspan="3">
+			Results Summary: 
+  		<% if result.summary.present? %>
+	  	<%= simple_format(urlify(result.summary)) %>
+     	<% else %>
+      <i>No notes given.</i>
+     	<% end %>
      </td>
-   </tr>
-   <% if current_user.is_admin? && @report.status == "Running" %>
-   <tr>
-     <td colspan="3"><%= button_to 'Record Test Result', edit_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
-   </tr>
-   <% end %>
- <% end %>
+  </tr>
+	<% end %>
+  <% unless ["Passed", "Failed"].include? result.status %>
+  <% if ["Pending"].include? result.status %>
+	<tr>
+  	<td colspan="3"><%= button_to 'Start Test', edit_admin_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
+  </tr>
+	<% else %>
+	<tr>
+  	<td colspan="3"><%= button_to 'Record Test Result', edit_admin_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
+  </tr>
+	<% end %>
+  <% end %>
+<% end %>
 </table>  
 
-<%= render partial: "complete_report" %>
+<%= render partial: "complete_report" if @report.status == "Running" %>

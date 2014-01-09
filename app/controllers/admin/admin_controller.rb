@@ -5,7 +5,7 @@ class Admin::AdminController < ApplicationController
   # GET /admin/
   def index
     @test_cases = TestCase.where(setup_completed_at: nil)
-    @reports = Report.where(status: 'Queued')    
+    @reports = Report.where("(status = 'queued') OR (status = 'Queued')")    
   end
 
 end

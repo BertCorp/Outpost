@@ -21,7 +21,7 @@
 <%= will_paginate @reports %>
 
   <tbody>
-    <% @reports.each do |report| %>
+    <% @reports.order('created_at DESC').each do |report| %>
       <tr>
         <td><%= link_to report.id, [:admin, report] %></td>
         <td><%= link_to report.company.name, [:admin, report.company] %></td>

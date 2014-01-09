@@ -5,8 +5,9 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th># of Tests</th>
-			<th># of Reports</th>
+      <th>Tests</th>
+			<th>Reports</th>
+			<th>Last Report</th>
       <th>Current Status</th>
       <th></th>
     </tr>
@@ -17,6 +18,7 @@
       <td><%= link_to company.name, [:admin, company] %></td>
       <td><%= company.test_cases.count %></td>
 			<td><%= (company.test_cases.any?) ? company.reports.count : '--' %></td>
+			<td><%= (company.reports.any?) ? company.reports.last.started_at.strftime('%Y-%m-%d %T') : '--' %></td>
       <td><%= company.status %></td>
       <td><%= link_to 'Edit', edit_admin_company_path(company), class: 'btn btn-primary btn-xs' %></td>
     </tr>

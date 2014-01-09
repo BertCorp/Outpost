@@ -1,9 +1,7 @@
+<%= link_to "< Back to Dashboard", dashboard_path %>
+
 <div class="pull-right">
-  <% if current_user.is_admin? %>
-    <%= button_to "Create a Report", new_report_path, method: :get, class: "btn btn-primary" %>
-  <% else %>
-    <%= render partial: "report_start" %>
-  <% end %>
+  <%= render partial: "report_start", locals: { suite: current_user.company.test_suites.first } %>
 </div>
 
 <h1>All Reports</h1>
@@ -12,7 +10,6 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Company</th>
       <th>Status</th>
       <th># of Tests</th>
       <th>Initiated</th>
@@ -28,7 +25,6 @@
     <% @reports.each do |report| %>
       <tr>
         <td><%= link_to report.id, report %></td>
-        <td><%= link_to report.company.name, report.company %></td>
         <td><%= report.status %></td>
         <td><%= link_to report.test_cases.count, report %></td>
         <td><%= report.initiated_at %></td>

@@ -1,8 +1,7 @@
-<% if @report.status == "Running" %>
-  <hr>
+  <hr/>
   <h3>Finished up with the report?</h3>
   <p>Update the status and include notes for the client.</p>
-  <%= form_for(@report) do |f| %>
+  <%= form_for([:admin, @report]) do |f| %>
     <% if @report.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
@@ -28,4 +27,3 @@
       </div>
     </div>
   <% end %>
-<% end %>
