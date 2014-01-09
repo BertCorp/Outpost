@@ -1,8 +1,8 @@
-<h2>Test for <%= link_to @test_case.company.name, company_path(@test_case.company) %></h2>
+<%= link_to "< Back to Dashboard", dashboard_path %>
+
+<h2><%= @test_case.title %></h2>
 
 <hr/>
-
-<p><b>Title:</b> <%= @test_case.title %></p>
 
 <p><b>Current Status:</b> <%= @test_case.status %></p>
 
@@ -15,13 +15,17 @@
 
 <p><b>Setup Completed At:</b> <%= @test_case.setup_completed_at||'--' %></p>
 
+<% if @test_case.pending_message.present? %>
 <p><b>Pending Message:</b> <%= @test_case.pending_message %></p>
+<% end %>
+
 <% end %>
 
 <hr/>
 
 <h3>Previous Test Results</h3>
 
+<% if @test_case.results.any? %>
 <table class="table table-bordered table-striped">
   <tr>
     <th>Status</th>
@@ -40,3 +44,8 @@
   </tr>
   <% end %>
 </table>
+<% elsif ['Awaiting Setup', 'Being Setup'].include? @test_case.status %>
+<p>We are still in the process of getting your test setup. We should have it done soon and we will run your first report and report back to you.</p>
+<% else %>
+<p>We have not run any reports for you yet. This could be because we are in the process of running it now. Check back in a few.</p>
+<% end %>

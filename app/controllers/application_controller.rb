@@ -21,5 +21,5 @@ class ApplicationController < ActionController::Base
       authenticate_user!
       redirect_to dashboard_path, notice: "Sorry, but you don't have permission to do that." unless current_user.is_admin?
     end
-    
+        
 end

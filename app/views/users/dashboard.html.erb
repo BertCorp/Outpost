@@ -15,11 +15,11 @@ Dashboard
 		    <th>Status</th>
 		    <th></th>
 		  </tr>
-		  <% suite.test_cases.each do |test_case| %>
+		  <% suite.test_cases.order('created_at ASC').each do |test_case| %>
 		    <tr>
 		      <td><%= test_case.title %></td>
 		      <td><%= test_case.status %></td>
-		      <td><%= link_to 'View Test Case',test_case_path(test_case) %></td>
+		      <td><%= link_to 'View Test',test_case_path(test_case) %></td>
 		    </tr>
 		  <% end %>
 		</table>

@@ -1,15 +1,15 @@
-<%= link_to 'Edit', edit_test_case_path(@test_case), class: 'pull-right btn btn-primary' %>
+<%= link_to 'Edit', edit_admin_test_case_path(@test_case), class: 'pull-right btn btn-primary' %>
 
 <h2>Test for <%= link_to @test_case.company.name, company_path(@test_case.company) %></h2>
 
 <hr/>
 
 <% if @test_case.setup_completed_at.present? %>
-	<%= link_to "Run Report", new_report_path(company: @test_case.company.id, suite: @test_case.test_suite.id), class: 'btn btn-primary btn-block' %>
+	<%= link_to "Run Report", new_admin_report_path(company: @test_case.company.id, suite: @test_case.test_suite.id), class: 'btn btn-primary btn-block' %>
 <% elsif @test_case.setup_started_at.present? %>
-	<%= link_to "Finish Setup", finish_setup_test_case_path(@test_case), class: 'btn btn-block btn-warning', method: :put %>
+	<%= link_to "Finish Setup", finish_setup_admin_test_case_path(@test_case), class: 'btn btn-block btn-warning', method: :put %>
 <% else %>
-	<%= link_to "Start Setup", start_setup_test_case_path(@test_case), class: 'btn btn-block btn-success', method: :post %>
+	<%= link_to "Start Setup", start_setup_admin_test_case_path(@test_case), class: 'btn btn-block btn-success', method: :post %>
 <% end %>
 
 <hr/>
@@ -43,7 +43,7 @@
   <% @test_case.results.order('started_at DESC').each do |results| %>
   <tr>
     <td><%= results.status %></td>
-    <td><%= link_to results.report.started_at.strftime('%Y-%m-%d'), report_path(results.report) %></td>
+    <td><%= link_to results.report.started_at.strftime('%Y-%m-%d'), admin_report_path(results.report) %></td>
     <td><%= results.started_at %></td>
     <td><%= results.ended_at %></td>
     <td><%= results.summary %></td>

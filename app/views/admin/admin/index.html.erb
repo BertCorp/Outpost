@@ -22,7 +22,7 @@ Admin Dashboard
         <td><%= report.initiated_at %></td>
         <td><%= report.started_at %></td>
         <td><%= report.completed_at %></td>
-        <td><%= button_to "Start Report", report_path(report), method: :get, class: "btn btn-success" %></td>
+        <td><%= button_to "Start Report", admin_report_path(report), method: :get, class: "btn btn-success" %></td>
       </tr>
     <% end %>
   </table>
@@ -41,12 +41,12 @@ Admin Dashboard
       <th>Status</th>
       <th></th>
     </tr>
-    <% @test_cases.each do |test_case| %>
+    <% @test_cases.order('created_at ASC').each do |test_case| %>
       <tr>
-				<td><%= link_to test_case.company.name, test_case.company %></td>
+				<td><%= link_to test_case.company.name, [:admin, test_case.company] %></td>
         <td><%= test_case.title %></td>
 				<td><%= (test_case.status != 'Pending') ? test_case.status : "#{test_case.status}: #{test_case.pending_message}" %></td>
-        <td><%= link_to 'Setup Test Case', test_case_path(test_case) %></td>
+        <td><%= link_to 'Setup Test Case', admin_test_case_path(test_case) %></td>
       </tr>
     <% end %>
   </table>

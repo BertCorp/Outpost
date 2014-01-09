@@ -14,7 +14,7 @@
   <div class="form-group">
 		<%= f.label :company_id, class: 'col-sm-3 control-label' %>
 		<div class="col-sm-9">
-      <%= f.select :company_id, Company.where("name != 'Outpost'").collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
+      <%= f.select :company_id, Company.order('name ASC').collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
     </div>
 	</div>
 	
@@ -22,7 +22,7 @@
 	<div class="form-group">
 		<%= f.label :test_suite_id, "Test Suite", class: 'col-sm-3 control-label' %>
 		<div class="col-sm-9">
-    	<%= f.select :test_suite_id, TestSuite.all.select {|t_s| t_s.company.present?}.collect {|t_s| [ (t_s.title.present? ? "#{t_s.company.name} - #{t_s.title}" : "#{t_s.company.name} - Tests"), t_s.id ] }, { include_blank: true }, { class: 'form-control' } %>
+    	<%= f.select :test_suite_id, TestSuite.order('created_at ASC').select {|t_s| t_s.company.present?}.collect {|t_s| [ (t_s.title.present? ? "#{t_s.company.name} - #{t_s.title}" : "#{t_s.company.name} - Tests"), t_s.id ] }, { include_blank: true }, { class: 'form-control' } %>
 		</div>
 	</div>
 	<% elsif @report.company.test_suites.count > 1 %>
