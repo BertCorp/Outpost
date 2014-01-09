@@ -16,7 +16,7 @@
 
 <p>Monitored By: <%= @report.monitorer.name if @report.monitorer.present? %></p>
 
-<p>Test Summary: <%= @report.summary %></p>
+<p>Test Summary: <%= simple_format(urlify(@report.summary)) %></p>
 
 <%= render partial: "admin_run_report" if current_user.is_admin? %>
 
@@ -25,21 +25,21 @@
 <h3>Test Results</h3>
 <table class="table table-bordered table-striped">
   <tr>
-    <th>Test Case Id</th>
-    <th>Test Case Title</th>
-    <th>Test Results</th>
+    <th>ID</th>
+    <th>Test</th>
+    <th>Results</th>
   </tr>
 
  <% @results.order('id ASC').each do |result| %>
    <tr>
      <td><%= result.id %></td>
      <td><%= result.test_case.title %></td>
-     <td><%= result.status %></td>
+     <td><%= link_to result.status, [:admin, result] %></td>
    </tr>
    <tr>
      <td colspan="3">Results Summary: 
      <% if result.summary.present? %>
-       <%= result.summary %>
+       <%= simple_format(urlify(result.summary)) %>
      <% else %>
        <i>No notes given.</i>
      <% end%>
