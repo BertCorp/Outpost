@@ -35,5 +35,8 @@ function formatTime(d) {
 	m = m+1;
 	if (m<10) m = "0" + m;
 	if (day<10) day = "0" + day;
+	if (hr<10) hr = "0" + hr;
+	if (min<10) min = "0" + min;
+	if (sec<10) sec = "0" + sec;
 	return y + "-" + m + "-" + day + " " + hr + ":" + min + ":" + sec;
 } //formatTime
