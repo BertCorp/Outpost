@@ -1,16 +1,4 @@
-<%= link_to 'Edit', edit_test_case_path(@test_case), class: 'pull-right btn btn-primary' %>
-
 <h2>Test for <%= link_to @test_case.company.name, company_path(@test_case.company) %></h2>
-
-<hr/>
-
-<% if @test_case.setup_completed_at.present? %>
-	<%= link_to "Run Report", new_report_path(company: @test_case.company.id, suite: @test_case.test_suite.id), class: 'btn btn-primary btn-block' %>
-<% elsif @test_case.setup_started_at.present? %>
-	<%= link_to "Finish Setup", finish_setup_test_case_path(@test_case), class: 'btn btn-block btn-warning', method: :put %>
-<% else %>
-	<%= link_to "Start Setup", start_setup_test_case_path(@test_case), class: 'btn btn-block btn-success', method: :post %>
-<% end %>
 
 <hr/>
 
@@ -22,13 +10,15 @@
 <p><b>Description:</b> <%= @test_case.description %></p>
 <% end %>
 
+<% if @test_case.setup_started_at.present? %>
 <p><b>Setup Started At:</b> <%= @test_case.setup_started_at %></p>
 
-<p><b>Setup Completed At:</b> <%= @test_case.setup_completed_at %></p>
+<p><b>Setup Completed At:</b> <%= @test_case.setup_completed_at||'--' %></p>
 
 <p><b>Pending Message:</b> <%= @test_case.pending_message %></p>
+<% end %>
 
-<hr>
+<hr/>
 
 <h3>Previous Test Results</h3>
 
