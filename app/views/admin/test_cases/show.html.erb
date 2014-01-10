@@ -1,6 +1,6 @@
 <%= link_to 'Edit', edit_admin_test_case_path(@test_case), class: 'pull-right btn btn-primary' %>
 
-<h2>Test for <%= link_to @test_case.company.name, company_path(@test_case.company) %></h2>
+<h2>Test for <%= link_to @test_case.company.name, admin_company_path(@test_case.company) %></h2>
 
 <hr/>
 
