@@ -6,7 +6,7 @@ class ReportsController < ApplicationController
   # GET /reports
   # GET /reports.json
   def index
-    @reports = Report.user_reports(current_user).paginate(page: params[:page], per_page: 10)
+    @reports = Report.user_reports(current_user).order('created_at DESC').paginate(page: params[:page], per_page: 10)
     @report = Report.new(report_params)
   end
 
