@@ -29,7 +29,7 @@
 	</tbody>
 </table>
 <% else %>
-<p style="text-align: center; font-size: 14px;">No tests yet. <%= link_to "Add A New Test", new_test_case_path(company: @company.id, test_suite: suite.id) %></p>
+<p style="text-align: center; font-size: 14px;">No tests yet. <%= link_to "Add A New Test", new_test_case_path(company: @company.id, suite: suite.id) %></p>
 <% end %>
 
 <hr/>
