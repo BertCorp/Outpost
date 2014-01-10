@@ -6,6 +6,10 @@
 
 <h1>All Reports</h1>
 
+<div class="pagination-container">
+<%= will_paginate @reports, :previous_label => "&laquo;", :next_label => "&raquo;", renderer: BootstrapPagination::Rails %>
+</div>
+
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
@@ -18,9 +22,6 @@
       <th></th>
     </tr>
   </thead>
-
-<%= will_paginate @reports %>
-
   <tbody>
     <% @reports.each do |report| %>
       <tr>
@@ -38,4 +39,6 @@
   </tbody>
 </table>
 
-<%= will_paginate @reports %>
+<div class="pagination-container">
+<%= will_paginate @reports, :previous_label => "&laquo;", :next_label => "&raquo;", renderer: BootstrapPagination::Rails %>
+</div>
