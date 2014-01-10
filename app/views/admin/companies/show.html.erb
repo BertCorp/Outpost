@@ -23,7 +23,7 @@
 		<tr>
 			<td><%= test.title %></td>
 			<td><%= link_to (test.status != 'Pending') ? test.status : "#{test.status}: #{test.pending_message}", admin_test_case_path(test) %></td>
-			<td><%= (test.results.count > 0) ? test.results.order('started_at DESC').last.started_at.strftime('%Y-%m-%d %T') : "--" %></td>
+			<td><%= (test.results.count > 0) ? test.results.order('started_at DESC').first.started_at.strftime('%Y-%m-%d %T') : "--" %></td>
 		</tr>
 	<% end %>
 	</tbody>
