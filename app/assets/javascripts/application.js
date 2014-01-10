@@ -18,11 +18,13 @@
 //= require bootstrap-3.0.2.min
 // require moment-2.4.0
 // require bootstrap-datetimepicker-2.1.20
+//= require jquery-expanding
 // require_tree .
 
-/*$(function() {
-	$('.datetimepicker').datetimepicker();
-});*/
+$(function() {
+	//$('.datetimepicker').datetimepicker();
+	$('textarea').expandingTextarea();
+});
 
 
 function formatTime(d) {

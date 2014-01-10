@@ -95,3 +95,8 @@
 		clear: both;
 	}
 }
+
+textarea, .textareaClone {
+  min-height: 4em;
+	max-height: 12em;
+}
