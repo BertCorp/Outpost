@@ -15,7 +15,7 @@ class TestResult < ActiveRecord::Base
 =end  
 
   def date
-    return completed_at.strftime('%Y-%m-%d %T') if completed_at.present?
+    return ended_at.strftime('%Y-%m-%d %T') if ended_at.present?
     return started_at.strftime('%Y-%m-%d %T') if started_at.present?
     created_at.strftime('%Y-%m-%d %T')
   end
