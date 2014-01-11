@@ -23,7 +23,7 @@
 		<div class="col-sm-9">
 		<% @company.users.each do |user| %>
 			<%= f.fields_for :users do |u| %>
-			<%= render partial: 'companies/user', locals: { user: user } %>
+			<%= render partial: 'admin/companies/user', locals: { user: user } %>
 			<% end %>
 		<% end %>
 			<!-- TODO: Ability to add multiple users -->
