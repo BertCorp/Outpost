@@ -45,7 +45,7 @@ class Admin::ReportsController < ApplicationController
       if @report.save
         
         @report.test_suite.test_cases.each do |test_case|
-          @report.results.create({ status: 'Pending', report_id: @report, test_case_id: test_case.id})
+          @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id})
         end
         
         ReportMailer.admin_new_report_email(@report).deliver
