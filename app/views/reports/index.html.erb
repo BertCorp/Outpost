@@ -4,7 +4,7 @@
   <%= render partial: "report_start", locals: { suite: current_user.company.test_suites.first } %>
 </div>
 
-<h1>All Reports</h1>
+<h1>All <%= current_user.company.name %> Reports</h1>
 
 <div class="pagination-container">
 <%= will_paginate @reports, :previous_label => "&laquo;", :next_label => "&raquo;", renderer: BootstrapPagination::Rails %>

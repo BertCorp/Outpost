@@ -52,12 +52,11 @@
      </td>
   </tr>
 	<% end %>
-  <% unless ["Passed", "Failed"].include? result.status %>
-  <% if ["Pending"].include? result.status %>
+  <% if ["Queued"].include? result.status %>
 	<tr>
   	<td colspan="3"><%= button_to 'Start Test', edit_admin_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
   </tr>
-	<% else %>
+	<% elsif ["Running"].include? result.status %>
 	<tr>
   	<td colspan="3"><%= button_to 'Record Test Result', edit_admin_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
   </tr>
