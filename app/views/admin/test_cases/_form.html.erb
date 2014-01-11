@@ -32,7 +32,7 @@
   <div class="form-group">
 		<%= f.label :company_id, class: 'col-sm-3 control-label' %>
 		<div class="col-sm-9">
-      <%= f.select :company_id, Company.all.collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
+      <%= f.select :company_id, Company.order('name ASC').collect {|c| [ c.name, c.id ] }, { include_blank: true }, { class: 'form-control' } %>
     </div>
 	</div>
 
