@@ -14,6 +14,12 @@ class TestResult < ActiveRecord::Base
   Pass - Test passed.
 =end  
 
+  def date
+    return completed_at.strftime('%Y-%m-%d %T') if completed_at.present?
+    return started_at.strftime('%Y-%m-%d %T') if started_at.present?
+    created_at.strftime('%Y-%m-%d %T')
+  end
+
   def statuses
     [
 			["Queued - In the queue to be run.", "Queued"],
