@@ -1,6 +1,0 @@
-<div style="margin-bottom: 20px;">
-	<%= hidden_field_tag "company[users_attributes][#{user.id}][id]", user.id if user.id.present? %>
-	<%= text_field_tag "company[users_attributes][#{(user.id.present?) ? user.id : Time.now}][name]", user.name, class: "form-control", placeholder: 'Name' %>
-	<%= text_field_tag "company[users_attributes][#{(user.id.present?) ? user.id : Time.now}][email]", user.email, class: "form-control", placeholder: 'Email' %>
-	<%= text_field_tag "company[users_attributes][#{Time.now}][password]", '', class: "form-control", placeholder: 'Password' unless user.id.present? %>
-</div>
