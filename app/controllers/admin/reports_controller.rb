@@ -48,8 +48,8 @@ class Admin::ReportsController < ApplicationController
           @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id})
         end
         
-        ReportMailer.admin_new_report_email(@report).deliver
-        ReportMailer.user_new_report_email(@report).deliver
+        #ReportMailer.admin_new_report_email(@report).deliver
+        #ReportMailer.user_new_report_email(@report).deliver
         
         format.html { redirect_to [:admin, @report], notice: 'Report was successfully created.' }
         format.json { render action: 'show', status: :created, location: @report }
