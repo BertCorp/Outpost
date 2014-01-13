@@ -11,4 +11,11 @@ class Report < ActiveRecord::Base
   #Attributes: initiated_at, initiated_by (who clicked the “run test” button), started_at, completed_at, monitored_by (user_id -- Outpost employee), status, summary
   accepts_nested_attributes_for :results
   scope :user_reports, ->(user) { where(company_id: user.company_id) }  
+
+  def date
+    return completed_at.strftime('%Y-%m-%d %T') if completed_at.present?
+    return started_at.strftime('%Y-%m-%d %T') if started_at.present?
+    created_at.strftime('%Y-%m-%d %T')
+  end
+
 end

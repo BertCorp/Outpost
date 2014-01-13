@@ -9,6 +9,7 @@ Admin Dashboard
   <table class="table table-bordered table-striped">
     <tr>
       <th>ID</th>
+			<th>Company</th>
       <th>Status</th>
       <th>Initiated At</th>
       <th>Started At</th>
@@ -18,6 +19,7 @@ Admin Dashboard
     <% @reports.each do |report| %>
       <tr>
         <td><%= report.id %></td>
+				<td><%= link_to report.company.name, [:admin, report.company] %></td>
         <td><%= report.status %></td>
         <td><%= report.initiated_at %></td>
         <td><%= report.started_at %></td>
