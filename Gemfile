@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Core Ruby + Rails gems
 ruby "2.0.0"
-gem 'rails', '4.0.1'
+gem 'rails', '4.0.2'
 gem 'sass-rails', '~> 4.0.1'
 gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 1.2'
@@ -14,6 +14,7 @@ gem 'jbuilder', '~> 1.2'
 
 # Use pg as the database for Active Record
 gem 'pg'
+gem 'intercom-rails', '~> 0.2.21'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -56,5 +57,4 @@ group :staging, :production do
   # Addon Gems
   #gem 'newrelic_rpm'
   #gem 'sentry-raven'
-  #gem 'intercom-rails'
 end
