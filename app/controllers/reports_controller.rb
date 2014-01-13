@@ -39,9 +39,11 @@ class ReportsController < ApplicationController
   # POST /reports
   # POST /reports.json
   def create
-    if ["Queued", "Running"].include? current_user.company.reports.last.status
-      redirect_to dashboard_path, notice: "Looks like you already have a report queued. We'll get to it asap, promise!"
-      return
+    if current_user.company.reports.any?
+      if ["Queued", "Running"].include? current_user.company.reports.last.status
+        redirect_to dashboard_path, notice: "Looks like you already have a report queued. We'll get to it asap, promise!"
+        return
+      end
     end
     
     @report = Report.new(report_params)    
