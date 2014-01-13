@@ -1,5 +1,7 @@
+
+<hr/>
+
 <h3>Last 5 Reports</h3>
-<p><%= link_to "View All Reports", reports_path %>
 <table class="table table-bordered table-striped">
   <tr>
     <th>ID</th>
@@ -20,3 +22,4 @@
     </tr>
   <% end %>
 </table>
+<%= link_to "View All Your Reports", reports_path, class: 'btn btn-primary pull-right' %>

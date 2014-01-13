@@ -25,15 +25,15 @@
 	<% end %>
 
   <div class="form-group">
-		<%= f.label :title, "Test Summary", class: 'col-sm-3 control-label' %>
-		<div class="col-sm-9">
+		<div class="col-sm-8 col-sm-offset-2">
+			<%= f.label :title, "What would you like us to test?", class: 'control-label' %>
 			<%= f.text_field :title, class: "form-control", placeholder: "Test a user can signup." %>
 		</div>
 	</div>
 
   <div class="form-group">
-		<%= f.label :description, "Additional Instructions", class: 'col-sm-3 control-label' %>
-		<div class="col-sm-9">
+		<div class="col-sm-8 col-sm-offset-2">
+			<%= f.label :description, "Any Additional Instructions?", class: 'control-label' %>
 			<%= f.text_area :description, class: "form-control", placeholder: "ie. This can only be done on staging." %>
 	    <span class="help-block">Provide any additional info on how to complete task.</span>
 		</div>

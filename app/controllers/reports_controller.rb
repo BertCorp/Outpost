@@ -56,7 +56,7 @@ class ReportsController < ApplicationController
         ReportMailer.admin_new_report_email(@report).deliver
         #ReportMailer.user_new_report_email(@report).deliver
         
-        format.html { redirect_to @report, notice: 'Report was successfully created.' }
+        format.html { redirect_to dashboard_path }
         format.json { render action: 'show', status: :created, location: @report }
       else
         format.html { render action: 'new' }

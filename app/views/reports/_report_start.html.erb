@@ -4,5 +4,5 @@
   <%= f.hidden_field :initiated_by, value: current_user.id %>
   <%= f.hidden_field :initiated_at, value: DateTime.now %>
 	<%= f.hidden_field :status, value: 'Queued' %>
-  <%= f.submit 'Run A Report', class: "btn btn-primary" %>
+  <%= f.submit 'Request A New Report', class: "btn btn-primary" %>
 <% end %>
