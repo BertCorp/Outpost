@@ -14,7 +14,6 @@ gem 'jbuilder', '~> 1.2'
 
 # Use pg as the database for Active Record
 gem 'pg'
-gem 'intercom-rails', '~> 0.2.21'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -54,7 +53,9 @@ end
 group :staging, :production do
   gem 'rails_12factor'
   gem 'unicorn'
-  # Addon Gems
-  #gem 'newrelic_rpm'
-  #gem 'sentry-raven'
 end
+
+# Addon Gems
+gem 'newrelic_rpm'
+gem 'sentry-raven'
+gem 'intercom-rails'
