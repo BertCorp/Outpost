@@ -41,7 +41,7 @@
   <% @test_case.results.order('started_at DESC').each do |results| %>
   <tr>
     <td><%= results.status %></td>
-    <td><%= link_to results.report.started_at.strftime('%Y-%m-%d'), report_path(results.report) %></td>
+    <td><%= link_to results.report.date, report_path(results.report) %></td>
     <td><%= results.started_at %></td>
     <td><%= results.ended_at %></td>
     <td><%= results.summary %></td>
