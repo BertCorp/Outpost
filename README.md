@@ -6,6 +6,8 @@ Coming soon.
 To Do:
 
 - User/Company should be able to manage their stripe credit card info from their dashboard.
+- Add sms support for emails
+	- 5857050130@txt.att.net
 
 
 Done: 
