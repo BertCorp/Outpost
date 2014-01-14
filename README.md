@@ -12,7 +12,13 @@ To Do:
 - Add public chat room link.
 	- marketing
 	- dashboard
-- Keep track of how long tests take to execute
+- keep track of how long tests take to execute
+- shrink logo
+- remove IDs from tables
+- friendly datetime display
+- color statuses
+- rework dashboard, report and test pages to display information better.
+
 
 
 Done: 
