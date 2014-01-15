@@ -5,20 +5,20 @@ Report for <%= @report.company.name %> - <%= @report.created_at %>
 <%= link_to "< Back to Dashboard", dashboard_path %>
 
 <h2>Report generated for <%= @report.company.name %></h2>
-<h3><%= @report.created_at %></h3>
+<h3><%= @report.created_at.to_formatted_s(:long) %></h3>
 
 <hr/>
 
 <p><b>Current Status:</b> <%= @report.status %></p>
 
-<p>Initiated At: <%= @report.initiated_at %></p>
+<p>Initiated At: <%= @report.initiated_at.to_formatted_s(:long) %></p>
 
 <p>Initiated By: <%= @report.initiator.name %></p>
 
 <% if @report.started_at.present? %>
-<p>Started At: <%= @report.started_at %></p>
+<p>Started At: <%= @report.started_at.to_formatted_s(:long) %></p>
 
-<p>Completed At: <%= (@report.completed_at.present?) ? @report.completed_at : '--' %></p>
+<p>Completed At: <%= (@report.completed_at.present?) ? @report.completed_at.to_formatted_s(:long) : '--' %></p>
 
 <p>Monitored By: <%= @report.monitorer.name if @report.monitorer.present? %></p>
 
