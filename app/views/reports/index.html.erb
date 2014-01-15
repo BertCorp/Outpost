@@ -13,7 +13,6 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th>ID</th>
       <th>Status</th>
       <th># of Tests</th>
       <th>Initiated</th>
@@ -25,7 +24,6 @@
   <tbody>
     <% @reports.each do |report| %>
       <tr>
-        <td><%= link_to report.id, report %></td>
         <td><%= report.status %></td>
         <td><%= link_to report.test_cases.count, report %></td>
         <td><%= report.initiated_at %></td>

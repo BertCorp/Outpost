@@ -4,7 +4,6 @@
 <h3>Last 5 Reports</h3>
 <table class="table table-bordered table-striped">
   <tr>
-    <th>ID</th>
     <th>Status</th>
     <th>Initiated At</th>
     <th>Started At</th>
@@ -13,7 +12,6 @@
   </tr>
   <% @reports.each do |report| %>
     <tr>
-      <td><%= report.id %></td>
       <td><%= report.status %></td>
       <td><%= report.initiated_at %></td>
       <td><%= report.started_at %></td>

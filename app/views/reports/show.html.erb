@@ -33,13 +33,11 @@ Report for <%= @report.company.name %> - <%= @report.created_at %>
 <h3>Test Results</h3>
 <table class="table table-bordered table-striped">
   <tr>
-    <th>ID</th>
     <th>Test</th>
     <th>Results</th>
   </tr>
 	<% @results.order('id ASC').each do |result| %>
   <tr>
-     <td><%= result.id %></td>
      <td><%= result.test_case.title %></td>
      <td><%= result.status %></td>
   </tr>
