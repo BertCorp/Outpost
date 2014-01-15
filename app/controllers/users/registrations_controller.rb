@@ -25,11 +25,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     # See https://github.com/plataformatec/devise/wiki/How-To%3A-Allow-users-to-edit-their-account-without-providing-a-password
     successfully_updated = if needs_password?(@user, params)
-      @user.update_with_password(devise_parameter_sanitizer.for(:account_update))
+      @user.update_with_password(devise_parameter_sanitizer.sanitize(:account_update))
     else
       params[:user].delete(:current_password)
       
-      @user.update_without_password(devise_parameter_sanitizer.for(:account_update))
+      @user.update_without_password(devise_parameter_sanitizer.sanitize(:account_update))
     end
 
     if successfully_updated
