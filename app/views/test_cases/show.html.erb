@@ -39,7 +39,7 @@
     <th>Summary</th>
   </tr>
   <% @test_case.results.order('started_at DESC').each do |results| %>
-  <tr>
+  <tr class="<%= results.status == "Passed" ? "success" : results.status == "Failed" ? "danger" : "" %>">
     <td><%= results.status %></td>
     <td><%= link_to results.report.date, report_path(results.report) %></td>
     <td><%= results.started_at %></td>

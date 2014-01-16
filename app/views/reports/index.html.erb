@@ -23,7 +23,7 @@
   </thead>
   <tbody>
     <% @reports.each do |report| %>
-      <tr>
+      <tr class="<%= report.status == "Completed" ? "success" : report.status == "Completed With Failures" ? "danger" : "" %>">
         <td><%= report.status %></td>
         <td><%= link_to report.test_cases.count, report %></td>
         <td><%= report.initiated_at %></td>

@@ -12,7 +12,7 @@
     <th></th>
   </tr>
   <% @reports.each do |report| %>
-    <tr>
+    <tr class="<%= report.status == "Completed" ? "success" : report.status == "Completed With Failures" ? "danger" : "" %>">
       <td><%= report.status %></td>
       <td><%= report.initiator.name %></td> 
       <td><abbr title="<%= (report.initiated_at.present?) ? report.initiated_at.to_formatted_s(:long) : '--' %>"><%= time_ago_in_words(report.initiated_at) %> ago</abbr></td>
