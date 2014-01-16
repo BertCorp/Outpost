@@ -35,7 +35,7 @@
     <th>Results</th>
   </tr>
 	<% @results.order('id ASC').each do |result| %>
-  <tr>
+  <tr class="<%= result.status == "Passed" ? "success" : result.status == "Failed" ? "danger" : "" %>">
     <td><%= result.id %></td>
     <td><%= result.test_case.title %></td>
   	<td><%= link_to result.status, [:admin, result] %></td>
