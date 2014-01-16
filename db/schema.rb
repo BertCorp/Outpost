@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131117220906) do
+ActiveRecord::Schema.define(version: 20140116203300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20131117220906) do
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "monitored_by"
-    t.string   "status",        default: "Queued", null: false
+    t.string   "status",        default: "queued", null: false
     t.text     "summary"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20131117220906) do
     t.integer  "company_id",                      null: false
     t.integer  "test_suite_id",                   null: false
     t.string   "title",              default: "", null: false
-    t.string   "description",        default: "", null: false
+    t.text     "description",        default: "", null: false
     t.datetime "setup_started_at"
     t.datetime "setup_completed_at"
     t.string   "pending_message"
