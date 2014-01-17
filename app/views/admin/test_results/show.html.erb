@@ -9,6 +9,7 @@
 <p>Started At: <%= @test_result.started_at %></p>
 <p>Ended At: <%= @test_result.ended_at %></p>
 <p>Status: <%= @test_result.status %></p>
+<p>Execution Time: <%= @test_result.execution_time %></p>
 <p>Summary: <%= simple_format(urlify(@test_result.summary)) if @test_result.summary.present? %></p>
 <p>Created At: <%= @test_result.created_at %></p>
 <p>Updated At: <%= @test_result.updated_at %></p>
