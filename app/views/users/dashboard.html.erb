@@ -33,6 +33,7 @@ Dashboard
 	<% end %>
   <% if suite.test_cases.any? %>
 	<div class="row">
+		<%= link_to "Watch Setup Video", suite.setup_video_url, target: '_blank', class: 'pull-right', style: 'margin-top: 26px;' if suite.setup_video_url.present? %>
 		<h3>Your Tests</h3>
 		<table class="table table-bordered table-striped">
 		  <tr>
