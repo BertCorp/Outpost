@@ -30,9 +30,7 @@
 		<label class="col-sm-3 control-label">User(s)</label>
 		<div class="col-sm-9">
 		<% @company.users.each do |user| %>
-			<%= f.fields_for :users do |u| %>
 			<%= render partial: 'admin/companies/user', locals: { user: user } %>
-			<% end %>
 		<% end %>
 			<!-- TODO: Ability to add multiple users -->
 			<!--<%= link_to "Add User", "javascript:void(0);", class: 'btn btn-primary pull-right', onclick: "$.get('/companies/new-user', function(data) { $(this).before(data); }); return false;" %>-->
