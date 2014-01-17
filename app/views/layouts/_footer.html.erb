@@ -4,6 +4,8 @@
     <span class="pull-right">
 			<% if current_user && current_user.company.present? %>
 			<a href="<%= current_user.company.chatroom %>" target="_blank">Need Help?</a> | 
+			<% else %>
+			<a href="http://www.hipchat.com/gpxnJo0u8" target="_blank">Have Questions?</a> | 
 			<% end %>
 			<%= link_to 'Find us on Twitter', 'http://twitter.com/outpostqa' %>
 			<!-- | <%= link_to 'Read our Blog', 'http://outpostqa.tumblr.com/' %>-->

@@ -2,7 +2,7 @@
 
 <h2><%= @company.name %></h2>
 <p>Customer since: <%= @company.created_at.in_time_zone('Central Time (US & Canada)') %></p>
-<p>Chatroom: <%= link_to @company.chatroom_url, @company.chatroom_url %></p>
+<p>Chatroom: <%= link_to @company.chatroom, @company.chatroom %></p>
 
 <hr/>
 
