@@ -18,7 +18,7 @@
 <p>Monitored By: <%= @report.monitorer.name if @report.monitorer.present? %></p>
 
 	<% if @report.summary.present? %>
-	<p>Test Summary: <%= simple_format(urlify(@report.summary)) %></p>
+	<p>Test Summary: <%= htmlify(@report.summary) %></p>
 	<% end %>
 	
 <% end %>
@@ -45,7 +45,7 @@
   	<td colspan="3">
 			Results Summary: 
   		<% if result.summary.present? %>
-	  	<%= simple_format(urlify(result.summary)) %>
+	  	<%= htmlify(result.summary) %>
      	<% else %>
       <i>No notes given.</i>
      	<% end %>

@@ -11,7 +11,7 @@
 <p><b>Current Status:</b> <%= @test_case.status %></p>
 
 <% if @test_case.description.present? %>
-<p><b>Description:</b> <%= @test_case.description %></p>
+<p><b>Description:</b> <%= htmlify(@test_case.description) %></p>
 <% end %>
 
 <% if @test_case.setup_started_at.present? %>
@@ -29,7 +29,7 @@
 
 <h3>Previous Test Results</h3>
 
-<% if @test_case.results.any? %>
+<% if @test_case.results.count > 1 %>
 <table class="table table-bordered table-striped">
   <tr>
     <th>Status</th>

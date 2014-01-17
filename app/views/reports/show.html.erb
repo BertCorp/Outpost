@@ -23,7 +23,7 @@ Report for <%= @report.company.name %> - <%= @report.created_at %>
 <p>Monitored By: <%= @report.monitorer.name if @report.monitorer.present? %></p>
 
 	<% if @report.summary.present? %>
-	<p>Test Summary: <%= simple_format(urlify(@report.summary)) %></p>
+	<p>Test Summary: <%= htmlify(@report.summary) %></p>
 	<% end %>
 
 <% end %>
@@ -44,7 +44,7 @@ Report for <%= @report.company.name %> - <%= @report.created_at %>
   <% if result.summary.present? %>
 	<tr>
   	<td colspan="3">Results Summary: 
-    	<%= simple_format(urlify(result.summary)) if result.summary.present? %>
+    	<%= htmlify(result.summary) %>
    	</td>
   </tr>
   <% end %>
