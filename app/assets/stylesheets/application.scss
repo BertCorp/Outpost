@@ -101,3 +101,38 @@ textarea, .textareaClone {
   min-height: 4em;
 	max-height: 12em;
 }
+
+#IntercomDefaultWidget {
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	width: 40px;
+	height: 40px;
+	border: 1px solid #1d1717;
+	background-color: #333333;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	z-index: 2147483646;
+	color: #fff;
+	cursor: pointer;
+	
+	span {
+		width: 40px;
+		height: 39px;
+		border-top: 1px solid #414141;
+		background: transparent url(https://static.intercomcdn.com/assets/message-box-sprites-52b6df2806c84dcdfb1b742925a248ab.png) no-repeat -152px 0;
+		background-size: 274px 48px;
+		display: block;
+		text-indent: 110%;
+		white-space: nowrap;
+		overflow: hidden;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+}
+

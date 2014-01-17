@@ -17,6 +17,14 @@
 			<%= f.text_field :name, class: "form-control", placeholder: "Acme Company" %>
 		</div>
 	</div>
+	
+	<div class="form-group">
+		<%= f.label :chatroom_url, "Chatroom URL", class: 'col-sm-3 control-label' %>
+  	<div class="col-sm-9">
+			<%= f.text_field :chatroom_url, class: "form-control", placeholder: "http://www.hipchat.com/gpxnJo0u8" %>
+			<span class="help-block">If no individual chatroom url is supplied, we'll use the generic Outpost one: <a href="http://www.hipchat.com/gpxnJo0u8">http://www.hipchat.com/gpxnJo0u8</a></span>
+		</div>
+	</div>
 		
 	<div class="form-group">
 		<label class="col-sm-3 control-label">User(s)</label>

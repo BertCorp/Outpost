@@ -11,15 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140117193411) do
+ActiveRecord::Schema.define(version: 20140117195050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "companies", force: true do |t|
-    t.string   "name",       null: false
+    t.string   "name",         null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "chatroom_url"
   end
 
   add_index "companies", ["name"], name: "index_companies_on_name", unique: true, using: :btree

@@ -8,6 +8,11 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :users
   #validates_associated :users
   
+  def chatroom
+    return chatroom_url if chatroom_url.present?
+    'http://www.hipchat.com/gpxnJo0u8' # should probably store in database to be updated easily from admin and not require code deploy.
+  end
+  
   def pending_tests
     test_cases.where("setup_started_at IS NULL")
   end

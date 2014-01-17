@@ -72,6 +72,6 @@ class TestResultsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def test_result_params
-      params.require(:test_result).permit(:report_id, :test_case_id, :started_at, :ended_at, :status, :summary, :created_at, :updated_at)
+      params.require(:test_result).permit(:report_id, :test_case_id, :started_at, :ended_at, :status, :summary, :execution_time, :created_at, :updated_at)
     end
 end

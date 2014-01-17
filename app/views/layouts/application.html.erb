@@ -47,6 +47,10 @@
 
 			<%= render 'layouts/footer' %>
 		</div>
+		<% if current_user %>
+		<div id="IntercomDefaultWidget" data-intercom_original_html="&lt;span&gt;Support&lt;/span&gt;" style="visibility: visible; opacity: 1;" class=""><a href="<%= current_user.company.chatroom %>" target="_blank"><span>Support</span></a></div>
+		<% end %>
+		
   	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   	<%= render 'layouts/analytics' %>
 	</body>
