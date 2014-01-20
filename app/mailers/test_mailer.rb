@@ -7,4 +7,10 @@ class TestMailer < ActionMailer::Base
     mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "#{@test.company.name} has added a new test!")
   end
   
+  def admin_test_updated_email(test)
+    @test = test
+    
+    mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "#{@test.company.name} has been updated one of their tests.")
+  end
+  
 end

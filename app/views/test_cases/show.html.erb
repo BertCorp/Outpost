@@ -2,6 +2,8 @@
 <%= @test_case.title %>
 <% end %>
 
+<%= link_to 'Edit', edit_test_case_path(@test_case), class: 'pull-right btn btn-primary' %>
+
 <%= link_to "< Back to Dashboard", dashboard_path %>
 
 <h2><%= @test_case.title %></h2>

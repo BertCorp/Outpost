@@ -1,3 +1,7 @@
+<% content_for :title do %>
+<%= @test_case.title %>
+<% end %>
+
 <%= link_to 'Edit', edit_admin_test_case_path(@test_case), class: 'pull-right btn btn-primary' %>
 
 <h2>Test for <%= link_to @test_case.company.name, admin_company_path(@test_case.company) %></h2>

@@ -3,18 +3,18 @@ class Admin::TestCasesController < ApplicationController
   before_action :authenticate_user!
   layout 'admin'
 
-  # GET /test_cases
-  # GET /test_cases.json
+  # GET /tests
+  # GET /tests.json
   def index
     @test_cases = TestCase.all
   end
 
-  # GET /test_cases/1
-  # GET /test_cases/1.json
+  # GET /tests/1
+  # GET /tests/1.json
   def show
   end
 
-  # GET /test_cases/new
+  # GET /tests/new
   def new
     @test_case = TestCase.new
     @test_case.company_id = params[:company] if params[:company].present?
@@ -22,12 +22,12 @@ class Admin::TestCasesController < ApplicationController
     #@test_case.setup_started_at = Time.zone.now
   end
 
-  # GET /test_cases/1/edit
+  # GET /tests/1/edit
   def edit
   end
 
-  # POST /test_cases
-  # POST /test_cases.json
+  # POST /tests
+  # POST /tests.json
   def create
     @test_case = TestCase.new(test_case_params)
 
@@ -42,8 +42,8 @@ class Admin::TestCasesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /test_cases/1
-  # PATCH/PUT /test_cases/1.json
+  # PATCH/PUT /tests/1
+  # PATCH/PUT /tests/1.json
   def update
     respond_to do |format|
       if @test_case.update(test_case_params)
@@ -56,8 +56,8 @@ class Admin::TestCasesController < ApplicationController
     end
   end
 
-  # DELETE /test_cases/1
-  # DELETE /test_cases/1.json
+  # DELETE /tests/1
+  # DELETE /tests/1.json
   def destroy
     @test_case.destroy
     respond_to do |format|
