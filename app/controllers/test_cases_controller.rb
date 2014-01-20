@@ -24,7 +24,9 @@ class TestCasesController < ApplicationController
 
     respond_to do |format|
       if @test_case.save
-        format.html { redirect_to @test_case, notice: 'Test was successfully created.' }
+        TestMailer.admin_new_test_email(@test_case).deliver
+        
+        format.html { redirect_to @test_case, notice: 'Test was successfully added.' }
         format.json { render action: 'show', status: :created, location: @test_case }
       else
         format.html { render action: 'new' }

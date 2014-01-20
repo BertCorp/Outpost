@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>A new test has been added for <%= @test.company.name %>!</p>
+    
+    <p>Well, what are you waiting for?! Hop to it! <%= link_to "Take me to the test", test_case_url(@test) %></p>
+  </body>
+</html>
