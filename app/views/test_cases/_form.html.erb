@@ -30,6 +30,14 @@
 			<%= f.text_field :title, class: "form-control", placeholder: "Test a user can signup." %>
 		</div>
 	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-8 col-sm-offset-2">
+			<%= f.label :url, "Test URL", class: 'control-label' %>
+			<%= f.text_field :url, class: "form-control", placeholder: "http://example.com/path/37" %>
+			<span class="help-block">Provide us with the exact url to start running your test at.</span>
+		</div>
+	</div>
 
   <div class="form-group">
 		<div class="col-sm-8 col-sm-offset-2">
@@ -38,7 +46,7 @@
 	    <span class="help-block">Provide any additional info on how to complete task.</span>
 		</div>
 	</div>
-	
+		
   <% if current_user.is_admin? %>
   <hr/>
   <span class="help-block">Admin Only Fields</span>

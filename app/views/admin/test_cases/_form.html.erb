@@ -17,6 +17,14 @@
 			<%= f.text_field :title, class: "form-control", placeholder: "Test a user can signup." %>
 		</div>
 	</div>
+	
+	<div class="form-group">
+		<%= f.label :url, "Test URL", class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<%= f.text_field :url, class: "form-control", placeholder: "http://example.com/path/37" %>
+			<span class="help-block">Where should we start running the test?</span>
+		</div>
+	</div>
 
   <div class="form-group">
 		<%= f.label :description, "Additional Instructions", class: 'col-sm-3 control-label' %>
