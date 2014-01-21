@@ -16,6 +16,9 @@ Outpost::Application.routes.draw do
     get "/logout" => "devise/sessions#destroy"
     get "/dashboard" => "users#dashboard", as: :dashboard
     get "/account" => "users/registrations#edit", as: :account
+    get "/company" => "companies#edit", as: :company
+    patch "/company" => "companies#update"
+    put "/company" => "companies#update"
   end
   
   namespace 'admin' do
@@ -34,8 +37,6 @@ Outpost::Application.routes.draw do
   end
   
   resources :users
-  resources :companies
-  resources :test_suites # not sure if we need this...
   
   resources :test_cases, path: 'tests' do
     post "start" => "test_cases#start", as: :start_setup, on: :member

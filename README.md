@@ -5,11 +5,10 @@ Coming soon.
 
 To Do:
 
-- Fully integrate new logo/branding/colors.
+- better managing of suites and environments
 - rework dashboard, report and test pages to display information better.
 - advanced run button
 - webhook
-- better managing of suites and environments
 - graph execution times
 - User/Company should be able to manage their stripe credit card info from their dashboard.
 
@@ -29,4 +28,5 @@ Done:
 - ~~test edit mailer~~
 - ~~add url for test cases~~
 - ~~test suite environment~~
+- ~~Fully integrate new logo/branding/colors.~~
 

@@ -58,7 +58,7 @@
 							<li<%= raw(' class="active"') if request['controller'] == 'reports' %>><%= link_to 'Past Reports', reports_path %></li>							
 							<li class="divider"></li>
 							<li<%= raw(' class="active"') if request['controller'] == 'test_cases' %>><%= link_to 'Your Tests', test_cases_path %></li>							
-							<!--<li><a href="">Your Company</a></li>-->
+							<!--<li<%= raw(' class="active"') if request['controller'] == 'companies' %>><%= link_to 'Your Company', company_path %></li>-->
 						  <li<%= raw(' class="active"') if request.fullpath == '/account' %>><%= link_to 'Your Account', account_path %></li>
 						</ul>
 						<div style="text-align: center;">
