@@ -118,6 +118,7 @@ header.row {
 
 .container {
 	max-width: 860px;
+	min-height: 500px;
 	margin: auto;
 	padding: 0px 20px;
 	
@@ -130,9 +131,9 @@ header.row {
 
 footer {
 	max-width: 860px;
-	margin: 50px auto;
+	margin: 50px auto 0px;
 	border-top: 1px solid #F2F2F2;
-	padding-top: 20px;
+	padding: 20px 5px 20px;
 	p {
 		color: #9D756E;
 	}
