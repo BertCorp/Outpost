@@ -18,7 +18,7 @@
       <td><abbr title="<%= (report.initiated_at.present?) ? report.initiated_at.to_formatted_s(:long) : '--' %>"><%= time_ago_in_words(report.initiated_at) %> ago</abbr></td>
       <td><abbr title="<%= report.started_at.to_formatted_s(:long) if report.started_at.present? %>"><%= time_ago_in_words(report.started_at) + ' ago' if report.started_at.present? %> </abbr></td>
       <td><%= distance_of_time_in_words(report.completed_at, report.started_at) if report.completed_at.present? %></td>
-      <td><%= link_to "View Report", report_path(report) %></td>
+      <td><%= link_to "View", report_path(report), class: 'btn btn-default' %></td>
     </tr>
   <% end %>
 </table>

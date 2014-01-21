@@ -12,7 +12,7 @@
 		    <tr class="<%= test_case.status == "Passed" ? "success" : test_case.status == "Failed" ? "danger" : "" %>">
 		      <td><%= test_case.title %></td>
 		      <td><%= test_case.status %></td>
-		      <td><%= link_to 'View Test',test_case_path(test_case) %></td>
+		      <td><%= link_to 'View Test', test_case_path(test_case), class: 'btn btn-sm btn-default' %></td>
 		    </tr>
 		  <% end %>
 		 	<tr>
