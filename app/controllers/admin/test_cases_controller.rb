@@ -19,7 +19,6 @@ class Admin::TestCasesController < ApplicationController
     @test_case = TestCase.new
     @test_case.company_id = params[:company] if params[:company].present?
     @test_case.test_suite_id = params[:suite] if params[:suite].present?
-    #@test_case.setup_started_at = Time.zone.now
   end
 
   # GET /tests/1/edit

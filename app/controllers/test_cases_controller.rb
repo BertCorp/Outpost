@@ -12,9 +12,6 @@ class TestCasesController < ApplicationController
     @test_case = TestCase.new
     @test_case.company_id = current_user.company_id
     @test_case.test_suite_id = current_user.company.test_suites.first.id if current_user.company.test_suites.count == 1
-    
-    #logger.info current_user.company.test_suites.inspect
-    #logger.info @test_case.inspect
   end
 
   # GET /tests/1/edit
