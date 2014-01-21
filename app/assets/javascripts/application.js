@@ -26,7 +26,6 @@ $(function() {
 	$('textarea').expandingTextarea();
 });
 
-
 function formatTime(d) {
 	var y = d.getFullYear();
 	var m = d.getMonth();

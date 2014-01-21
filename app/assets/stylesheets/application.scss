@@ -18,6 +18,17 @@
 @import 'twitter/bootstrap/forms';*/
 @import 'pages-marketing';
 
+@font-face {
+    font-family: 'bebas_neueregular';
+    src: url('/fonts/BebasNeue-webfont.eot');
+    src: url('/fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/BebasNeue-webfont.woff') format('woff'),
+         url('/fonts/BebasNeue-webfont.ttf') format('truetype'),
+         url('/fonts/BebasNeue-webfont.svg#bebas_neueregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Devise forms: /login & /signup */
 .form-signin, .form-signup {
   max-width: 330px;
@@ -85,6 +96,26 @@
   padding: 15px;
 }
 
+html, body, p {
+	font-family: 'Lora', serif;
+	color: #1A1919;
+}
+
+h1, h2, h3, h4, h5,
+.bs-sidebar, .bs-sidebar a {
+	font-family: 'bebas_neueregular';
+}
+
+header.row {
+	max-width: 860px; 
+	margin: -5px auto 0px;
+}
+
+.alert {
+	max-width: 860px;
+	margin: 25px auto 15px;
+}
+
 .container {
 	max-width: 860px;
 	margin: auto;
@@ -96,6 +127,57 @@
 		padding-top: 20px;
 	}
 }
+
+footer {
+	max-width: 860px;
+	margin: 50px auto;
+	border-top: 1px solid #F2F2F2;
+	padding-top: 20px;
+	p {
+		color: #9D756E;
+	}
+}
+
+.bs-sidenav {
+margin-top: 30px;
+margin-bottom: 30px;
+padding-top: 10px;
+padding-bottom: 10px;
+text-shadow: 0 1px 0 #fff;
+background-color: #F2F2F2;
+border-radius: 5px;
+}
+
+.bs-sidebar .nav > li > a {
+display: block;
+color: #716b7a;
+padding: 5px 20px;
+}
+
+.bs-sidebar .nav > .active > a, .bs-sidebar .nav > .active:hover > a, .bs-sidebar .nav > .active:focus > a {
+font-weight: bold;
+color: #9D756E;
+background-color: transparent;
+border-right: 1px solid #9D756E;
+}
+
+.bs-sidebar .nav .divider {
+height: 1px;
+margin: 9px 0;
+overflow: hidden;
+background-color: #e5e5e5;
+}
+
+a {
+color: #C7B39B;
+text-decoration: none;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+color: #fff;
+background-color: #C7B39B;
+}
+
 
 textarea, .textareaClone {
   min-height: 4em;

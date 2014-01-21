@@ -36,20 +36,23 @@
     <%= yield(:head) %>
   </head>
   <body>
-    <div class="container">
-			<%= render 'layouts/header' %>      
+    <%= render 'layouts/header' %>      
 			
-			<div class="content">
-          <%= render 'layouts/messages' %>
+		<%= render 'layouts/messages' %>
 					
-					<%= render 'layouts/admin_nav' %>
+		<div class="container bs-docs-container">
+	    <div class="row">
+		
+		<%= render 'layouts/admin_nav' %>
 
-          <%= yield %>
-      </div>
+    <%= yield %>
 
-			<%= render 'layouts/footer' %>
+    	</div>
 		</div>
-  	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+
+		<%= render 'layouts/footer' %>
+		
+		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   	<%= render 'layouts/analytics' %>
 	</body>
 </html>
