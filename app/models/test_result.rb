@@ -2,6 +2,7 @@ class TestResult < ActiveRecord::Base
   
   belongs_to :report
   belongs_to :test_case
+  belongs_to :test_environment
 
 =begin
   Attributes: started_at, ended_at, status, summary

@@ -34,6 +34,20 @@
 		</div>
 	</div>
 	
+	<% if @test_case.test_suite.test_environments.count > 1 %>
+	<div class="form-group">
+		<%= f.label :test_environments, "Environments", class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+			<%= hidden_field_tag "test_case[test_environment_ids][]" %>
+			<% @test_case.test_suite.test_environments.each do |e| %>
+    	<label><%= check_box_tag 'test_case[test_environment_ids][]', e.id, @test_case.test_environment_ids.include?(e.id) %> <%= e.name %></label><br/>
+			<% end %>
+		</div>
+	</div>
+	<% else %>
+	<%= hidden_field_tag "test_case[test_environment_ids][]", @test_case.test_suite.test_environments.first.id %>
+	<% end %>
+	
   <hr/>
   <span class="help-block">Admin Only Fields</span>
     

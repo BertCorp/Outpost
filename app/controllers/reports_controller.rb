@@ -28,6 +28,7 @@ class ReportsController < ApplicationController
       @company = @test_suite.company
       @report.company = @company
       @report.test_suite = @test_suite
+      @report.test_environment_id = @test_suite.test_environments.first.id if @test_case.test_suite.test_environments.count == 1
     end
     @report.monitored_by = current_user.id if current_user.is_admin?
   end
@@ -100,7 +101,7 @@ class ReportsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def report_params
-      params.fetch(:report, {}).permit(:company_id, :test_suite_id, :initiated_at, :initiated_by, :started_at, :completed_at, :monitored_by, :status, :summary, :created_at, :updated_at, 
+      params.fetch(:report, {}).permit(:company_id, :test_suite_id, :test_environment_id, :initiated_at, :initiated_by, :started_at, :completed_at, :monitored_by, :status, :summary, :created_at, :updated_at, 
       test_results_attributes: [:id, :report_id, :test_case_id, :status])
     end
 end

@@ -28,6 +28,13 @@
 	<% else %>
 		<%= f.hidden_field :test_suite_id %>
 	<% end %>
+	
+	<div class="form-group">
+		<%= f.label :test_environment_id, "Test Environment", class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+    	<%= f.select :test_environment_id, @report.test_suite.test_environments.collect {|t_e| [ t_e.name, t_e.id ] }, { include_blank: true }, { class: 'form-control' } %>
+		</div>
+	</div>
 
 	<% if @report.initiated_at.present? || !@report.started_at.present? %>
 	<div class="form-group">

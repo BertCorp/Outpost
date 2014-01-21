@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140120210851) do
+ActiveRecord::Schema.define(version: 20140120222130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,17 +26,18 @@ ActiveRecord::Schema.define(version: 20140120210851) do
   add_index "companies", ["name"], name: "index_companies_on_name", unique: true, using: :btree
 
   create_table "reports", force: true do |t|
-    t.integer  "company_id",                       null: false
-    t.integer  "test_suite_id",                    null: false
+    t.integer  "company_id",                             null: false
+    t.integer  "test_suite_id",                          null: false
     t.datetime "initiated_at"
     t.integer  "initiated_by"
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "monitored_by"
-    t.string   "status",        default: "queued", null: false
+    t.string   "status",              default: "queued", null: false
     t.text     "summary"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "test_environment_id"
   end
 
   create_table "test_cases", force: true do |t|
@@ -52,6 +53,20 @@ ActiveRecord::Schema.define(version: 20140120210851) do
     t.string   "url"
   end
 
+  create_table "test_cases_test_environments", force: true do |t|
+    t.integer "test_case_id"
+    t.integer "test_environment_id"
+  end
+
+  create_table "test_environments", force: true do |t|
+    t.integer  "company_id"
+    t.integer  "test_suite_id"
+    t.string   "name"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "test_results", force: true do |t|
     t.integer  "report_id"
     t.integer  "test_case_id"
@@ -62,6 +77,7 @@ ActiveRecord::Schema.define(version: 20140120210851) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "execution_time"
+    t.integer  "test_environment_id"
   end
 
   create_table "test_suites", force: true do |t|

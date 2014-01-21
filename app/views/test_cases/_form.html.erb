@@ -46,6 +46,20 @@
 	    <span class="help-block">Provide any additional info on how to complete task.</span>
 		</div>
 	</div>
+	
+	<% if @test_case.test_suite.test_environments.count > 1 %>
+	<div class="form-group">
+		<div class="col-sm-8 col-sm-offset-2">
+			<%= f.label :test_environments, "Environments to Test", class: 'control-label' %><br/>
+			<%= hidden_field_tag "test_case[test_environment_ids][]" %>
+			<% @test_case.test_suite.test_environments.each do |e| %>
+    	<label><%= check_box_tag 'test_case[test_environment_ids][]', e.id, @test_case.test_environment_ids.include?(e.id) %> <%= e.name %></label><br/>
+			<% end %>
+		</div>
+	</div>
+	<% else %>
+	<%= hidden_field_tag "test_case[test_environment_ids][]", @test_case.test_suite.test_environments.first.id %>
+	<% end %>
 		
   <% if current_user.is_admin? %>
   <hr/>

@@ -2,6 +2,7 @@ class TestCase < ActiveRecord::Base
   
   belongs_to :company
   belongs_to :test_suite
+  has_and_belongs_to_many :test_environments, join_table: 'test_cases_test_environments'
   has_many :results, class_name: 'TestResult', dependent: :destroy
   
   

@@ -92,7 +92,7 @@ class Admin::ReportsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def report_params
-      params.fetch(:report, {}).permit(:company_id, :test_suite_id, :initiated_at, :initiated_by, :started_at, :completed_at, :monitored_by, :status, :summary, :created_at, :updated_at, 
+      params.fetch(:report, {}).permit(:company_id, :test_suite_id, :test_environment_id, :initiated_at, :initiated_by, :started_at, :completed_at, :monitored_by, :status, :summary, :created_at, :updated_at, 
       test_results_attributes: [:id, :report_id, :test_case_id, :status])
     end
 end

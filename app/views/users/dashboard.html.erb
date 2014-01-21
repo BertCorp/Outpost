@@ -14,6 +14,7 @@ Dashboard
 
 	<%= form_for(@report) do |f| %>
 	  <%= f.hidden_field :test_suite_id, value: suite.id %>
+		<%= f.hidden_field :test_environment_id, value: suite.test_environments.first.id if suite.test_environments.count == 1 %>
 	  <%= f.hidden_field :company_id, value: current_user.company.id %>
 	  <%= f.hidden_field :initiated_by, value: current_user.id %>
 	  <%= f.hidden_field :initiated_at, value: DateTime.now %>
