@@ -25,6 +25,7 @@ class TestCasesController < ApplicationController
 
   # GET /tests/1/edit
   def edit
+    @test_environment = TestEnvironment.new(company_id: @test_case.company_id, test_suite_id: @test_case.test_suite_id)
   end
 
   # POST /tests

@@ -7,7 +7,7 @@
 			<label class="control-label">Environments to Test</label><br/>
 			<%= hidden_field_tag "test_case[test_environment_ids][]" %>
 			<% test_case.test_suite.test_environments.each do |e| %>
-	  	<label><%= check_box_tag 'test_case[test_environment_ids][]', e.id, test_case.test_environment_ids.include?(e.id) %> <%= e.name %> - <%= e.url.gsub('http://', '') %></label><br/>
+	  	<label><%= check_box_tag 'test_case[test_environment_ids][]', e.id, test_case.test_environment_ids.include?(e.id) %> <%= e.name %> - <%= get_host(e.url) %></label><br/>
 			<% end %>
 		</div>
 	</div>

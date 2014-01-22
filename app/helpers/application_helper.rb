@@ -1,5 +1,11 @@
 module ApplicationHelper
   
+  def get_host(url)
+    url = "http://#{url}" unless url.start_with?('http')
+    uri = URI.parse(url)
+    uri.host.downcase
+  end
+  
   def htmlify(s)
     return simple_format(urlify(s)) if s.present?
     ''
