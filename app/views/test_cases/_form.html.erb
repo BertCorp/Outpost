@@ -15,8 +15,8 @@
   
 	<% if current_user.company.test_suites.count > 1 %>
   <div class="form-group">
-		<%= f.label :test_suite_id, "Test Suite", class: 'col-sm-3 control-label' %>
-		<div class="col-sm-9">
+		<div class="col-sm-12">
+			<%= f.label :test_suite_id, "Test Suite", class: 'control-label' %>
     	<%= f.select :test_suite_id, @test_case.company.test_suites.collect {|t_s| [ (t_s.title.present? ? t_s.title : "Tests"), t_s.id ] }, { include_blank: true }, { class: 'form-control' } %>
 		</div>
 	</div>
@@ -25,14 +25,14 @@
 	<% end %>
 
   <div class="form-group">
-		<div class="col-sm-8 col-sm-offset-2">
+		<div class="col-sm-12">
 			<%= f.label :title, "What would you like us to test?", class: 'control-label' %>
 			<%= f.text_field :title, class: "form-control", placeholder: "Test a user can signup." %>
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<div class="col-sm-8 col-sm-offset-2">
+		<div class="col-sm-12">
 			<%= f.label :url, "Test URL", class: 'control-label' %>
 			<%= f.text_field :url, class: "form-control", placeholder: "http://example.com/path/37" %>
 			<span class="help-block">Provide us with the exact url to start running your test at.</span>
@@ -40,26 +40,14 @@
 	</div>
 
   <div class="form-group">
-		<div class="col-sm-8 col-sm-offset-2">
+		<div class="col-sm-12">
 			<%= f.label :description, "Any Additional Instructions?", class: 'control-label' %>
 			<%= f.text_area :description, class: "form-control", placeholder: "ie. This can only be done on staging." %>
 	    <span class="help-block">Provide any additional info on how to complete task.</span>
 		</div>
 	</div>
 	
-	<% if @test_case.test_suite.test_environments.count > 1 %>
-	<div class="form-group">
-		<div class="col-sm-8 col-sm-offset-2">
-			<%= f.label :test_environments, "Environments to Test", class: 'control-label' %><br/>
-			<%= hidden_field_tag "test_case[test_environment_ids][]" %>
-			<% @test_case.test_suite.test_environments.each do |e| %>
-    	<label><%= check_box_tag 'test_case[test_environment_ids][]', e.id, @test_case.test_environment_ids.include?(e.id) %> <%= e.name %></label><br/>
-			<% end %>
-		</div>
-	</div>
-	<% else %>
-	<%= hidden_field_tag "test_case[test_environment_ids][]", @test_case.test_suite.test_environments.first.id %>
-	<% end %>
+	<%= render partial: 'test_environments_container', locals: { test_case: @test_case } %>
 		
   <% if current_user.is_admin? %>
   <hr/>
@@ -93,7 +81,10 @@
 	</div>
 	<% end %>
 
-	<div class="actions col-sm-offset-6">
+	<div class="actions col-sm-offset-4">
 		<%= f.submit 'Save Test', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", :back, class: "btn btn-danger" %>
 	</div>
   <% end %>
+
+	<%= render partial: 'test_environments_modal' %>
+

@@ -8,15 +8,15 @@ Manage Your Account
   <%= devise_error_messages! %>
   
 	<div class="form-group">
-		<%= f.label :name, class: 'col-sm-3 control-label' %>
-		<div class="col-sm-9">
+		<div class="col-sm-12">
+			<%= f.label :name, class: 'control-label' %>
 			<%= f.text_field :name, class: "form-control" %>
 		</div>
 	</div>
 
 	<div class="form-group">
-		<%= f.label :email, class: 'col-sm-3 control-label' %>
-		<div class="col-sm-9">
+		<div class="col-sm-12">
+			<%= f.label :email, class: 'control-label' %>
 			<%= f.email_field :email, class: "form-control" %>
 		</div>
 	</div>
@@ -25,27 +25,27 @@ Manage Your Account
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
   
-	<div class="col-sm-9 col-sm-offset-3">
-		<span class="help-block">Want to change your password? If not, leave blank if you don't want to change it.</span>
+	<div class="col-sm-12">
+		<span class="help-block">Only fill out the following fields if you want to change your password.</span>
 	</div>
 
 	<div class="form-group">
-		<%= f.label :password, class: 'col-sm-3 control-label' %>
-		<div class="col-sm-9">
+		<div class="col-sm-12">
+			<%= f.label :password, class: 'control-label' %>
 			<%= f.password_field :password, class: "form-control", autocomplete: "off" %>
 		</div>
 	</div>
 
 	<div class="form-group">
-		<%= f.label :password_confirmation, class: 'col-sm-3 control-label' %>
-		<div class="col-sm-9">
+		<div class="col-sm-12">
+			<%= f.label :password_confirmation, class: 'control-label' %>
 			<%= f.password_field :password_confirmation, class: "form-control", autocomplete: "off" %>
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<%= f.label :current_password, class: 'col-sm-3 control-label' %>
-		<div class="col-sm-9">
+		<div class="col-sm-12">
+			<%= f.label :current_password, class: 'control-label' %>
 			<%= f.password_field :current_password, class: "form-control", autocomplete: "off" %>
 			<span class="help-block">We need your current password to confirm your changes.</span>
 		</div>

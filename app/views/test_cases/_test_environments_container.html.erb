@@ -1,0 +1,13 @@
+
+	<div id="test-environments-container" class="form-group">
+		<div class="col-sm-12">
+			<button class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#environments-modal">
+			  Add New Environment
+			</button>
+			<label class="control-label">Environments to Test</label><br/>
+			<%= hidden_field_tag "test_case[test_environment_ids][]" %>
+			<% test_case.test_suite.test_environments.each do |e| %>
+	  	<label><%= check_box_tag 'test_case[test_environment_ids][]', e.id, test_case.test_environment_ids.include?(e.id) %> <%= e.name %> - <%= e.url.gsub('http://', '') %></label><br/>
+			<% end %>
+		</div>
+	</div>

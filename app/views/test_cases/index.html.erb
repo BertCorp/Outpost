@@ -1,7 +1,7 @@
 <% current_user.company.test_suites.each do |suite| %>
-	<div class="row">
+	<div class="">
 		<%= link_to "Watch Setup Video", suite.setup_video_url, target: '_blank', class: 'pull-right', style: 'margin-top: 26px;' if suite.setup_video_url.present? %>
-		<h3>Your Tests</h3>
+		<h2>Your Tests</h2>
 		<table class="table table-bordered table-striped">
 		  <tr>
 		    <th>Test Name</th>

@@ -16,7 +16,11 @@ class TestCasesController < ApplicationController
   def new
     @test_case = TestCase.new
     @test_case.company_id = current_user.company_id
-    @test_case.test_suite_id = current_user.company.test_suites.first.id if current_user.company.test_suites.count == 1
+    #if current_user.company.test_suites.count == 1
+      @test_case.test_suite_id = current_user.company.test_suites.first.id
+      @test_case.test_environment_ids = @test_case.test_suite.test_environments.map {|e| e.id }
+      @test_environment = TestEnvironment.new(company_id: @test_case.company_id, test_suite_id: @test_case.test_suite_id)
+    #end
   end
 
   # GET /tests/1/edit

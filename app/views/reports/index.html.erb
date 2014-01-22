@@ -1,35 +1,39 @@
 
-<div class="pull-right">
-  <%= render partial: "report_start", locals: { suite: current_user.company.test_suites.first } %>
-</div>
+<div class="">
 
-<h1>All <%= current_user.company.name %> Reports</h1>
+	<div class="pull-right">
+	  <%= render partial: "report_start", locals: { suite: current_user.company.test_suites.first } %>
+	</div>
 
-<div class="pagination-container">
-<%= will_paginate @reports, :previous_label => "&laquo;", :next_label => "&raquo;", renderer: BootstrapPagination::Rails %>
-</div>
+	<h2>All Your Reports</h2>
 
-<table class="table table-bordered table-striped">
-  <tr>
-    <th>Status</th>
-    <th>Initiated By</th>
-    <th>Initiated At</th>
-    <th>Started At</th>
-    <th>Time To Complete</th>
-    <th></th>
-  </tr>
-  <% @reports.each do |report| %>
-    <tr class="<%= report.status == "Completed" ? "success" : report.status == "Completed With Failures" ? "danger" : "" %>">
-      <td><%= report.status %></td>
-      <td><%= report.initiator.name %></td> 
-      <td><abbr title="<%= (report.initiated_at.present?) ? report.initiated_at.to_formatted_s(:long) : '--' %>"><%= time_ago_in_words(report.initiated_at) %> ago</abbr></td>
-      <td><abbr title="<%= report.started_at.to_formatted_s(:long) if report.started_at.present? %>"><%= time_ago_in_words(report.started_at) + ' ago' if report.started_at.present? %> </abbr></td>
-      <td><%= distance_of_time_in_words(report.completed_at, report.started_at) if report.completed_at.present? %></td>
-      <td><%= link_to "View", report_path(report), class: 'btn btn-default' %></td>
-    </tr>
-  <% end %>
-</table>
+	<div class="pagination-container">
+	<%= will_paginate @reports, :previous_label => "&laquo;", :next_label => "&raquo;", renderer: BootstrapPagination::Rails %>
+	</div>
 
-<div class="pagination-container">
-<%= will_paginate @reports, :previous_label => "&laquo;", :next_label => "&raquo;", renderer: BootstrapPagination::Rails %>
+	<table class="table table-bordered table-striped">
+	  <tr>
+	    <th>Status</th>
+	    <th>Initiated By</th>
+	    <th>Initiated At</th>
+	    <th>Started At</th>
+	    <th>Time To Complete</th>
+	    <th></th>
+	  </tr>
+	  <% @reports.each do |report| %>
+	    <tr class="<%= report.status == "Completed" ? "success" : report.status == "Completed With Failures" ? "danger" : "" %>">
+	      <td><%= report.status %></td>
+	      <td><%= report.initiator.name %></td> 
+	      <td><abbr title="<%= (report.initiated_at.present?) ? report.initiated_at.to_formatted_s(:long) : '--' %>"><%= time_ago_in_words(report.initiated_at) %> ago</abbr></td>
+	      <td><abbr title="<%= report.started_at.to_formatted_s(:long) if report.started_at.present? %>"><%= time_ago_in_words(report.started_at) + ' ago' if report.started_at.present? %> </abbr></td>
+	      <td><%= distance_of_time_in_words(report.completed_at, report.started_at) if report.completed_at.present? %></td>
+	      <td><%= link_to "View", report_path(report), class: 'btn btn-default' %></td>
+	    </tr>
+	  <% end %>
+	</table>
+
+	<div class="pagination-container">
+	<%= will_paginate @reports, :previous_label => "&laquo;", :next_label => "&raquo;", renderer: BootstrapPagination::Rails %>
+	</div>
+
 </div>
