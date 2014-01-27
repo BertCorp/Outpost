@@ -20,14 +20,13 @@ class Company < ActiveRecord::Base
   def status
     # loop through each test suite
     test_suites.each do |suite|
-      suite.reports.each do |report|
-        # if there are any reports with a non-standard status, return it
-        return report.status if report.status != 'Finished'
-      end
       # return if any tests need to be setup
+      return "Ready to Add Tests" if suite.test_cases.count < 1
       return "#{pending_tests.count} tests need setup" if pending_tests.count > 0
+      return "Ready to Run Initial Report" if suite.reports.count < 1
+      return suite.reports.order('created_at DESC').first.status if (suite.reports.count > 0) && (suite.reports.order('created_at DESC').first.status != 'Completed')
     end
-    "OK"
+    "Completed"
   end
     
 end
