@@ -59,6 +59,29 @@ class Admin::ReportsController < ApplicationController
       end
     end
   end
+  
+  
+  # GET /reports/latest/start
+  # GET /reports/latest/start.json
+  def start
+    @reports = Report.where(company_id: params[:company], status: 'Queued').order('created_at DESC')
+    respond_to do |format|
+      if @reports.any?
+        @report = @reports.first
+        if @report.update({ started_at: Time.now, monitored_by: current_user.id, status: 'Running' })
+          format.html { render text: "Running..." }
+          format.json { head :no_content }
+        else
+          format.html { render text: @report.errors.inspect }
+          format.json { render json: @report.errors, status: :unprocessable_entity }
+        end
+      else
+        format.html { render text: "Report not found." }
+        format.json { head :no_content }
+      end
+    end
+  end
+  
 
   # PATCH/PUT /reports/1
   # PATCH/PUT /reports/1.json

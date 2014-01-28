@@ -28,22 +28,23 @@ Outpost::Application.routes.draw do
     resources :test_suites # not sure if we need this...
 
     resources :test_cases, path: 'tests' do
-      post "start" => "test_cases#start", as: :start_setup, on: :member
-      put "finish" => "test_cases#finish", as: :finish_setup, on: :member
+      get "start" => "test_cases#start", on: :member
+      get "stop" => "test_cases#stop", on: :member
+      post "start" => "test_cases#setup_start", as: :start_setup, on: :member
+      put "finish" => "test_cases#setup_finish", as: :finish_setup, on: :member
     end
 
-    resources :reports
+    resources :reports do
+      get "latest/start" => "reports#start", on: :collection
+    end
+    
     resources :test_results, path: 'results'
   end
   
   resources :users
   
-  resources :test_cases, path: 'tests' do
-    post "start" => "test_cases#start", as: :start_setup, on: :member
-    put "finish" => "test_cases#finish", as: :finish_setup, on: :member
-  end
-  
   resources :reports
+  resources :test_cases, path: 'tests'
   resources :test_results, path: 'results'
   resources :test_environments, path: 'environments'
   resources :pages
