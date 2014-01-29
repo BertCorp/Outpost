@@ -102,7 +102,7 @@ class Admin::TestCasesController < ApplicationController
       if @results.any?
         @test_result = @results.last
         unless @test_result.ended_at.present?
-          if @test_result.update(ended_at: Time.now, status: 'Passed')
+          if @test_result.update(ended_at: Time.now, status: 'Passed', execution_time: params[:execution])
             format.html { render text: 'Completed...' }
             format.json { head :no_content }
           else
