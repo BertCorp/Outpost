@@ -31,14 +31,14 @@
 
 /* Devise forms: /login & /signup */
 .form-signin, .form-signup {
-  max-width: 330px;
+  max-width: 430px;
   padding: 15px;
   margin: 0 auto;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox,
 .form-signup .form-signin-heading {
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 .form-signin .checkbox {
   font-weight: normal;
@@ -47,7 +47,7 @@
 .form-signup .form-control {
   position: relative;
   font-size: 16px;
-  height: auto;
+  /*height: auto;*/
   padding: 10px;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -61,11 +61,6 @@
   margin-bottom: -1px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-}
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
 .form-signup input[type="text"],
@@ -83,7 +78,6 @@
   border-top-right-radius: 4px;	
 }
 .form-signup input:nth-last-of-type(1) {
-  margin-bottom: 10px;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;	
 }
