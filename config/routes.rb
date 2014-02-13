@@ -49,7 +49,7 @@ Outpost::Application.routes.draw do
   resources :test_environments, path: 'environments'
   resources :pages
 
-  get 'new_client_confirmation' => 'pages#new_client_confirmation', as: 'new_client_confirmation'
+  get 'thankyou' => 'pages#new_client_confirmation', as: 'new_client_confirmation'
   
   root "pages#index"
   
