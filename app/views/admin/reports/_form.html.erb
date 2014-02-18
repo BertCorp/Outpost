@@ -39,7 +39,7 @@
 	<div class="form-group">
 		<%= f.label :test_environment_id, "Test Environment", class: 'col-sm-3 control-label' %>
 		<div class="col-sm-9">
-    	<%= f.select :test_environment_id, @report.test_suite.test_environments.collect {|t_e| [ t_e.name, t_e.id ] }, { include_blank: true }, { class: 'form-control' } %>
+    	<%= f.select :test_environment_id, TestEnvironment.order('name ASC').collect {|t_e| [ ("#{t_e.company.name} - #{t_e.name} Environment"), t_e.id ] }, { include_blank: true }, { class: 'form-control' } %>
 		</div>
 	</div>
 
