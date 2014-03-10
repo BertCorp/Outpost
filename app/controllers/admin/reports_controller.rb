@@ -81,7 +81,6 @@ class Admin::ReportsController < ApplicationController
       end
     end
   end
-  
 
   # PATCH/PUT /reports/1
   # PATCH/PUT /reports/1.json
