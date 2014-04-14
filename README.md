@@ -1,8 +1,6 @@
 Outpost
 =======
 
-Coming soon.
-
 To Do:
 
 - better managing of suites and environments
