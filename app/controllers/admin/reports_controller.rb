@@ -43,7 +43,7 @@ class Admin::ReportsController < ApplicationController
     respond_to do |format|
       if @report.save
         
-        @report.test_suite.test_cases.each do |test_case|
+        @report.test_suite.test_cases.order('id ASC').each do |test_case|
           @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id, test_environment_id: @report.test_environment_id })
         end
         

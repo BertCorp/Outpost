@@ -35,9 +35,13 @@ describe "TestPrep" do
       end
 
       $driver.find_element(:link, "test@bertcorp.com").click
-      #$driver.find_element(:link, "Sign out").click
+      $driver.find_element(:link, "Sign out").click
 
       $driver.get(@base_url + 'documents')
+      
+      if alert_present?
+        $driver.switch_to.alert.accept
+      end
 
       if $driver.current_url.include? "draft/users/sign_in"
         $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
