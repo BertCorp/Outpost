@@ -35,15 +35,9 @@ class Admin::ReportsController < ApplicationController
   # GET /reports/run
   def run
     @report = Report.new(company_id: params[:company], test_suite_id: params[:suite], test_environment_id: params[:environment])
-    @report.company = Company.find(params[:company])
-    
-    @test_suite = TestSuite.find(params[:suite])
-    @company = @test_suite.company
-    @report.company = @company
-    @report.test_suite = @test_suite
     @report.initiated_at = Time.now
     @report.initiated_by = current_user.id
-    @report.monitored_by = current_user.id
+    @report.monitored_by = current_user.id if current_user.is_admin?
     @report.status = "Queued"
     
     respond_to do |format|

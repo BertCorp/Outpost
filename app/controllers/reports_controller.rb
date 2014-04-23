@@ -37,12 +37,6 @@ class ReportsController < ApplicationController
   # GET /reports/run
   def run
     @report = Report.new(company_id: params[:company], test_suite_id: params[:suite], test_environment_id: params[:environment])
-    @report.company = Company.find(params[:company])
-    
-    @test_suite = TestSuite.find(params[:suite])
-    @company = @test_suite.company
-    @report.company = @company
-    @report.test_suite = @test_suite
     @report.initiated_at = Time.now
     @report.initiated_by = current_user.id
     @report.monitored_by = current_user.id if current_user.is_admin?
@@ -55,6 +49,7 @@ class ReportsController < ApplicationController
           @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id, test_environment_id: @report.test_environment_id })
         end
         
+        @report.delay.run!
         #ReportMailer.admin_new_report_email(@report).deliver
         #ReportMailer.user_new_report_email(@report).deliver
         
