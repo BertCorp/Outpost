@@ -13,3 +13,5 @@
 <p>Summary: <%= htmlify(@test_result.summary) %></p>
 <p>Created At: <%= @test_result.created_at %></p>
 <p>Updated At: <%= @test_result.updated_at %></p>
+<p>Raw Output:</p>
+<blockquotes><pre><%= @test_result.errors_raw %></pre></blockquotes>

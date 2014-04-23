@@ -36,7 +36,18 @@
 <hr/>
 
 <% if suite.reports.any? %>
-<%= link_to "Run New Report", new_admin_report_path(company: @company.id, suite: suite.id), class: 'btn btn-primary btn-sm pull-right' %>
+<%= link_to "Create New Report", new_admin_report_path(company: @company.id, suite: suite.id), class: 'btn btn-primary btn-sm pull-right' %>
+<div class="btn-group pull-right">
+  <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
+    Run Report <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+		<% suite.test_environments.each do |e| %>
+    <li><%= link_to e.name, run_admin_reports_path(company: @company.id, suite: suite.id, environment: e.id) %></li>
+		<% end %>
+  </ul>
+	&nbsp;
+</div>
 <h3><%= suite.title.present? ? "#{suite.title} Reports" : "Reports" %></h3>
 
 <table class="table table-bordered table-striped">
@@ -66,7 +77,24 @@
 
 <hr/>
 <% else %>
-<p style="text-align: center; font-size: 14px;">No reports yet. <%= link_to "Run A New Report", new_admin_report_path(company: @company.id, suite: suite.id) %></p>
+<p style="text-align: center; font-size: 14px;">
+	No reports yet. <%= link_to "Create A New Report", new_admin_report_path(company: @company.id, suite: suite.id), class: 'btn btn-sm btn-primary' %> or 
+	<% if suite.test_environments.count == 1 %>
+	<%= link_to "Run Report", run_admin_reports_path(company: @company.id, suite: suite.id, environment: suite.test_environments.first.id), class: 'btn btn-sm btn-success' %>
+	<% else %>
+	<div class="btn-group">
+	  <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
+	    Run Report <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu" role="menu">
+			<% suite.test_environments.each do |e| %>
+	    <li><%= link_to e.name, run_admin_reports_path(company: @company.id, suite: suite.id, environment: e.id) %></li>
+			<% end %>
+	  </ul>
+		&nbsp;
+	</div>
+	<% end %>
+</p>
 <% end %>
 
 <% end %>

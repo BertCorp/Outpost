@@ -47,7 +47,7 @@
 .form-signup .form-control {
   position: relative;
   font-size: 16px;
-  /*height: auto;*/
+  height: auto;
   padding: 10px;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -61,6 +61,11 @@
   margin-bottom: -1px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+.form-signin input:nth-last-of-type(1) {
+  margin-bottom: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .form-signup input[type="text"],

@@ -8,7 +8,7 @@
       <%= f.hidden_field :status, value: 'Running' %>
       <%= f.hidden_field :started_at, value: DateTime.now %>
       <%= f.hidden_field :monitored_by, value: current_user.id %>
-      <%= f.submit 'Run This Report', class: 'btn btn-lg btn-success', confirm: 'Are you sure? This will notify the client.' %>
+      <%= f.submit 'Run This Report', class: 'btn btn-lg btn-success', data: { confirm: 'Are you sure? This will notify the client.' } %>
 	  <% end %>
 	</div>
 	

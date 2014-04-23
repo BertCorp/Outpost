@@ -38,6 +38,8 @@ gem 'will_paginate-bootstrap'
 gem 'rails_admin'
 
 # Testing Setup
+gem 'selenium-webdriver'
+
 group :development, :test do
   gem 'thin'
   gem 'rspec-rails', '~> 2.0'
@@ -59,3 +61,4 @@ end
 gem 'newrelic_rpm'
 gem 'sentry-raven'
 gem 'intercom-rails'
+gem 'delayed_job_active_record'

@@ -17,6 +17,10 @@
 
 <p>Monitored By: <%= @report.monitorer.name if @report.monitorer.present? %></p>
 
+	<% if @report.errors_raw.present? %>
+	<p>Raw Output:</p>
+	<blockquote><pre><%= @report.errors_raw.gsub('\n', "\n") %></pre></blockquote>
+	<% end %>
 	<% if @report.summary.present? %>
 	<p>Test Summary: <%= htmlify(@report.summary) %></p>
 	<% end %>

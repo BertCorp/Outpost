@@ -35,6 +35,7 @@ Outpost::Application.routes.draw do
     end
 
     resources :reports do
+      get "run" => "reports#run", on: :collection, as: :run
       get "latest/start" => "reports#start", on: :collection
     end
     
@@ -50,6 +51,7 @@ Outpost::Application.routes.draw do
   resources :pages
 
   get 'thankyou' => 'pages#new_client_confirmation', as: 'new_client_confirmation'
+  get 'test' => 'pages#test'
   
   root "pages#index"
   

@@ -33,6 +33,39 @@ class ReportsController < ApplicationController
     end
     @report.monitored_by = current_user.id if current_user.is_admin?
   end
+  
+  # GET /reports/run
+  def run
+    @report = Report.new(company_id: params[:company], test_suite_id: params[:suite], test_environment_id: params[:environment])
+    @report.company = Company.find(params[:company])
+    
+    @test_suite = TestSuite.find(params[:suite])
+    @company = @test_suite.company
+    @report.company = @company
+    @report.test_suite = @test_suite
+    @report.initiated_at = Time.now
+    @report.initiated_by = current_user.id
+    @report.monitored_by = current_user.id if current_user.is_admin?
+    @report.status = "Queued"
+    
+    respond_to do |format|
+      if @report.save
+        
+        @report.test_suite.test_cases.each do |test_case|
+          @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id, test_environment_id: @report.test_environment_id })
+        end
+        
+        #ReportMailer.admin_new_report_email(@report).deliver
+        #ReportMailer.user_new_report_email(@report).deliver
+        
+        format.html { redirect_to @report, notice: 'Your report has been queued and will start soon.' }
+        format.json { render action: 'show', status: :created, location: @report }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @report.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # GET /reports/1/edit
   def edit

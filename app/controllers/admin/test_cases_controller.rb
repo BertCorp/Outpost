@@ -1,6 +1,6 @@
 class Admin::TestCasesController < ApplicationController
   before_action :set_test_case, only: [:show, :edit, :update, :destroy, :start, :finish]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:start, :stop]
   layout 'admin'
 
   # GET /tests
@@ -102,8 +102,15 @@ class Admin::TestCasesController < ApplicationController
       if @results.any?
         @test_result = @results.last
         unless @test_result.ended_at.present?
-          if @test_result.update(ended_at: Time.now, status: 'Passed', execution_time: params[:execution])
-            format.html { render text: 'Completed...' }
+          r = { 
+            ended_at: Time.now, 
+            status: params[:status], 
+            execution_time: params[:execution] 
+          }
+          r[:errors_raw] = params[:message] if params[:message].present?
+          
+          if @test_result.update(r)
+            format.html { render text: 'Stopped...' }
             format.json { head :no_content }
           else
             format.html { render text: @test_result.errors.inspect }

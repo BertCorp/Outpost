@@ -1,3 +1,8 @@
+require 'rake'
+
+Rake::Task.clear # necessary to avoid tasks being loaded several times in dev mode
+Outpost::Application.load_tasks
+
 class Report < ActiveRecord::Base
   
   belongs_to :company
@@ -18,5 +23,9 @@ class Report < ActiveRecord::Base
     return started_at.strftime('%Y-%m-%d %T') if started_at.present?
     created_at.strftime('%Y-%m-%d %T')
   end
-
+  
+  def run!
+    output = Rake::Task['report:run'].invoke(id, 'staging')
+    logger.info output
+  end
 end

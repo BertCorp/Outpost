@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140120222130) do
+ActiveRecord::Schema.define(version: 20140422220120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,22 @@ ActiveRecord::Schema.define(version: 20140120222130) do
 
   add_index "companies", ["name"], name: "index_companies_on_name", unique: true, using: :btree
 
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
   create_table "reports", force: true do |t|
     t.integer  "company_id",                             null: false
     t.integer  "test_suite_id",                          null: false
@@ -33,11 +49,12 @@ ActiveRecord::Schema.define(version: 20140120222130) do
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "monitored_by"
-    t.string   "status",              default: "queued", null: false
+    t.string   "status",              default: "Queued", null: false
     t.text     "summary"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "test_environment_id"
+    t.text     "errors_raw"
   end
 
   create_table "test_cases", force: true do |t|
@@ -78,6 +95,7 @@ ActiveRecord::Schema.define(version: 20140120222130) do
     t.datetime "updated_at"
     t.string   "execution_time"
     t.integer  "test_environment_id"
+    t.text     "errors_raw"
   end
 
   create_table "test_suites", force: true do |t|
