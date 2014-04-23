@@ -25,7 +25,7 @@ class Report < ActiveRecord::Base
   end
   
   def run!
-    output = Rake::Task['report:run'].invoke(id, 'staging')
+    output = Rake::Task['report:run'].invoke(id)
     logger.info output
   end
 end
