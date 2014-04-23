@@ -43,7 +43,12 @@
   </button>
   <ul class="dropdown-menu" role="menu">
 		<% suite.test_environments.each do |e| %>
-    <li><%= link_to e.name, run_admin_reports_path(company: @company.id, suite: suite.id, environment: e.id) %></li>
+			<% if Rails.env.production? %>
+	    <li><%= link_to "#{e.name}", run_admin_reports_path(company: @company.id, suite: suite.id, environment: e.id) %></li>			
+			<% else %>
+    <li><%= link_to "#{e.name} (browserstack)", run_admin_reports_path(company: @company.id, suite: suite.id, environment: e.id) %></li>
+    <li><%= link_to "#{e.name} (locally)", run_admin_reports_path(company: @company.id, suite: suite.id, environment: e.id, local: true) %></li>
+			<% end %>
 		<% end %>
   </ul>
 	&nbsp;

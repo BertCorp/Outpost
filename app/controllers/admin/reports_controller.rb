@@ -34,6 +34,7 @@ class Admin::ReportsController < ApplicationController
   
   # GET /reports/run
   def run
+    params[:local] ||= 'false'
     @report = Report.new(company_id: params[:company], test_suite_id: params[:suite], test_environment_id: params[:environment])
     @report.initiated_at = Time.now
     @report.initiated_by = current_user.id
@@ -47,8 +48,10 @@ class Admin::ReportsController < ApplicationController
           @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id, test_environment_id: @report.test_environment_id })
         end
         
-        @report.delay.run!
-        #ReportMailer.admin_new_report_email(@report).deliver
+        env = @report.test_environment.name.downcase
+        env = 'staging' if env == 'mirror'
+        ReportMailer.admin_triggered_report_email(@report).deliver
+        @report.delay.run!(env, params[:local])
         #ReportMailer.user_new_report_email(@report).deliver
         
         format.html { redirect_to [:admin, @report], notice: 'Report has been queued and will start running soon.' }
