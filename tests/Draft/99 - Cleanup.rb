@@ -15,7 +15,7 @@ describe "Test Cleanup" do
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit unless $is_test_suite
+    $driver.quit
   end
   
   it "test_99_cleanup" do

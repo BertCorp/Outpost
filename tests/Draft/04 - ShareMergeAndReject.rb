@@ -17,7 +17,7 @@ describe "Share, Merge and Reject" do
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit
+    $driver.quit unless $is_test_suite
   end
   
   it "test_4_share_merge_and_reject" do
