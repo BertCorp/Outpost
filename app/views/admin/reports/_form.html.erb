@@ -105,7 +105,15 @@
 		<div class="col-sm-9">
 		  <%= f.text_area :summary, class: "form-control", placeholder: "Detail the results of the report." %>
 		</div>
-	</div>      
+	</div>
+	
+	<div class="form-group">
+		<%= f.label :errors_raw, "Raw Output", class: 'col-sm-3 control-label' %>
+		<div class="col-sm-9">
+		  <%= f.text_area :errors_raw, class: "form-control" %>
+		</div>
+	</div>
+	
 	
 	<div class="actions col-sm-offset-6">
 		<%= f.submit 'Save Report', class: "btn btn-lg btn-primary" %> or <%= link_to "Cancel", :back, class: "btn btn-danger" %>

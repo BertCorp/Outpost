@@ -2,7 +2,7 @@ require "./config/initializers/browserstack"
 
 # Set Environment Variables
 ENV['ENVIRONMENT'] ||= 'production'
-ENV['LOCAL'] ||= 'false'
+ENV['LOCAL'] ||= 'true'
 
 # Outpost Specific Functions
 def start_driver(cs = {})
@@ -14,7 +14,7 @@ def start_driver(cs = {})
     cs.each do |k,v|
       caps[k] = v
     end
-    caps['browser'] ||= 'Firefox'
+    caps['browser'] ||= 'Chrome'
     caps['os'] ||= 'Windows'
     caps['os_version'] ||= '8.1'
     caps['resolution'] ||= '1280x1024'
