@@ -34,11 +34,11 @@ describe "Create and save a new document" do
       random_num = rand(1000)
 
       $driver.find_element(:id, "new_document_button").click
+      sleep(1)
       $driver.find_element(:id, "document_content").send_keys "This is a test document. I am testing that I can create and save a new document. #{random_num}"
       #$post_id =  $driver.find_element(:class, 'distraction_free_form').attribute("data-document-id")
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      sleep(1)
       $driver.find_element(:id, "mark_draft_button").click
       sleep(1)
       # Verify
@@ -47,10 +47,12 @@ describe "Create and save a new document" do
       sleep(1)
       home_button_expander = $driver.find_element(:id, 'home_button')
       $driver.action.move_to(home_button_expander).perform
+      sleep(2)
       $driver.find_element(:id, "home_link").click
+      $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
 
       sleep(3)
-      document_section = $driver.find_element(:css, ".document:nth-child(1)").find_element(:css, 'a').click
+      $driver.find_element(:css, ".document:nth-child(1) .row-fluid div.span9 div div a.btn").click
       # Verify
       ($driver.find_element(:css, "div.document_id > p").text).should == "This is a test document. I am testing that I can create and save a new document. #{random_num}"
       

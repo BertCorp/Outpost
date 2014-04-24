@@ -59,7 +59,7 @@ end
 def fail(test_id, execution_time, e)
   require 'uri'
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Failure&execution=#{execution_time.to_s}&message=#{URI.escape(e.inspect)}")
-  p "\nFAILED: #{test_id}\n"
+  p "\nFAILED: #{test_id}"
   raise
 end
 
@@ -71,34 +71,15 @@ end
 
 # Selenium IDE Helper Functions
 def element_present?(how, what)
-  @driver.find_element(how, what)
+  $driver.find_element(how, what)
   true
 rescue Selenium::WebDriver::Error::NoSuchElementError
   false
 end
 
 def alert_present?()
-  @driver.switch_to.alert
+  $driver.switch_to.alert
   true
 rescue Selenium::WebDriver::Error::NoAlertPresentError
   false
-end
-
-def verify(&blk)
-  yield
-rescue => ex
-  @verification_errors << ex
-end
-
-def close_alert_and_get_its_text(how, what)
-  alert = @driver.switch_to().alert()
-  alert_text = alert.text
-  if (@accept_next_alert) then
-    alert.accept()
-  else
-    alert.dismiss()
-  end
-  alert_text
-ensure
-  @accept_next_alert = true
 end

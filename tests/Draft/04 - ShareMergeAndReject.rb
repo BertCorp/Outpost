@@ -39,7 +39,6 @@ describe "Share, Merge and Reject" do
       #$post_id =  $driver.find_element(:class, 'distraction_free_form').attribute("data-document-id")
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      sleep(1)
       $driver.find_element(:id, "mark_draft_button").click
       sleep(1)
       # Verify
@@ -48,9 +47,11 @@ describe "Share, Merge and Reject" do
       sleep(1)
       home_button_expander = $driver.find_element(:id, 'home_button')
       $driver.action.move_to(home_button_expander).perform
+      sleep(2)
       $driver.find_element(:id, "home_link").click
-      sleep(1)
-      
+      $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
+
+      sleep(3)
       $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
       sleep(1)
       $driver.find_element(:css, "#sidebar_content > div:nth-child(5) a:nth-child(1)").click
@@ -66,6 +67,7 @@ describe "Share, Merge and Reject" do
       # 
       # $driver.find_element(:css, '#sidebar_content > h5 > a').click
 
+      $driver.find_element(:css, '.modal-backdrop').click
       $driver.find_element(:link_text, "LOGOUT").click
       $driver.find_element(:css, "#homepage_titles > h1").text.should == "WRITE BETTER WITH DRAFT"
 
@@ -86,20 +88,22 @@ describe "Share, Merge and Reject" do
       # $driver.get(@base_url + edit_link)
 
       $driver.get(share_link)
-      $driver.find_element(:css, "#sidebar_content > div.instruction_copy > p:nth-child(2) > a").click
-      $driver.find_element(:link, "LOGIN").click
-
+      $driver.find_element(:css, "#sidebar_content div.instruction_copy a.btn").click
+      sleep(1)
+      $driver.find_element(:link_text, "LOGIN").click
+      sleep(1)
       $driver.find_element(:id, "draft_user_email").send_keys "test+draft_editor@bertcorp.com"
       $driver.find_element(:id, "draft_user_password").send_keys "testcase12"
       $driver.find_element(:name, "commit").click
 
-      $driver.find_element(:css, "#sidebar_content > div.instruction_copy > p:nth-child(2) > a").click
-
+      if element_present?(:css, "#sidebar_content div.instruction_copy a.btn")
+        $driver.find_element(:css, "#sidebar_content div.instruction_copy a.btn").click
+      end
+      
       $driver.find_element(:id, "document_content").clear
       $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      sleep(1)
       $driver.find_element(:id, "mark_draft_button").click
       sleep(1)
       # Verify
@@ -138,9 +142,9 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:link, "EDIT").click
       $driver.find_element(:id, "document_content").clear
       $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num} Here is another change to this document."
+
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      sleep(1)
       $driver.find_element(:id, "mark_draft_button").click
       sleep(1)
       # Verify

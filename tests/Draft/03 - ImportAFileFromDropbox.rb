@@ -69,10 +69,12 @@ describe "Import a file from Dropbox" do
       sleep(1)
       home_button_expander = $driver.find_element(:id, 'home_button')
       $driver.action.move_to(home_button_expander).perform
+      sleep(2)
       $driver.find_element(:id, "home_link").click
+      $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
 
       sleep(3)
-      $driver.find_element(:css, ".document:nth-child(1)").find_element(:css, 'a').click
+      $driver.find_element(:css, ".document:nth-child(1) .row-fluid div.span9 div div a.btn").click
 
       # Verify
       ($driver.find_element(:css, '#main_content > h5').text.downcase).should == "text_upload_doc.txt"

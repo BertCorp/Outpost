@@ -29,10 +29,10 @@ describe "Test Cleanup" do
         $driver.find_element(:name, "commit").click
       end
       
-      count = $driver.find_elements(:css, "div.document_container button.dropdown-toggle").count
+      count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
 
       count.times do
-        $driver.find_element(:css, "div.document_container button.dropdown-toggle").click
+        $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
         $driver.find_element(:css, 'li:nth-child(2) > a').click
         $driver.switch_to.alert.accept
         $driver.navigate.refresh
