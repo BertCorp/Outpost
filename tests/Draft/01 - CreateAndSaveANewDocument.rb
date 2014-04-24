@@ -54,7 +54,7 @@ describe "Create and save a new document" do
       $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
 
       sleep(3)
-      $driver.find_element(:css, ".document:nth-child(1) .row-fluid div.span9 div div a.btn").click
+      $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
       # Verify
       ($driver.find_element(:css, "div.document_id > p").text).should == "This is a test document. I am testing that I can create and save a new document. #{random_num}"
       

@@ -75,7 +75,7 @@ describe "Import a file from Dropbox" do
       $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
 
       sleep(3)
-      $driver.find_element(:css, ".document:nth-child(1) .row-fluid div.span9 div div a.btn").click
+      $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
 
       # Verify
       ($driver.find_element(:css, '#main_content > h5').text.downcase).should == "text_upload_doc.txt"

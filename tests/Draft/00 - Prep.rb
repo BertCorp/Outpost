@@ -21,6 +21,7 @@ describe "TestPrep" do
   it "test_0_prep" do
     begin
       start_time = Time.now
+=begin
       $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
       $driver.find_element(:id, "Email").clear
       $driver.find_element(:id, "Email").send_keys "test@bertcorp.com"
@@ -36,7 +37,7 @@ describe "TestPrep" do
 
       $driver.find_element(:link, "test@bertcorp.com").click
       $driver.find_element(:link, "Sign out").click
-
+=end
       $driver.get(@base_url + 'documents')
       
       if alert_present?

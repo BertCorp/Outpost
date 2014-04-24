@@ -69,10 +69,23 @@
   <tbody>
 	<% suite.reports.order('created_at DESC').each do |report| %>
 		<tr>
-			<td><% if report.initiated_by.present? %><%= report.initiated_at.strftime('%Y-%m-%d %T') %> by <%= report.initiator.name %><% end %></td>
+			<td>
+				<%= report.initiated_at.strftime('%Y-%m-%d %T') %> by 
+				<% if report.initiated_by.present? %>
+					<%= report.initiator.name %>
+				<% else %>
+					Scheduler
+				<% end %>
+			</td>
 			<td><%= report.started_at.strftime('%Y-%m-%d %T') if report.started_at.present? %></td>
 			<td><%= report.completed_at.strftime('%Y-%m-%d %T') if report.completed_at.present? %></td>
-			<td><%= report.monitorer.name if report.monitorer.present? %></td>
+			<td>
+				<% if report.monitorer.present? %>
+					<%= report.monitorer.name %>
+				<% else %>
+					--
+				<% end %>
+			</td>
 			<td><%= link_to report.status, [:admin, report] %></td>
 			<td><%= report.summary %></td>
 		</tr>

@@ -14,10 +14,11 @@ namespace :company do
     args.with_defaults(:company_id => '0', :environment => 'production')
     puts "Try to run tests for: #{args}"
     company = Company.find(args.company_id)
-    environment = company.test_environments.where('name LIKE ?', args.environment)
-
-    report = Report.new(company_id: company.id, test_suite_id: company.test_suites.first, test_environment_id: environment.id)
+    environment = company.test_suites.first.test_environments.where('lower(name) LIKE ?', args.environment).first
+    
+    report = Report.new(company_id: company.id, test_suite_id: company.test_suites.first.id, test_environment_id: environment.id)
     report.initiated_at = Time.now
+    report.started_at = Time.now
     report.status = "Running"
     report.save!
     
@@ -29,7 +30,7 @@ namespace :company do
     
     env = args.environment
     env = 'staging' if env == 'mirror'
-    output = %x{ENVIRONMENT=#{env} LOCAL=false bundle exec rspec "./tests/#{company.name}/test_suite.rb" }
+    output = %x{ENVIRONMENT=#{env} LOCAL=true bundle exec rspec "./tests/#{company.name}/test_suite.rb" }
     
     report.completed_at = Time.now
     report.errors_raw = output

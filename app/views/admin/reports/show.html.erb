@@ -8,7 +8,7 @@
 
 <p>Initiated At: <%= @report.initiated_at %></p>
 
-<p>Initiated By: <%= @report.initiator.name %></p>
+<p>Initiated By: <%= (@report.initiated_by.present?) ? @report.initiator.name : 'Scheduler' %></p>
 
 <% if @report.started_at.present? %>
 <p>Started At: <%= @report.started_at %></p>
