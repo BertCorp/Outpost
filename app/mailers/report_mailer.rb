@@ -27,6 +27,19 @@ class ReportMailer < ActionMailer::Base
     mail(to: @initiator.email, subject: "A new report has been queued.")
   end
   
+  def scheduled_report_completed_email(report, output)
+    @report = report
+    @output = output
+    
+    mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "#{@report.company.name} report (scheduled): #{@report.status}")
+  end
+  
+  def scheduled_report_triggered_email(report)
+    @report = report
+    
+    mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "Scheduled report created: #{@report.company.name}")
+  end
+  
   def successful_report_email(report)
     @report = report
     
