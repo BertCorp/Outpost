@@ -32,6 +32,7 @@ describe "Share, Merge and Reject" do
       end
       
       random_num = rand(1000)
+      wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
 
       # just create a new document for this
       $driver.find_element(:id, "new_document_button").click
@@ -39,7 +40,8 @@ describe "Share, Merge and Reject" do
       #$post_id =  $driver.find_element(:class, 'distraction_free_form').attribute("data-document-id")
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      $driver.find_element(:id, "mark_draft_button").click
+      #wait.until { $driver.find_element(:id, "mark_draft_button").displayed? }
+      $driver.find_element(:id, "mark_draft_button").click if element_present?(:id, "mark_draft_button") && $driver.find_element(:id, "mark_draft_button").displayed?
       sleep(1)
       # Verify
       $driver.find_element(:id, "saving_indicator").text.should == "SAVED"
@@ -47,7 +49,7 @@ describe "Share, Merge and Reject" do
       sleep(1)
       home_button_expander = $driver.find_element(:id, 'home_button')
       $driver.action.move_to(home_button_expander).perform
-      sleep(2)
+      wait.until { $driver.find_element(:id, "home_link").displayed? }
       $driver.find_element(:id, "home_link").click
       $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
 
@@ -104,7 +106,7 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      $driver.find_element(:id, "mark_draft_button").click
+      #$driver.find_element(:id, "mark_draft_button").click
       sleep(1)
       # Verify
       ($driver.find_element(:id, "saving_indicator").text).should == "SAVED"
@@ -145,7 +147,7 @@ describe "Share, Merge and Reject" do
 
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      $driver.find_element(:id, "mark_draft_button").click
+      #$driver.find_element(:id, "mark_draft_button").click if element_present?(:id, "mark_draft_button")
       sleep(1)
       # Verify
       ($driver.find_element(:id, "saving_indicator").text).should == "SAVED"
@@ -176,7 +178,7 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:link, "VIEW").click
       sleep(1)
       ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
-      #$driver.find_element(:link, "LOGOUT").click
+      $driver.find_element(:link, "LOGOUT").click
       
       pass(@test_id, Time.now - start_time)
     rescue => e

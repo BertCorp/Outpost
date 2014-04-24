@@ -11,7 +11,7 @@ class ReportMailer < ActionMailer::Base
     @report = report
     @output = output
     
-    mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "#{@report.company.name} report was: #{@report.status}")
+    mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "#{@report.company.name} report is: #{@report.status}")
   end
   
   def admin_new_report_email(report)

@@ -32,6 +32,7 @@ describe "Create and save a new document" do
       end
 
       random_num = rand(1000)
+      wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
 
       $driver.find_element(:id, "new_document_button").click
       sleep(1)
@@ -39,7 +40,8 @@ describe "Create and save a new document" do
       #$post_id =  $driver.find_element(:class, 'distraction_free_form').attribute("data-document-id")
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      $driver.find_element(:id, "mark_draft_button").click
+      #wait.until { $driver.find_element(:id, "mark_draft_button").displayed? }
+      $driver.find_element(:id, "mark_draft_button").click if element_present?(:id, "mark_draft_button") && $driver.find_element(:id, "mark_draft_button").displayed?
       sleep(1)
       # Verify
       $driver.find_element(:id, "saving_indicator").text.should == "SAVED"
@@ -47,7 +49,7 @@ describe "Create and save a new document" do
       sleep(1)
       home_button_expander = $driver.find_element(:id, 'home_button')
       $driver.action.move_to(home_button_expander).perform
-      sleep(2)
+      wait.until { $driver.find_element(:id, "home_link").displayed? }
       $driver.find_element(:id, "home_link").click
       $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
 

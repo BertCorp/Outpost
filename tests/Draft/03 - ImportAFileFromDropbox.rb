@@ -31,6 +31,7 @@ describe "Import a file from Dropbox" do
         $driver.find_element(:name, "commit").click
       end
       
+      wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
       $driver.find_element(:css, "#sidebar_content > div:nth-child(6) > a").click
       sleep(3)
 
@@ -69,7 +70,7 @@ describe "Import a file from Dropbox" do
       sleep(1)
       home_button_expander = $driver.find_element(:id, 'home_button')
       $driver.action.move_to(home_button_expander).perform
-      sleep(2)
+      wait.until { $driver.find_element(:id, "home_link").displayed? }
       $driver.find_element(:id, "home_link").click
       $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
 
