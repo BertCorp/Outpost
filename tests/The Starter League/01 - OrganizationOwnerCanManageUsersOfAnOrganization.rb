@@ -55,6 +55,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       sleep(3)
       
       #:2s > b:nth-child(1)
+      wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+      wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
       $driver.find_elements(:css, "table td span b").each do |subject|
         subject.click if subject.text == "You're invited to join Outpost"
       end
