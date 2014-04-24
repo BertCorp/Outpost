@@ -30,7 +30,7 @@ namespace :company do
     
     env = args.environment
     env = 'staging' if env == 'mirror'
-    output = %x{ENVIRONMENT=#{env} LOCAL=true bundle exec rspec "./tests/#{company.name}/test_suite.rb" }
+    output = %x{ENVIRONMENT=#{env} LOCAL=false bundle exec rspec "./tests/#{company.name}/test_suite.rb" }
     
     report.completed_at = Time.now
     report.errors_raw = output
