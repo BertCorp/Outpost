@@ -96,7 +96,7 @@
 	<div class="form-group">
 		<%= f.label :status, class: 'col-sm-3 control-label' %>
 		<div class="col-sm-9">
-      <%= f.select :status, options_for_select(['Queued', 'Running', 'Completed With Failures', 'Completed'], @report.status), {}, { class: 'form-control' } %>
+      <%= f.select :status, options_for_select(['Queued', 'Running', 'Under Review', 'Completed With Failures', 'Completed'], @report.status), {}, { class: 'form-control' } %>
     </div>
 	</div>
 

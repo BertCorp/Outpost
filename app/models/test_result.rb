@@ -29,7 +29,7 @@ class TestResult < ActiveRecord::Base
 	  	["Canceled - Test was canceled.", "Canceled"],
 	  	["Running - Test currently running.", "Running"],
 	  	["Failed - Test failed.", "Failed"],
-	  	["Manual Review - Test is being reviewed by an associate.", "Manual Review"],
+	  	["Under Review - Test is being reviewed by an associate.", "Under Review"],
 	  	["Passed - Test passed.", "Passed"]
 		]
   end
