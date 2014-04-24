@@ -39,10 +39,10 @@ gem 'rails_admin'
 
 # Testing Setup
 gem 'selenium-webdriver'
+gem 'rspec-rails', '~> 2.0'
 
 group :development, :test do
   gem 'thin'
-  gem 'rspec-rails', '~> 2.0'
   gem 'guard-rspec', require: false
   gem 'capybara'
   gem 'capybara-webkit'
