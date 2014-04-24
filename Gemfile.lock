@@ -281,7 +281,8 @@ DEPENDENCIES
   rails (= 4.0.4)
   rails_12factor
   rails_admin
-  rspec-rails (~> 2.0)
+  rspec
+  rspec-rails
   sass-rails (~> 4.0.1)
   sdoc
   selenium-webdriver

@@ -39,7 +39,8 @@ gem 'rails_admin'
 
 # Testing Setup
 gem 'selenium-webdriver'
-gem 'rspec-rails', '~> 2.0'
+gem 'rspec'
+gem 'rspec-rails'
 
 group :development, :test do
   gem 'thin'
