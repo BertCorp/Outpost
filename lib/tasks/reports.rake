@@ -17,7 +17,7 @@ namespace :report do
     report.status = (output.include? 'FAILED') ? "Completed With Failures" : "Completed"
     report.save!
     # Mark any tests that weren't run as Skipped.
-    report.test_suite.test_results.where(status: 'Queued').each do |test|
+    report.results.where(status: 'Queued').each do |test|
       test.status = 'Skipped'
       test.save!
     end
