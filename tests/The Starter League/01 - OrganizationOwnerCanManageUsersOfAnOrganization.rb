@@ -23,6 +23,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
   it "test_01_organization_owner_can_manage_users_of_an_organization" do
     begin
       start_time = Time.now
+      # Login to Lantern and invite a new teacher.
       $driver.get(@base_url)
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
@@ -32,24 +33,39 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:name, "commit").click
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "add-people-btn").click
-      # ERROR: Caught exception [ERROR: Unsupported command [getEval |  | ]]
+      teacher_email = "test+lantern-" + rand(1000).to_s + "@outpostqa.com"
       $driver.find_element(:id, "invitation_emails_").clear
       $driver.find_element(:id, "invitation_emails_").send_keys teacher_email
       $driver.find_element(:id, "invitation_staff").click
       $driver.find_element(:id, "invitation_enrollments_0_course_id").click
-      # ERROR: Caught exception [ReferenceError: selectLocator is not defined]
+      $driver.find_element(:id, "invitation_enrollments_0_role").find_elements( :tag_name => "option" ).find do |option|
+        option.text == "teacher"
+      end.click
       $driver.find_element(:name, "commit").click
       $driver.find_element(:link, "Logout").click
+      # Check Gmail for email invitation sent.
+      sleep(5)
       $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
-      # ERROR: Caught exception [unknown command [tryClick]]
+      $driver.find_element(:link, "Sign out").click if element_present?(:link, "Sign out")
       $driver.find_element(:id, "Email").clear
       $driver.find_element(:id, "Email").send_keys "test@bertcorp.com"
       $driver.find_element(:id, "Passwd").clear
       $driver.find_element(:id, "Passwd").send_keys "LigReb2013"
       $driver.find_element(:id, "signIn").click
-      $driver.find_element(:css, "span:contains(\"You're invited to join Outpost\"):first").click
+      sleep(3)
+      
+      #:2s > b:nth-child(1)
+      $driver.find_elements(:css, "table td span b").each do |subject|
+        subject.click if subject.text == "You're invited to join Outpost"
+      end
+      $driver.find_elements(:css, "table table table a").each do |link|
+        p link.text
+        p link.attribute('href') #if link.text == "Click here to create your account"
+      end
+      
       teacher_invitation_link = $driver.find_element(:css, "a:contains(\"Click here to create your account\")").attribute("href")
       p teacher_invitation_link
+      
       $driver.get(@base_url + teacher_invitation_link)
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
@@ -75,8 +91,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:css, "div[data-tooltip=\"Select\"] span").click
       # ERROR: Caught exception [ERROR: Unsupported command [keyPress | css=div[data-tooltip="Delete"] | #]]
       $driver.find_element(:link, "Sign out").click
+
       $driver.get(@base_url)
-      # ERROR: Caught exception [unknown command [tryClick]]
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys "test@outpostqa.com"
@@ -85,7 +101,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:name, "commit").click
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "add-people-btn").click
-      # ERROR: Caught exception [ERROR: Unsupported command [getEval |  | ]]
+      student_email = "test+lantern-" + rand(1000).to_s + "@outpostqa.com"
       $driver.find_element(:id, "invitation_emails_").clear
       $driver.find_element(:id, "invitation_emails_").send_keys student_email
       $driver.find_element(:id, "invitation_enrollments_0_course_id").click
@@ -97,9 +113,10 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "Passwd").clear
       $driver.find_element(:id, "Passwd").send_keys "LigReb2013"
       $driver.find_element(:id, "signIn").click
-      $driver.find_element(:css, "span:contains(\"You're invited to join Outpost\"):first").click
+      $driver.find_element(:css, "span:contains(\"You're invited to join Outpost\"):nth-child(1)").click
       student_invitation_link = $driver.find_element(:css, "a:contains(\"Click here to create your account\")").attribute("href")
       p student_invitation_link
+
       $driver.get(@base_url + student_invitation_link)
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"

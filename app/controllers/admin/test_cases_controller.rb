@@ -1,5 +1,5 @@
 class Admin::TestCasesController < ApplicationController
-  before_action :set_test_case, only: [:show, :edit, :update, :destroy, :start, :finish]
+  before_action :set_test_case, only: [:show, :edit, :update, :destroy, :start, :finish, :setup_start, :setup_finish]
   before_action :authenticate_user!, except: [:start, :stop]
   layout 'admin'
 
