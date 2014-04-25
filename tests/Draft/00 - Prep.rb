@@ -38,17 +38,7 @@ describe "TestPrep" do
       $driver.find_element(:link, "test@bertcorp.com").click
       $driver.find_element(:link, "Sign out").click
 =end
-      $driver.get(@base_url + 'documents')
-      
-      if alert_present?
-        $driver.switch_to.alert.accept
-      end
-
-      if $driver.current_url.include? "draft/users/sign_in"
-        $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
-        $driver.find_element(:id, "draft_user_password").send_keys "changeme"
-        $driver.find_element(:name, "commit").click
-      end
+      start_logged_in
       
       count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
 

@@ -14,11 +14,14 @@ def go_home_from_document
 end
 
 def save_document
-  edit_menu = $driver.find_element(:id, "edit_menu")
-  $driver.action.move_to(edit_menu).perform
-  edit_menu.click unless $driver.find_element(:id, "mark_draft_button").displayed?
-  sleep(1)
-  $driver.find_element(:id, "mark_draft_button").click
+  begin
+    edit_menu = $driver.find_element(:id, "edit_menu")
+    $driver.action.move_to(edit_menu).perform
+    edit_menu.click unless $driver.find_element(:id, "mark_draft_button").displayed?
+    sleep(1)
+    $driver.find_element(:id, "mark_draft_button").click
+  rescue
+  end
   sleep(1)
   # Verify
   $driver.find_element(:id, "saving_indicator").text.should == "SAVED"
@@ -26,6 +29,10 @@ end
 
 def start_logged_in
   $driver.get(@base_url + 'documents')
+  # close any alerts, if they are present
+  if alert_present?
+    $driver.switch_to.alert.accept
+  end
   # login, if we aren't already
   if $driver.current_url.include? "draft/users/sign_in"
     $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
