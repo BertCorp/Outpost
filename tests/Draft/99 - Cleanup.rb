@@ -24,6 +24,7 @@ describe "Test Cleanup" do
       close_alert_and_get_its_text(true) if alert_present?
       $driver.get(@base_url + 'documents')
       
+      close_alert_and_get_its_text(true) if alert_present?
       if $driver.current_url.include? "draft/users/sign_in"
         $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
         $driver.find_element(:id, "draft_user_password").send_keys "changeme"
