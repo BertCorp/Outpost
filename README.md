@@ -4,11 +4,13 @@ Outpost
 To Do:
 
 - better managing of suites and environments
-- rework dashboard, report and test pages to display information better.
-- advanced run button
-- webhook
+- ~~advanced run button~~
+- deployment webhook
 - graph execution times
 - User/Company should be able to manage their stripe credit card info from their dashboard.
+- Better display of dates/times (relative)
+- Fix any timezone issues
+- Redesign based on: http://tctechcrunch2011.files.wordpress.com/2014/04/rs-radar-overview.png
 
 
 Done: 

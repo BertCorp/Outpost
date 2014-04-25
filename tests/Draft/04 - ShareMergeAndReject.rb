@@ -125,6 +125,7 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:id, "note").clear
       $driver.find_element(:id, "note").send_keys "I edited this document."
       $driver.find_element(:css, "form > input[name=\"commit\"]").click
+      close_alert_and_get_its_text(true) if alert_present?
       $driver.find_element(:link, "LOGOUT").click
 
       $driver.find_element(:link, "LOGIN").click

@@ -21,6 +21,7 @@ describe "Test Cleanup" do
   it "test_99_cleanup" do
     begin
 
+      close_alert_and_get_its_text(true) if alert_present?
       $driver.get(@base_url + 'documents')
       
       if $driver.current_url.include? "draft/users/sign_in"
