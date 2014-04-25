@@ -40,8 +40,11 @@ describe "Share, Merge and Reject" do
       #$post_id =  $driver.find_element(:class, 'distraction_free_form').attribute("data-document-id")
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      #wait.until { $driver.find_element(:id, "mark_draft_button").displayed? }
-      $driver.find_element(:id, "mark_draft_button").click if element_present?(:id, "mark_draft_button") && $driver.find_element(:id, "mark_draft_button").displayed?
+      begin
+        wait.until { $driver.find_element(:id, "mark_draft_button").displayed? }
+        $driver.find_element(:id, "mark_draft_button").click #if element_present?(:id, "mark_draft_button") && $driver.find_element(:id, "mark_draft_button").displayed?
+      rescue
+      end
       sleep(1)
       # Verify
       $driver.find_element(:id, "saving_indicator").text.should == "SAVED"
@@ -68,8 +71,10 @@ describe "Share, Merge and Reject" do
       # $driver.find_element(:name, "commit").click
       # 
       # $driver.find_element(:css, '#sidebar_content > h5 > a').click
-
-      $driver.find_element(:css, '.modal-backdrop').click
+      
+      
+      $driver.find_element(:css, '#invite_link > div > a').click
+      sleep(1)
       $driver.find_element(:link_text, "LOGOUT").click
       $driver.find_element(:css, "#homepage_titles > h1").text.should == "WRITE BETTER WITH DRAFT"
 
@@ -106,7 +111,11 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
       edit_menu = $driver.find_element(:id, "edit_menu")
       $driver.action.move_to(edit_menu).perform
-      #$driver.find_element(:id, "mark_draft_button").click
+      begin
+        wait.until { $driver.find_element(:id, "mark_draft_button").displayed? }
+        $driver.find_element(:id, "mark_draft_button").click #if element_present?(:id, "mark_draft_button") && $driver.find_element(:id, "mark_draft_button").displayed?
+      rescue
+      end
       sleep(1)
       # Verify
       ($driver.find_element(:id, "saving_indicator").text).should == "SAVED"
