@@ -23,15 +23,10 @@ describe "Import a file from Dropbox" do
   it "test_3_import_a_file_from_dropbox" do
     begin
       start_time = Time.now
-      $driver.get(@base_url + 'documents')
-      # login, if we aren't already
-      if $driver.current_url.include? "draft/users/sign_in"
-        $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
-        $driver.find_element(:id, "draft_user_password").send_keys "changeme"
-        $driver.find_element(:name, "commit").click
-      end
-      
       wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+      
+      start_logged_in
+      
       $driver.find_element(:css, "#sidebar_content > div:nth-child(6) > a").click
       sleep(3)
 
@@ -62,19 +57,12 @@ describe "Import a file from Dropbox" do
       $driver.find_element(:link, "Upload").click
       $driver.switch_to.default_content
 
-      sleep(5)  
-      #$uploaded_post_id =  $driver.find_element(:class, 'distraction_free_form').attribute("data-document-id")  
+      sleep(5)
       # Verify
       ($driver.find_element(:id, "document_content").text).should == "Dropbox Post -\n\nThis is a dropbox file that I am uploading to Draft to test that I can import a file"
 
-      sleep(1)
-      home_button_expander = $driver.find_element(:id, 'home_button')
-      $driver.action.move_to(home_button_expander).perform
-      wait.until { $driver.find_element(:id, "home_link").displayed? }
-      $driver.find_element(:id, "home_link").click
-      $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
-
-      sleep(3)
+      go_home_from_document
+      
       $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
 
       # Verify

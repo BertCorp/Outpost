@@ -22,43 +22,20 @@ describe "Share, Merge and Reject" do
   
   it "test_4_share_merge_and_reject" do
     begin
-      start_time = Time.now
-      $driver.get(@base_url + 'documents')
-      # login, if we aren't already
-      if $driver.current_url.include? "draft/users/sign_in"
-        $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
-        $driver.find_element(:id, "draft_user_password").send_keys "changeme"
-        $driver.find_element(:name, "commit").click
-      end
-      
+      start_time = Time.now      
       random_num = rand(1000)
       wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
       
-      if element_present?(:css, '.ic_close_modal') && $driver.find_element(:css, '.ic_close_modal').displayed?
-        $driver.find_element(:css, '.ic_close_modal').click
-      end
+      start_logged_in
       
       # just create a new document for this
       $driver.find_element(:id, "new_document_button").click
       $driver.find_element(:id, "document_content").send_keys "Creating a new document that we will share. #{random_num}"
-      #$post_id =  $driver.find_element(:class, 'distraction_free_form').attribute("data-document-id")
-      edit_menu = $driver.find_element(:id, "edit_menu")
-      $driver.action.move_to(edit_menu).perform
-      edit_menu.click unless $driver.find_element(:id, "mark_draft_button").displayed?
-      sleep(1)
-      $driver.find_element(:id, "mark_draft_button").click
       
-      sleep(1)
-      # Verify
-      $driver.find_element(:id, "saving_indicator").text.should == "SAVED"
-
-      sleep(3)
-      home_button_expander = $driver.find_element(:id, 'home_button')
-      $driver.action.move_to(home_button_expander).perform
-      wait.until { $driver.find_element(:id, "home_link").displayed? }
-      $driver.find_element(:id, "home_link").click
-      $driver.get(@base_url + 'documents/') unless $driver.current_url ==  @base_url + 'documents'
-
+      save_document
+      
+      go_home_from_document
+      
       $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
       sleep(1)
       $driver.find_element(:css, "#sidebar_content > div:nth-child(5) a:nth-child(1)").click
@@ -108,15 +85,8 @@ describe "Share, Merge and Reject" do
       
       $driver.find_element(:id, "document_content").clear
       $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
-      edit_menu = $driver.find_element(:id, "edit_menu")
-      $driver.action.move_to(edit_menu).perform
-      edit_menu.click unless $driver.find_element(:id, "mark_draft_button").displayed?
-      sleep(1)
-      $driver.find_element(:id, "mark_draft_button").click
-      sleep(1)
-      # Verify
-      ($driver.find_element(:id, "saving_indicator").text).should == "SAVED"
-      sleep(1)
+      
+      save_document
 
       $driver.find_element(:css, "#done_editing_button").click
       $driver.find_element(:id, "note").clear
@@ -152,16 +122,8 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:id, "document_content").clear
       $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num} Here is another change to this document."
 
-      edit_menu = $driver.find_element(:id, "edit_menu")
-      $driver.action.move_to(edit_menu).perform
-      edit_menu.click unless $driver.find_element(:id, "mark_draft_button").displayed?
-      sleep(1)
-      $driver.find_element(:id, "mark_draft_button").click
-      sleep(1)
-      # Verify
-      ($driver.find_element(:id, "saving_indicator").text).should == "SAVED"
-
-      sleep(1)
+      save_document
+      
       $driver.find_element(:css, "#done_editing_button").click
       $driver.find_element(:id, "note").clear
       $driver.find_element(:id, "note").send_keys "Here is my second change to ignore."
