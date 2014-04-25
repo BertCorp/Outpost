@@ -26,7 +26,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
       clear_gmail_inbox
       
-      login_as_outpost_admin
+      login_as_admin
       
       # Invite a new teacher
       $driver.find_element(:link, "People").click
@@ -77,7 +77,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
 
       clear_gmail_inbox
 
-      login_as_outpost_admin
+      login_as_admin
       
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "add-people-btn").click
@@ -122,7 +122,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       ($driver.find_element(:css, "h6").text).should == "You're a student in:"
       $driver.find_element(:link, "Logout").click
       
-      login_as_outpost_admin
+      login_as_admin
       
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click

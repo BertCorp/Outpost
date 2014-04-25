@@ -19,13 +19,8 @@ describe "Test Cleanup" do
   end
   
   it "test_99_cleanup" do
-    $driver.get(@base_url)
-    $driver.find_element(:link, "Log in").click
-    $driver.find_element(:id, "user_email").clear
-    $driver.find_element(:id, "user_email").send_keys "test@outpostqa.com"
-    $driver.find_element(:id, "user_password").clear
-    $driver.find_element(:id, "user_password").send_keys "LigReb2013"
-    $driver.find_element(:name, "commit").click
+    login_as_admin
+    
     # Delete Resources
     $driver.find_element(:link, "Classes").click
     $driver.find_element(:link, "Outpost Test Class").click

@@ -13,7 +13,7 @@ def clear_gmail_inbox
   sign_out_of_gmail
 end
 
-def login_as_outpost_admin
+def login_as_admin
   $driver.get(@base_url) unless $driver.current_url == @base_url
   $driver.find_element(:link, "Log in").click
   $driver.find_element(:id, "user_email").clear
