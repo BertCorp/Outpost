@@ -88,6 +88,11 @@ describe "Share, Merge and Reject" do
       
       save_document
 
+      # close intercom modal, if it exists
+      if element_present?(:css, '.ic_close_modal') && $driver.find_element(:css, '.ic_close_modal').displayed?
+        $driver.find_element(:css, '.ic_close_modal').click
+      end
+      
       $driver.find_element(:css, "#done_editing_button").click
       $driver.find_element(:id, "note").clear
       $driver.find_element(:id, "note").send_keys "I edited this document."

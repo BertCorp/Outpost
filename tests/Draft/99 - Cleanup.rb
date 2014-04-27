@@ -36,7 +36,9 @@ describe "Test Cleanup" do
       count.times do
         $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
         $driver.find_element(:css, 'li:nth-child(2) > a').click
-        $driver.switch_to.alert.accept
+        if alert_present?
+          $driver.switch_to.alert.accept
+        end
         $driver.navigate.refresh
       end
 
