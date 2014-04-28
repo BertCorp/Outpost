@@ -19,33 +19,24 @@ describe "Test Cleanup" do
   end
   
   it "test_99_cleanup" do
-    begin
+    close_alert_and_get_its_text(true) if alert_present?
+    
+    start_logged_in
+    
+    close_alert_and_get_its_text(true) if alert_present?
+    if $driver.current_url.include? "draft/users/sign_in"
+      $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
+      $driver.find_element(:id, "draft_user_password").send_keys "changeme"
+      $driver.find_element(:name, "commit").click
+    end
+    
+    count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
 
-      close_alert_and_get_its_text(true) if alert_present?
-      $driver.get(@base_url + 'documents')
-      
-      close_alert_and_get_its_text(true) if alert_present?
-      if $driver.current_url.include? "draft/users/sign_in"
-        $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
-        $driver.find_element(:id, "draft_user_password").send_keys "changeme"
-        $driver.find_element(:name, "commit").click
-      end
-      
-      count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
-
-      count.times do
-        $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
-        $driver.find_element(:css, 'li:nth-child(2) > a').click
-        if alert_present?
-          $driver.switch_to.alert.accept
-        end
-        $driver.navigate.refresh
-      end
-
-      #pass(@test_id, Time.now - start_time)
-    #rescue => e
-      #fail(@test_id, Time.now - start_time, e)
-      #raise
+    count.times do
+      $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
+      $driver.find_element(:css, 'li:nth-child(2) > a').click
+      $driver.switch_to.alert.accept
+      $driver.navigate.refresh
     end
   end
   
