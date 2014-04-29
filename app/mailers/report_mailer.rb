@@ -1,14 +1,14 @@
 class ReportMailer < ActionMailer::Base
   default from: "admin@outpostqa.com"
   
-  def admin_report_completed_email(report, output)
+  def admin_requested_report_status_email(report, output)
     @report = report
     @output = output
     
     mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "#{@report.company.name} report is: #{@report.status}")
   end
   
-  def admin_report_requested_email(report)
+  def admin_requested_report_triggered_email(report)
     @report = report
     
     mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "New report: #{@report.company.name}")
