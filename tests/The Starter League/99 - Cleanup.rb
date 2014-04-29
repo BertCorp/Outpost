@@ -7,9 +7,7 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "Test Cleanup" do
 
-  before(:each) do
-    $driver = start_driver({ name: 'Draft - Automated Tests' })
-    $driver.manage.timeouts.implicit_wait = 3
+  before(:all) do
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
   end
   
@@ -19,6 +17,9 @@ describe "Test Cleanup" do
   end
   
   it "test_99_cleanup" do
+    $driver = start_driver({ name: 'Draft - Automated Tests' })
+    $driver.manage.timeouts.implicit_wait = 3
+    
     login_as_admin
     
     # Delete Resources

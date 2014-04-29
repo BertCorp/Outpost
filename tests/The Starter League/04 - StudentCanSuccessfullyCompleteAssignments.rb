@@ -7,11 +7,8 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "Student Can Successfully Complete Assignments" do
 
-  before(:each) do
+  before(:all) do
     @test_id = "30"
-    start(@test_id)
-    $driver = start_driver({ name: 'Starter League - Automated Tests' })
-    $driver.manage.timeouts.implicit_wait = 3
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
   end
   
@@ -23,6 +20,11 @@ describe "Student Can Successfully Complete Assignments" do
   it "test_04_student_can_successfully_complete_assignments_html" do
     begin
       start_time = Time.now
+      
+      start(@test_id)
+      $driver = start_driver({ name: 'Starter League - Automated Tests' })
+      $driver.manage.timeouts.implicit_wait = 3
+      
       $driver.get(@base_url)
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear

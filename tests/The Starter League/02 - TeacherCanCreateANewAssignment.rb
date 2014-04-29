@@ -7,7 +7,7 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "Teacher Can Create A New Assignment" do
 
-  before(:each) do
+  before(:all) do
     @test_id = "28"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
   end
