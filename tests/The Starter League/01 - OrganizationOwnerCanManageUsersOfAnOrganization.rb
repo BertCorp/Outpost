@@ -9,9 +9,6 @@ describe "Organization Owner Can Manage Users Of An Organization" do
 
   before(:each) do
     @test_id = "27"
-    start(@test_id)
-    $driver = start_driver({ name: 'Starter League - Automated Tests' })
-    $driver.manage.timeouts.implicit_wait = 3
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
   end
   
@@ -24,6 +21,11 @@ describe "Organization Owner Can Manage Users Of An Organization" do
     begin
       start_time = Time.now
       wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+      
+      start(@test_id)
+      $driver = start_driver({ name: 'Starter League - Automated Tests' })
+      $driver.manage.timeouts.implicit_wait = 3
+      
       clear_gmail_inbox
       
       login_as_admin
