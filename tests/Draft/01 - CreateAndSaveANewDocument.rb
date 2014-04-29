@@ -7,12 +7,10 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "Create and save a new document" do
 
-  before(:each) do
+  before(:all) do
     @test_id = "7"
-    start(@test_id)
-    $driver = start_driver({ name: 'Draft - Automated Tests' })
-    $driver.manage.timeouts.implicit_wait = 3
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
+    @retry_count = 0
   end
   
   after(:all) do
@@ -26,6 +24,10 @@ describe "Create and save a new document" do
       random_num = rand(1000)
       wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
 
+      start(@test_id)
+      $driver = start_driver({ name: 'Draft - Automated Tests' })
+      $driver.manage.timeouts.implicit_wait = 3
+      
       start_logged_in
 
       $driver.find_element(:id, "new_document_button").click
@@ -42,6 +44,10 @@ describe "Create and save a new document" do
       
       pass(@test_id, Time.now - start_time)
     rescue => e
+      @retry_count = @retry_count + 1
+      puts "Exception: #{e.inspect}"
+      puts "Retry: #{@retry_count}"
+      retry if @retry_count < 3
       fail(@test_id, Time.now - start_time, e)
     end
   end

@@ -7,9 +7,7 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "TestPrep" do
 
-  before(:each) do
-    $driver = start_driver({ name: 'Draft - Automated Tests' })
-    $driver.manage.timeouts.implicit_wait = 3
+  before(:all) do
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
   end
   
@@ -21,6 +19,10 @@ describe "TestPrep" do
   it "test_0_prep" do
     begin
       start_time = Time.now
+      
+      $driver = start_driver({ name: 'Draft - Automated Tests' })
+      $driver.manage.timeouts.implicit_wait = 3
+      
 =begin
       $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
       $driver.find_element(:id, "Email").clear
@@ -41,7 +43,6 @@ describe "TestPrep" do
       start_logged_in
       
       count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
-
       count.times do
         $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
         $driver.find_element(:css, 'li:nth-child(2) > a').click

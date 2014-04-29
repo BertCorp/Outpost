@@ -7,12 +7,10 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "Share, Merge and Reject" do
 
-  before(:each) do
+  before(:all) do
     @test_id = "10"
-    start(@test_id)
-    $driver = start_driver({ name: 'Draft - Automated Tests' })
-    $driver.manage.timeouts.implicit_wait = 3
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
+    @retry_count = 0
   end
   
   after(:all) do
@@ -26,6 +24,10 @@ describe "Share, Merge and Reject" do
       random_num = rand(1000)
       wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
       
+      start(@test_id)
+      $driver = start_driver({ name: 'Draft - Automated Tests' })
+      $driver.manage.timeouts.implicit_wait = 3
+
       start_logged_in
       
       # just create a new document for this
@@ -88,18 +90,25 @@ describe "Share, Merge and Reject" do
       
       save_document
 
+      sleep(3)
       # close intercom modal, if it exists
       if element_present?(:css, '.ic_close_modal') && $driver.find_element(:css, '.ic_close_modal').displayed?
         $driver.find_element(:css, '.ic_close_modal').click
         sleep(1)
       end
       
+      sleep(3)
       begin
         $driver.find_element(:css, "#done_editing_button").click
       rescue
-        $driver.find_element(:css, '.ic_close_modal').click
-        sleep(1)
+        if element_present?(:css, '.ic_close_modal') && $driver.find_element(:css, '.ic_close_modal').displayed?
+          $driver.find_element(:css, '.ic_close_modal').click
+          sleep(1)
+        end
+        $driver.find_element(:css, "#done_editing_button").click
       end
+      
+      sleep(3)
       
       $driver.find_element(:id, "note").clear
       $driver.find_element(:id, "note").send_keys "I edited this document."
@@ -165,6 +174,10 @@ describe "Share, Merge and Reject" do
       
       pass(@test_id, Time.now - start_time)
     rescue => e
+      @retry_count = @retry_count + 1
+      puts "Exception: #{e.inspect}"
+      puts "Retry: #{@retry_count}"
+      retry if @retry_count < 3
       fail(@test_id, Time.now - start_time, e)
     end
   end
