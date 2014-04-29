@@ -14,7 +14,7 @@ namespace :report do
     # Let's store results in report and update as completed.
     report.completed_at = Time.now
     report.errors_raw = output
-    report.status = ((output == '') || output.include?('FAILED')) ? "Under Review" : "Completed"
+    report.status = ((output == '') || output.include?('Failures:')) ? "Under Review" : "Completed"
     report.save!
     # Mark any tests that weren't run as Skipped.
     report.results.where(status: 'Queued').each do |test|
@@ -22,14 +22,11 @@ namespace :report do
       test.save!
     end
     # mail results to admin, regardless
-    ReportMailer.admin_report_completed_email(report, output).deliver
-    
-    # mail client to let them know if they are all good.
-    #if report.status == 'Completed'
-    #  ReportMailer.successful_report_email(report).deliver
-    #else
-    #  # otherwise, we might want to look into things ourselves.
-    #end
+    ReportMailer.admin_requested_report_status_email(report, output).deliver
+
+    if report.status == 'Completed'
+      ReportMailer.requested_report_successful_email(report).deliver
+    end
     
     puts output
   end

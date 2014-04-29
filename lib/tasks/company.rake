@@ -22,7 +22,7 @@ namespace :company do
     report.status = "Running"
     report.save!
     
-    ReportMailer.scheduled_report_triggered_email(report).deliver
+    ReportMailer.admin_scheduled_report_triggered_email(report).deliver
     
     report.test_suite.test_cases.order('id ASC').each do |test_case|
       report.results.create({ status: 'Queued', report_id: report.id, test_case_id: test_case.id, test_environment_id: report.test_environment_id })
@@ -34,7 +34,7 @@ namespace :company do
     
     report.completed_at = Time.now
     report.errors_raw = output
-    report.status = ((output == '') || output.include?('FAILED')) ? "Under Review" : "Completed"
+    report.status = ((output == '') || output.include?('Failures:')) ? "Under Review" : "Completed"
     report.save!
     # Mark any tests that weren't run as Skipped.
     report.results.where(status: 'Queued').each do |test|
@@ -42,7 +42,11 @@ namespace :company do
       test.save!
     end
     # mail results to admin, regardless
-    ReportMailer.scheduled_report_completed_email(report, output).deliver
+    ReportMailer.admin_scheduled_report_status_email(report, output).deliver
+    
+    if report.status == 'Completed'
+      ReportMailer.scheduled_report_successful_email(report).deliver
+    end
     
     puts output
   end

@@ -52,7 +52,6 @@ class Admin::ReportsController < ApplicationController
         env = 'staging' if env == 'mirror'
         ReportMailer.admin_triggered_report_email(@report).deliver
         @report.delay.run!(env, params[:local])
-        #ReportMailer.user_new_report_email(@report).deliver
         
         format.html { redirect_to [:admin, @report], notice: 'Report has been queued and will start running soon.' }
         format.json { render action: 'show', status: :created, location: @report }
@@ -78,9 +77,6 @@ class Admin::ReportsController < ApplicationController
         @report.test_suite.test_cases.each do |test_case|
           @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id})
         end
-        
-        #ReportMailer.admin_new_report_email(@report).deliver
-        #ReportMailer.user_new_report_email(@report).deliver
         
         format.html { redirect_to [:admin, @report], notice: 'Report was successfully created.' }
         format.json { render action: 'show', status: :created, location: @report }
