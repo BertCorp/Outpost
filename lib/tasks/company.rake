@@ -34,7 +34,7 @@ namespace :company do
     
     report.completed_at = Time.now
     report.errors_raw = output
-    report.status = ((output == '') || output.include?('Failures:')) ? "Under Review" : "Completed"
+    report.status = ((output == '') || output.include?('FAILED:')) ? "Under Review" : "Completed"
     report.save!
     # Mark any tests that weren't run as Skipped.
     report.results.where(status: 'Queued').each do |test|
