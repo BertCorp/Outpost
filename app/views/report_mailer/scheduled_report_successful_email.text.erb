@@ -1,12 +1,11 @@
-Hello!
+Good morning!
 
 We just successfully finished running your tests for the day and everything looks good! If you'd like to view the full report, you can do so here: <%= report_url(@report) %>
 
 Here are the individual results:
-
-<%= @report.results.order('id ASC').each do |test| %>
-<%= test.test_case.title %>: <%= test.status %> (executed in <%= test.execution_time %> seconds)
-<% end %>
+<% @report.results.order('id ASC').each do |test| %>
+- <%= test.test_case.title %>: <%= test.status %> (executed in <%= test.ended_at - test.started_at %> seconds)
+<% end %> 
 
 If you have any questions please don't hesitate to drop us a note!
 
