@@ -16,11 +16,13 @@ end
 def login_as_admin
   $driver.get(@base_url) unless $driver.current_url == @base_url
   $driver.find_element(:link, "Log in").click
-  $driver.find_element(:id, "user_email").clear
-  $driver.find_element(:id, "user_email").send_keys "test@outpostqa.com"
-  $driver.find_element(:id, "user_password").clear
-  $driver.find_element(:id, "user_password").send_keys "LigReb2013"
-  $driver.find_element(:name, "commit").click
+  if $driver.current_url.include? "/login"
+    $driver.find_element(:id, "user_email").clear
+    $driver.find_element(:id, "user_email").send_keys "test@outpostqa.com"
+    $driver.find_element(:id, "user_password").clear
+    $driver.find_element(:id, "user_password").send_keys "LigReb2013"
+    $driver.find_element(:name, "commit").click
+  end
 end
 
 

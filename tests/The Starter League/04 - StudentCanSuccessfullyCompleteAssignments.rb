@@ -21,6 +21,7 @@ describe "Student Can Successfully Complete Assignments" do
   it "test_04_student_can_successfully_complete_assignments_html" do
     begin
       start_time = Time.now
+      wait = Selenium::WebDriver::Wait.new(:timeout => 15) # seconds
       
       start(@test_id)
       $driver = start_driver({ name: 'Starter League - Automated Tests' })
