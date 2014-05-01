@@ -10,6 +10,7 @@ describe "Student Can Successfully Complete Assignments" do
   before(:all) do
     @test_id = "30"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
+    @retry_count = 0
   end
   
   after(:all) do
@@ -93,6 +94,10 @@ describe "Student Can Successfully Complete Assignments" do
       
       pass(@test_id, Time.now - start_time)
     rescue => e
+      @retry_count = @retry_count + 1
+      puts "Exception: #{e.inspect}"
+      puts "Retry: #{@retry_count}"
+      retry if @retry_count < 3
       fail(@test_id, Time.now - start_time, e)
     end
   end
