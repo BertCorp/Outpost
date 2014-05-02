@@ -32,17 +32,14 @@ describe "Teacher Can Create A New Assignment" do
       # Add a new assignment
       $driver.find_element(:link, "Add a new assignment").click
       
-      assignment_one = "Exercise #" + rand(10000).to_s
+      assignment_one = "Completion Exercise #" + rand(10000).to_s
       
       $driver.find_element(:id, "assignment_title").clear
       $driver.find_element(:id, "assignment_title").send_keys assignment_one
       $driver.find_element(:name, "commit").click
-      # Set wysiwyg editor + textarea text via javascript (minor hack)
-      $driver.find_element(:css, ".redactor_editor").click
-      $driver.find_element(:css, ".redactor_editor").send_keys "Test content for " + assignment_one
-      $driver.execute_script("document.getElementsByClassName('redactor_editor')[0].innerHTML = '<p>Test content for " + assignment_one + "</p>'")
-      $driver.execute_script("document.getElementById('assignment_task_content').innerHTML = '<p>Test content for " + assignment_one + "</p>'")
-      sleep(1)
+      
+      type_redactor_field('assignment_task_content', "Test content for " + assignment_one)
+      
       $driver.find_element(:link, "Publish...").click
       $driver.find_element(:name, "publish_and_notify").click
       sleep(1)
@@ -64,17 +61,14 @@ describe "Teacher Can Create A New Assignment" do
       $driver.find_element(:link, "Add a new assignment").click
       $driver.find_element(:id, "assignment_requires_submission_true").click
 
-      assignment_two = "Exercise #" + rand(10000).to_s
+      assignment_two = "Submission Exercise #" + rand(10000).to_s
 
       $driver.find_element(:id, "assignment_title").clear
       $driver.find_element(:id, "assignment_title").send_keys assignment_two
       $driver.find_element(:name, "commit").click
-      # Set wysiwyg editor + textarea text via javascript (minor hack)
-      $driver.find_element(:css, ".redactor_editor").click
-      $driver.find_element(:css, ".redactor_editor").send_keys "Test content for " + assignment_two
-      $driver.execute_script("document.getElementsByClassName('redactor_editor')[0].innerHTML = '<p>Test content for " + assignment_two + "</p>'")
-      $driver.execute_script("document.getElementById('assignment_task_content').innerHTML = '<p>Test content for " + assignment_two + "</p>'")
-      sleep(1)
+
+      type_redactor_field('assignment_task_content', "Test content for " + assignment_two)
+
       $driver.find_element(:link, "Publish...").click
       $driver.find_element(:name, "publish_and_notify").click
       # Verify

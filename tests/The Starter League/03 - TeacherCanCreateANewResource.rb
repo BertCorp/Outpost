@@ -41,11 +41,7 @@ describe "Teacher Can Create A New Assignment" do
       
       document_one = "Resource #" + rand(10000).to_s
       
-      $driver.find_element(:css, ".redactor_editor").click
-      $driver.find_element(:css, ".redactor_editor").send_keys "An uploaded test resource. " + document_one
-      $driver.execute_script("document.getElementsByClassName('redactor_editor')[0].innerHTML = '<p>An uploaded test resource. " + document_one + "</p>'")
-      $driver.execute_script("document.getElementById('resource_content').innerHTML = '<p>An uploaded test resource. " + document_one + "</p>'")
-      sleep(1)
+      type_redactor_field('resource_content', "An uploaded test resource. " + document_one)
       
       $driver.find_element(:xpath, "(//button[@name='commit'])[2]").click
       # Verify
@@ -62,11 +58,7 @@ describe "Teacher Can Create A New Assignment" do
       $driver.find_element(:id, "resource_title").send_keys document_two
       #$driver.find_element(:css, "textarea.resource-content").clear
       #$driver.find_element(:css, "textarea.resource-content").send_keys "A written test resource body of content."
-      $driver.find_element(:css, ".redactor_editor").click
-      $driver.find_element(:css, ".redactor_editor").send_keys "A written test resource body of content."
-      $driver.execute_script("document.getElementsByClassName('redactor_editor')[0].innerHTML = '<p>A written test resource body of content.</p>'")
-      $driver.execute_script("document.getElementById('resource_content').innerHTML = '<p>A written test resource body of content.</p>'")
-      sleep(1)
+      type_redactor_field('resource_content', "A written test resource body of content.")      
       
       $driver.find_element(:xpath, "(//button[@name='commit'])[2]").click
       # Verify
@@ -98,7 +90,7 @@ describe "Teacher Can Create A New Assignment" do
       puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
       puts ""
-      #retry if @retry_count < 3
+      retry if @retry_count < 3
       fail(@test_id, e)
     end
   end

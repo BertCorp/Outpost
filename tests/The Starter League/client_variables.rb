@@ -47,3 +47,14 @@ def sign_out_of_gmail
     close_alert_and_get_its_text(true)
   end
 end
+
+def type_redactor_field(id, text)
+  $driver.find_element(:css, ".redactor_editor").click
+  $driver.find_element(:css, ".redactor_editor").send_keys text
+  $driver.execute_script("document.getElementsByClassName('redactor_editor')[0].innerHTML = '<p>" + text + "</p>'")
+  sleep(1)
+  $driver.execute_script("document.getElementById('" + id + "').style.display = 'block'")
+  $driver.find_element(:id, id).clear
+  $driver.find_element(:id, id).send_keys "<p>" + text + "</p>"
+  sleep(2)
+end
