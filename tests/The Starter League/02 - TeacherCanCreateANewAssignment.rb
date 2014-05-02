@@ -105,9 +105,11 @@ describe "Teacher Can Create A New Assignment" do
       pass(@test_id)
     rescue => e
       @retry_count = @retry_count + 1
+      puts ""
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
+      puts ""
       retry if @retry_count < 3
       fail(@test_id)
     end

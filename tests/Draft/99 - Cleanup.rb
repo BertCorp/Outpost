@@ -34,9 +34,9 @@ describe "Test Cleanup" do
       end
       
       
-      #pass(@test_id, Time.now - start_time)
+      #pass(@test_id)
     #rescue => e
-      #fail(@test_id, Time.now - start_time, e)
+      #fail(@test_id, e)
       #raise
     end
   end

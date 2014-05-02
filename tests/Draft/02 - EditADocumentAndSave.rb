@@ -11,6 +11,7 @@ describe "Edit a document and save" do
     @test_id = "8"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @retry_count = 0
+    start(@test_id)
   end
   
   after(:all) do
@@ -20,11 +21,8 @@ describe "Edit a document and save" do
   
   it "test_2_edit_a_document_and_save" do
     begin
-      start_time = Time.now
       random_num = rand(1000)
-      wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
       
-      start(@test_id)
       $driver = start_driver({ name: 'Draft - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
       
@@ -51,13 +49,16 @@ describe "Edit a document and save" do
       # Verify
       $driver.find_element(:css, "div.document_id > p").text.should == "This is a test document. I am testing that I can edit the document that i created in the draft composer. #{random_num}"
       
-      pass(@test_id, Time.now - start_time)
+      pass(@test_id)
     rescue => e
       @retry_count = @retry_count + 1
+      puts ""
       puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
+      puts ""
       retry if @retry_count < 3
-      fail(@test_id, Time.now - start_time, e)
+      fail(@test_id, e)
     end
   end
   

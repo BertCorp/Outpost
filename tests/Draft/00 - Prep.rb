@@ -18,8 +18,6 @@ describe "TestPrep" do
   
   it "test_0_prep" do
     begin
-      start_time = Time.now
-      
       $driver = start_driver({ name: 'Draft - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
       
@@ -50,9 +48,7 @@ describe "TestPrep" do
         $driver.navigate.refresh
       end
 
-      #pass(@test_id, Time.now - start_time)
     #rescue => e
-      #fail(@test_id, Time.now - start_time, e)
       #raise
     end
   end

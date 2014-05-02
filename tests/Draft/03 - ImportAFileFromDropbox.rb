@@ -11,6 +11,7 @@ describe "Import a file from Dropbox" do
     @test_id = "9"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @retry_count = 0
+    start(@test_id)
   end
   
   after(:all) do
@@ -20,10 +21,6 @@ describe "Import a file from Dropbox" do
   
   it "test_3_import_a_file_from_dropbox" do
     begin
-      start_time = Time.now
-      wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
-      
-      start(@test_id)
       $driver = start_driver({ name: 'Draft - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
       
@@ -72,13 +69,16 @@ describe "Import a file from Dropbox" do
       ($driver.find_element(:css, '#document_container > div > p:nth-child(1)').text).should == "Dropbox Post -"
       ($driver.find_element(:css, '#document_container > div > p:nth-child(2)').text).should == "This is a dropbox file that I am uploading to Draft to test that I can import a file"
       
-      pass(@test_id, Time.now - start_time)
+      pass(@test_id)
     rescue => e
       @retry_count = @retry_count + 1
+      puts ""
       puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
+      puts ""
       retry if @retry_count < 3
-      fail(@test_id, Time.now - start_time, e)
+      fail(@test_id, e)
     end
   end
   
