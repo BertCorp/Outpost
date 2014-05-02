@@ -24,7 +24,7 @@ namespace :report do
     # mail results to admin, regardless
     ReportMailer.admin_requested_report_status_email(report, output).deliver
 
-    if report.status == 'Completed'
+    if (report.status == 'Completed') && !report.initiator.is_admin?
       ReportMailer.requested_report_successful_email(report).deliver
     end
     
