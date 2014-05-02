@@ -11,6 +11,7 @@ describe "Teacher Can Create A New Assignment" do
     @test_id = "28"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @retry_count = 0
+    start(@test_id)
   end
   
   after(:all) do
@@ -20,10 +21,6 @@ describe "Teacher Can Create A New Assignment" do
   
   it "test_02_teacher_can_create_a_new_assignment" do
     begin
-      start_time = Time.now
-      wait = Selenium::WebDriver::Wait.new(:timeout => 15) # seconds
-      
-      start(@test_id)
       $driver = start_driver({ name: 'Starter League - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
       
@@ -55,13 +52,13 @@ describe "Teacher Can Create A New Assignment" do
       ($driver.find_element(:link, assignment_one).text).should == assignment_one
       $driver.find_element(:link, assignment_one).click
       
-      wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
+      $wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
       # Verify
       ($driver.find_element(:css, "h5").text).should == assignment_one + "\n- change this"
       # Verify
       ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_one
       $driver.find_element(:link, "← Assignments").click
-      wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
+      $wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
       
       # Add a new assigment
       $driver.find_element(:link, "Add a new assignment").click
@@ -84,13 +81,13 @@ describe "Teacher Can Create A New Assignment" do
       ($driver.find_element(:link, assignment_two).text).should == assignment_two
       $driver.find_element(:link, assignment_two).click
 
-      wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
+      $wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
       # Verify
       ($driver.find_element(:css, "h5").text).should == assignment_two + "\nrequires a submission (private) - change this"
       # Verify
       ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
       $driver.find_element(:link, "← Assignments").click
-      wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
+      $wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
       
       # Double check that activity was logged.
       $driver.find_element(:link, "Recent Activity").click
@@ -105,13 +102,14 @@ describe "Teacher Can Create A New Assignment" do
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_two + "\"").text).should == "published assignment \"" + assignment_two + "\""
       
-      pass(@test_id, Time.now - start_time)
+      pass(@test_id)
     rescue => e
       @retry_count = @retry_count + 1
       puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
       retry if @retry_count < 3
-      fail(@test_id, Time.now - start_time, e)
+      fail(@test_id)
     end
   end
   

@@ -11,6 +11,7 @@ describe "Teacher Can Create A New Assignment" do
     @test_id = "29"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @retry_count = 0
+    start(@test_id)
   end
   
   after(:all) do
@@ -20,10 +21,6 @@ describe "Teacher Can Create A New Assignment" do
   
   it "test_03_teacher_can_create_a_new_resource" do
     begin
-      start_time = Time.now
-      wait = Selenium::WebDriver::Wait.new(:timeout => 15) # seconds
-      
-      start(@test_id)
       $driver = start_driver({ name: 'Starter League - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
       
@@ -74,13 +71,14 @@ describe "Teacher Can Create A New Assignment" do
       ($driver.find_element(:link, "added resource \"Document #" + document_two + "\" in \"Outpost Test Class\"").text).should == "added resource \"Document #" + document_two + "\" in \"Outpost Test Class\""
       $driver.find_element(:link, "Logout").click
       
-      pass(@test_id, Time.now - start_time)
+      pass(@test_id)
     rescue => e
       @retry_count = @retry_count + 1
       puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
       retry if @retry_count < 3
-      fail(@test_id, Time.now - start_time, e)
+      fail(@test_id, e)
     end
   end
   

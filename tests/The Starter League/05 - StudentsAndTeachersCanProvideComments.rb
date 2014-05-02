@@ -11,6 +11,7 @@ describe "Students and Teachers Can Provide Comments" do
     @test_id = "31"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @retry_count = 0
+    start(@test_id)
   end
   
   after(:all) do
@@ -20,10 +21,6 @@ describe "Students and Teachers Can Provide Comments" do
   
   it "test_05_students_and_teachers_can_provide_comments_html" do
     begin
-      start_time = Time.now
-      wait = Selenium::WebDriver::Wait.new(:timeout => 15) # seconds
-      
-      start(@test_id)
       $driver = start_driver({ name: 'Starter League - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
       
@@ -145,13 +142,14 @@ describe "Students and Teachers Can Provide Comments" do
       ($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to Document #" + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to Document #" + document_two
       $driver.find_element(:link, "Logout").click
       
-      pass(@test_id, Time.now - start_time)
+      pass(@test_id)
     rescue => e
       @retry_count = @retry_count + 1
       puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
       retry if @retry_count < 3
-      fail(@test_id, Time.now - start_time, e)
+      fail(@test_id, e)
     end
   end
   

@@ -11,6 +11,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
     @test_id = "27"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @retry_count = 0
+    start(@test_id)
   end
   
   after(:all) do
@@ -20,10 +21,6 @@ describe "Organization Owner Can Manage Users Of An Organization" do
   
   it "test_01_organization_owner_can_manage_users_of_an_organization" do
     begin
-      start_time = Time.now
-      wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
-      
-      start(@test_id)
       $driver = start_driver({ name: 'Starter League - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
       
@@ -48,7 +45,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       sign_into_gmail
       
       # Click and view the latest invitation email.
-      wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
+      $wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
       $driver.find_elements(:css, "table td span b").find do |subject|
         subject.text == "You're invited to join Outpost"
       end.click
@@ -95,7 +92,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       sign_into_gmail
       
       # Click and view the latest invitation email.
-      wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
+      $wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
       $driver.find_elements(:css, "table td span b").find do |subject|
         subject.text == "You're invited to join Outpost"
       end.click
@@ -132,7 +129,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       # Verify
       ($driver.find_element(:link, "See an overview of your students' progress").text).should == "See an overview of your students' progress"
       $driver.find_element(:link, "See an overview of your students' progress").click
-      wait.until { $driver.find_elements(:link, "Go back").size > 0 }
+      $wait.until { $driver.find_elements(:link, "Go back").size > 0 }
       # Verify
       ($driver.find_element(:css, "h5").text).should == "Here's how your students are progressing in Outpost Test Class"
       # Verify
@@ -142,13 +139,14 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       # Verify
       ($driver.find_element(:css, "#profile .user-details h4 a").text).should == student_email
       
-      pass(@test_id, Time.now - start_time)
+      pass(@test_id)
     rescue => e
       @retry_count = @retry_count + 1
       puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
       retry if @retry_count < 3
-      fail(@test_id, Time.now - start_time, e)
+      fail(@test_id, e)
     end
   end
   

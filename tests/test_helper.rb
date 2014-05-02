@@ -24,6 +24,7 @@ def start_driver(cs = {})
       :desired_capabilities => caps)
     $driver.manage().window().maximize()
   end
+  $wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
   $driver
 end # setup_driver
 
@@ -50,21 +51,21 @@ def start(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/start")
 end
 
-def pass(test_id, execution_time)
-  outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Passed&execution=#{execution_time.to_s}")
-  #p "Executed successfully: #{execution_time.to_s}"
+def pass(test_id)
+  outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Passed")
+  #p "Passed"
 end
 
-def fail(test_id, execution_time, e)
+def fail(test_id, e)
   require 'uri'
-  outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Failure&execution=#{execution_time.to_s}&message=#{URI.escape(e.inspect)}")
+  outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Failure&message=#{URI.escape(e.inspect)}")
   p "\nFAILED: #{test_id}"
   raise
 end
 
-def skip(test_id, execution_time)
-  outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Skipped&execution=0.0")
-  #p "Skipped: #{execution_time.to_s}"
+def skip(test_id)
+  outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Skipped")
+  #p "Skipped"
 end
 
 
