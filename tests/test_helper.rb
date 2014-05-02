@@ -23,6 +23,10 @@ def start_driver(cs = {})
       :url => "http://#{ENV['BS_USERNAME']}:#{ENV['BS_AUTHKEY']}@hub.browserstack.com/wd/hub",
       :desired_capabilities => caps)
     $driver.manage().window().maximize()
+    $driver.file_detector = lambda do |args|
+      str = args.first.to_s
+      str if File.exist?(str)
+    end
   end
   $wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
   $driver
