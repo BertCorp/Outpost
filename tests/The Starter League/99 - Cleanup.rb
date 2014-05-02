@@ -82,8 +82,8 @@ describe "Test Cleanup" do
       $wait.until { $driver.current_url.include? '/assignments' }
       
       # loop through .assignment and leave the first 10 
-      while $driver.find_elements(:css, '.content-table > tr').size > 10 do
-        $driver.find_element(:css, '.content-table > tr:nth-child(11) > td > a').click
+      while $driver.find_elements(:css, '#resources > table > tbody > tr').size > 10 do
+        $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(11) > td.content > a').click
         $wait.until { $driver.find_elements(:link, "change this").size > 0 }
         $driver.find_element(:link, "change this").click
         $driver.find_element(:link, "Delete this assignment").click
@@ -122,12 +122,14 @@ describe "Test Cleanup" do
       $wait.until { $driver.current_url.include? '/resources' }
       
       # loop through .assignment and leave the first 5
-      while $driver.find_elements(:css, '.content-table > tr').size > 5 do
-        $driver.find_element(:css, '.content-table > tr:nth-child(6) > td > a').click
+      while $driver.find_elements(:css, '#resources > table > tbody > tr').size > 5 do
+        $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(6) > td.content > a').click
         $wait.until { $driver.find_elements(:link, "Delete").size > 0 }
         $driver.find_element(:link, "Delete").click
         (close_alert_and_get_its_text(true)).should include("Are you sure")
-        ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+        if element_present?(:id, "flash-msg")
+          ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+        end
         $driver.find_element(:link, "Resources").click
         $wait.until { $driver.current_url.include? '/resources' }
       end
