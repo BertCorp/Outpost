@@ -24,6 +24,9 @@ describe "Students and Teachers Can Provide Comments" do
       $driver = start_driver({ name: 'Starter League - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
       
+      # Need to get: student_email, teacher_email, assignment_two (submission), document_two (created)
+      
+      
       $driver.get(@base_url)
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
@@ -165,7 +168,7 @@ describe "Students and Teachers Can Provide Comments" do
       #($driver.find_element(:link, "posted a comment (The teacher is commenting on the discussion for...) to Our first class discussion!").text).should == "posted a comment (The teacher is commenting on the discussion for...) to Our first class discussion!"
       # Verify
       $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).size > 0
-      #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to Document #" + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to Document #" + document_two
+      #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to " + document_two
       $driver.find_element(:link, "Logout").click
       
       pass(@test_id)
