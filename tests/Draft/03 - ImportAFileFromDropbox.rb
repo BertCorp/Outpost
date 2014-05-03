@@ -16,7 +16,10 @@ describe "Import a file from Dropbox" do
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit unless $is_test_suite
+    unless $is_test_suite
+      $driver.quit
+      $outpost.quit
+    end
   end
   
   it "test_3_import_a_file_from_dropbox" do

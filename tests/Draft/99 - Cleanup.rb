@@ -14,6 +14,7 @@ describe "Test Cleanup" do
   after(:all) do
     # if this is really the end... then quit.
     $driver.quit
+    $outpost.quit
   end
   
   it "test_99_cleanup" do
