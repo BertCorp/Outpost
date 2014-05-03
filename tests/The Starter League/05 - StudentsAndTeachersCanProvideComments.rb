@@ -35,13 +35,13 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_element(:link, "Outpost S.").click
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      #puts student_email
+      puts student_email
       
       # Next, let's get the teacher's email
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "teaching_staff").find_element(:link, "Outpost T.").click
       teacher_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      #puts teacher_email
+      puts teacher_email
       
       # Now, we need the submission assignment
       $driver.find_element(:link, "Classes").click
@@ -63,11 +63,30 @@ describe "Students and Teachers Can Provide Comments" do
           end
         end
       end
-      #puts assignment_two
+      puts assignment_two
+      # Add a new submission assigment if we don't have one we can use.
+      if assignment_two == nil
+        $driver.find_element(:link, "Add a new assignment").click
+        $driver.find_element(:id, "assignment_requires_submission_true").click
+
+        assignment_two = "Submission Exercise #" + rand(10000).to_s
+
+        $driver.find_element(:id, "assignment_title").clear
+        $driver.find_element(:id, "assignment_title").send_keys assignment_two
+        $driver.find_element(:name, "commit").click
+
+        type_redactor_field('assignment_task_content', "Test content for " + assignment_two)
+
+        $driver.find_element(:link, "Publish...").click
+        $driver.find_element(:name, "publish_and_notify").click
+        # Verify
+        ($driver.find_element(:link, assignment_two).text).should == assignment_two
+        puts "Added new assignment: #{assignment_two}"
+      end
       
       # And finally, we need to get the created document
       document_two = $driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a').text.gsub($driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a > span').text, '').chomp(" ")
-      #puts document_two
+      puts document_two
       
       #puts $driver.find_elements(:link, "Logout").inspect
       $driver.find_elements(:link, "Logout").first.click
@@ -84,9 +103,32 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       
-      # Student can comment on a submission assignment
       $driver.find_element(:link, assignment_two).click
+            
+      # Complete second (submission) exercise if we haven't already
+      if element_present?(:id, 'assignment_submission_content')
+        answer_one = "Answer #" + rand(11111).to_s
+        
+        type_redactor_field('assignment_submission_content', "This is my first answer to a Lantern exercise. I hope I get it right! " + answer_one)      
+
+        $driver.find_element(:name, "draft").click
+        $driver.find_element(:link, "← Assignments").click
+        $wait.until { $driver.current_url.include? '/assignments' }
+        $driver.find_element(:link, assignment_two).click
+        # Verify
+        ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
+
+        type_redactor_field('assignment_submission_content', "This is my first answer to a Lantern exercise. I hope I get it right! " + assignment_two + " Now with a change to it!")
+
+        $driver.find_element(:name, "complete").click
+        if alert_present?
+          close_alert_and_get_its_text(true)
+        end
+        sleep(2)
+        $driver.find_element(:link, assignment_two).click
+      end
       
+      # Student can comment on a submission assignment
       type_redactor_field('comment_content', "This is a comment on #{assignment_two}. #{random_num}")
       #$driver.find_element(:css, "textarea#comment_content").clear
       #$driver.find_element(:css, "textarea#comment_content").send_keys "This is a comment on " + assignment_two + "."

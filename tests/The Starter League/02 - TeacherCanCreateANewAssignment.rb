@@ -32,7 +32,7 @@ describe "Teacher Can Create A New Assignment" do
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       
-      # Add a new assignment
+      # Add a new completion assignment
       $driver.find_element(:link, "Add a new assignment").click
       
       assignment_one = "Completion Exercise #" + rand(10000).to_s
@@ -60,7 +60,7 @@ describe "Teacher Can Create A New Assignment" do
       $driver.find_element(:link, "← Assignments").click
       $wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
       
-      # Add a new assigment
+      # Add a new submission assigment
       $driver.find_element(:link, "Add a new assignment").click
       $driver.find_element(:id, "assignment_requires_submission_true").click
 
