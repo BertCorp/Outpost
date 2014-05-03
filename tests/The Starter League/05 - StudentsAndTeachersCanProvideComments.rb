@@ -35,13 +35,13 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_element(:link, "Outpost S.").click
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      puts student_email
+      #puts student_email
       
       # Next, let's get the teacher's email
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "teaching_staff").find_element(:link, "Outpost T.").click
       teacher_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      puts teacher_email
+      #puts teacher_email
       
       # Now, we need the submission assignment
       $driver.find_element(:link, "Classes").click
@@ -63,16 +63,16 @@ describe "Students and Teachers Can Provide Comments" do
           end
         end
       end
-      puts assignment_two
+      #puts assignment_two
       
       # And finally, we need to get the created document
       document_two = $driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a').text.gsub($driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a > span').text, '').chomp(" ")
-      puts document_two
+      #puts document_two
       
       #puts $driver.find_elements(:link, "Logout").inspect
       $driver.find_elements(:link, "Logout").first.click
       $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
-=begin
+
       # Login as student
       $driver.get(@base_url)
       $driver.find_element(:link, "Log in").click
@@ -147,7 +147,7 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_elements(:link, "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost").size > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost").text).should == "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost"
       $driver.find_element(:link, "Logout").click
-=end      
+
       # Login as teacher and comment on a created resource file.
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
