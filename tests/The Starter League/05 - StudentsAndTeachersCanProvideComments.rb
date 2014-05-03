@@ -35,13 +35,13 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_element(:link, "Outpost S.").click
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      puts student_email
+      #puts student_email
       
       # Next, let's get the teacher's email
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "teaching_staff").find_element(:link, "Outpost T.").click
       teacher_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      puts teacher_email
+      #puts teacher_email
       
       # Now, we need the submission assignment
       $driver.find_element(:link, "Classes").click
@@ -63,7 +63,7 @@ describe "Students and Teachers Can Provide Comments" do
           end
         end
       end
-      puts assignment_two
+      #puts assignment_two
       # Add a new submission assigment if we don't have one we can use.
       if assignment_two == nil
         $driver.find_element(:link, "Add a new assignment").click
@@ -81,12 +81,12 @@ describe "Students and Teachers Can Provide Comments" do
         $driver.find_element(:name, "publish_and_notify").click
         # Verify
         ($driver.find_element(:link, assignment_two).text).should == assignment_two
-        puts "Added new assignment: #{assignment_two}"
+        #puts "Added new assignment: #{assignment_two}"
       end
       
       # And finally, we need to get the created document
       document_two = $driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a').text.gsub($driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a > span').text, '').chomp(" ")
-      puts document_two
+      #puts document_two
       
       #puts $driver.find_elements(:link, "Logout").inspect
       $driver.find_elements(:link, "Logout").first.click

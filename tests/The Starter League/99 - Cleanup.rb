@@ -10,6 +10,8 @@ describe "Test Cleanup" do
   before(:all) do
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @retry_count = 0
+    $driver = start_driver({ name: 'Starter League - Automated Tests' })
+    $driver.manage.timeouts.implicit_wait = 3
   end
   
   after(:all) do
@@ -20,9 +22,6 @@ describe "Test Cleanup" do
   
   it "Clean up users" do
     begin
-      $driver = start_driver({ name: 'Starter League - Automated Tests' })
-      $driver.manage.timeouts.implicit_wait = 3
-
       login_as_admin
       
       # People Cleanup
@@ -72,9 +71,6 @@ describe "Test Cleanup" do
 
   it "Clean up assignments" do
     begin
-      $driver = start_driver({ name: 'Starter League - Automated Tests' })
-      $driver.manage.timeouts.implicit_wait = 3
-
       login_as_admin
       
       # go to assignments page
@@ -113,9 +109,6 @@ describe "Test Cleanup" do
 
   it "Clean up resources" do
     begin
-      $driver = start_driver({ name: 'Starter League - Automated Tests' })
-      $driver.manage.timeouts.implicit_wait = 3
-
       login_as_admin
       
       # Delete Resources
@@ -154,9 +147,6 @@ describe "Test Cleanup" do
   
   it "Clean up discussions" do
     begin
-      $driver = start_driver({ name: 'Starter League - Automated Tests' })
-      $driver.manage.timeouts.implicit_wait = 3
-
       login_as_admin
       
       # Delete Resources

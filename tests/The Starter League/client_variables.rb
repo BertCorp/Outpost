@@ -15,7 +15,6 @@ end
 
 def login_as_admin
   $driver.get(@base_url) unless $driver.current_url == @base_url
-  $wait.until { $driver.current_url == @base_url }
   $driver.find_element(:link, "Log in").click
   if $driver.current_url.include? "/login"
     $driver.find_element(:id, "user_email").clear
