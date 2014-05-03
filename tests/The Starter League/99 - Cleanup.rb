@@ -61,6 +61,7 @@ describe "Test Cleanup" do
     rescue => e
       #@retry_count = @retry_count + 1
       puts ""
+      puts "Current Page: #{$driver.current_url}"
       puts "Clean up users exception: #{e.inspect}"
       puts e.backtrace.join("\n")
       puts ""
@@ -82,9 +83,9 @@ describe "Test Cleanup" do
       $driver.find_element(:link, "Assignments").click
       $wait.until { $driver.current_url.include? '/assignments' }
       
-      # loop through .assignment and leave the first 10 
+      # loop through .assignment and leave the newest 10 
       while $driver.find_elements(:css, '#resources > table > tbody > tr').size > 10 do
-        $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(11) > td.content > a').click
+        $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(1) > td.content > a').click
         $wait.until { $driver.find_elements(:link, "change this").size > 0 }
         $driver.find_element(:link, "change this").click
         $driver.find_element(:link, "Delete this assignment").click
@@ -100,6 +101,7 @@ describe "Test Cleanup" do
     rescue => e
       #@retry_count = @retry_count + 1
       puts ""
+      puts "Current Page: #{$driver.current_url}"
       puts "Clean up assignments exception: #{e.inspect}"
       puts e.backtrace.join("\n")
       puts ""
@@ -122,9 +124,9 @@ describe "Test Cleanup" do
       $driver.find_element(:link, "Resources").click
       $wait.until { $driver.current_url.include? '/resources' }
       
-      # loop through .assignment and leave the first 5
+      # loop through .assignment and leave the newest 5
       while $driver.find_elements(:css, '#resources > table > tbody > tr').size > 5 do
-        $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(6) > td.content > a').click
+        $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(1) > td.content > a').click
         $wait.until { $driver.find_elements(:link, "Delete").size > 0 }
         $driver.find_element(:link, "Delete").click
         (close_alert_and_get_its_text(true)).should include("Are you sure")
@@ -140,6 +142,7 @@ describe "Test Cleanup" do
     rescue => e
       #@retry_count = @retry_count + 1
       puts ""
+      puts "Current Page: #{$driver.current_url}"
       puts "Clean up resources exception: #{e.inspect}"
       puts e.backtrace.join("\n")
       puts ""
