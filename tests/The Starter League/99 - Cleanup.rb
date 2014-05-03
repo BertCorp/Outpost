@@ -109,6 +109,8 @@ describe "Test Cleanup" do
 
   it "Clean up resources" do
     begin
+      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
+      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
       login_as_admin
       
       # Delete Resources
