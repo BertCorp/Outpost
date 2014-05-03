@@ -80,8 +80,9 @@ describe "Test Cleanup" do
       $wait.until { $driver.current_url.include? '/assignments' }
       
       # loop through .assignment and leave the newest 10 
-      while $driver.find_elements(:css, '#resources > table > tbody > tr').size > 10 do
-        $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(1) > td.content > a').click
+      #assignment_899 > td.title > a
+      while $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size > 10 do
+        $driver.find_element(:css, '#assignments > .curriculum-items > tbody > tr:nth-child(1) > td.title > a').click
         $wait.until { $driver.find_elements(:link, "change this").size > 0 }
         $driver.find_element(:link, "change this").click
         $driver.find_element(:link, "Delete this assignment").click
@@ -92,7 +93,7 @@ describe "Test Cleanup" do
         $wait.until { $driver.current_url.include? '/assignments' }
       end
       # Verify
-      $driver.find_elements(:css, '#resources > table > tbody > tr').size <= 10
+      $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size <= 10
 
     rescue => e
       #@retry_count = @retry_count + 1
@@ -109,8 +110,6 @@ describe "Test Cleanup" do
 
   it "Clean up resources" do
     begin
-      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
-      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
       login_as_admin
       
       # Delete Resources
@@ -149,6 +148,10 @@ describe "Test Cleanup" do
   
   it "Clean up discussions" do
     begin
+      # Why are you being such an a-hole?
+      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
+      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
+      
       login_as_admin
       
       # Delete Resources
