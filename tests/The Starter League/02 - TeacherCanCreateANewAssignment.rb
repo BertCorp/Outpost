@@ -104,7 +104,7 @@ describe "Teacher Can Create A New Assignment" do
       puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
       puts ""
-      retry if @retry_count < 3
+      retry if @retry_count < 3 && $is_test_suite
       fail(@test_id)
     end
   end

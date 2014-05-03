@@ -51,7 +51,7 @@ end
 def type_redactor_field(id, text)
   $driver.find_element(:css, ".redactor_editor").click
   $driver.find_element(:css, ".redactor_editor").send_keys text
-  $driver.execute_script("document.getElementsByClassName('redactor_editor')[0].innerHTML = '<p>" + text + "</p>'")
+  $driver.execute_script("document.getElementsByClassName('redactor_editor')[0].innerHTML = '<p>" + text.gsub("'", "\\'") + "</p>'")
   sleep(1)
   $driver.execute_script("document.getElementById('" + id + "').style.display = 'block'")
   $driver.find_element(:id, id).clear

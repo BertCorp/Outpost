@@ -147,7 +147,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
       puts ""
-      retry if @retry_count < 3
+      retry if @retry_count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end
