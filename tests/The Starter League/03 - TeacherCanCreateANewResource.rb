@@ -16,7 +16,10 @@ describe "Teacher Can Create A New Assignment" do
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit unless $is_test_suite
+    unless $is_test_suite
+      $driver.quit
+      $outpost.quit
+    end
   end
   
   it "test_03_teacher_can_create_a_new_resource" do
@@ -86,6 +89,7 @@ describe "Teacher Can Create A New Assignment" do
     rescue => e
       @retry_count = @retry_count + 1
       puts ""
+      puts "Current Page: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"

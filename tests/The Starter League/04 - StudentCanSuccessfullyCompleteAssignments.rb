@@ -16,7 +16,10 @@ describe "Student Can Successfully Complete Assignments" do
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit unless $is_test_suite
+    unless $is_test_suite
+      $driver.quit
+      $outpost.quit
+    end
   end
   
   it "test_04_student_can_successfully_complete_assignments_html" do
@@ -147,6 +150,7 @@ describe "Student Can Successfully Complete Assignments" do
     rescue => e
       @retry_count = @retry_count + 1
       puts ""
+      puts "Current Page: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"

@@ -16,7 +16,10 @@ describe "Organization Owner Can Manage Users Of An Organization" do
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit unless $is_test_suite
+    unless $is_test_suite
+      $driver.quit
+      $outpost.quit
+    end
   end
   
   it "test_01_organization_owner_can_manage_users_of_an_organization" do
@@ -143,6 +146,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
     rescue => e
       @retry_count = @retry_count + 1
       puts ""
+      puts "Current Page: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"

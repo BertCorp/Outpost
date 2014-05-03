@@ -16,7 +16,10 @@ describe "Students and Teachers Can Provide Comments" do
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit unless $is_test_suite
+    unless $is_test_suite
+      $driver.quit
+      $outpost.quit
+    end
   end
   
   it "test_05_students_and_teachers_can_provide_comments_html" do
@@ -206,9 +209,9 @@ describe "Students and Teachers Can Provide Comments" do
       #$driver.find_element(:css, "textarea#comment_content").send_keys "A teacher's comment on an exercise"
       $driver.find_element(:name, "commit").click
       # Verify
-      ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "This is my first answer to a Lantern exercise. I hope I get it right! " + assignment_two + " Now with a change to it!"
+      ($driver.find_element(:css, "div.reviewing-assignment-submission > div.assignment-submission-content > div.content").text).should == "This is my first answer to a Lantern exercise. I hope I get it right! " + assignment_two + " Now with a change to it!"
       # Verify
-      ($driver.find_element(:xpath, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "A teacher's comment on an exercise"
+      ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "A teacher's comment on an exercise"
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Recent Activity").click
       # Verify
@@ -236,6 +239,7 @@ describe "Students and Teachers Can Provide Comments" do
     rescue => e
       @retry_count = @retry_count + 1
       puts ""
+      puts "Current Page: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
       puts "Retry: #{@retry_count}"
