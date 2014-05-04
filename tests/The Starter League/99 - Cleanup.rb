@@ -18,7 +18,6 @@ describe "Test Cleanup" do
   after(:all) do
     # if this is really the end... then quit.
     $driver.quit
-    $outpost.quit if $outpost
   end
   
   it "Clean up users" do

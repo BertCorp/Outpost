@@ -8,13 +8,13 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 describe "Test Cleanup" do
 
   before(:all) do
+    $outpost.quit if $outpost
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
   end
   
   after(:all) do
     # if this is really the end... then quit.
     $driver.quit
-    $outpost.quit
   end
   
   it "test_99_cleanup" do
