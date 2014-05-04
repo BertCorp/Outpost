@@ -24,7 +24,7 @@ describe "Students and Teachers Can Provide Comments" do
   
   it "test_05_students_and_teachers_can_provide_comments_html" do
     begin
-      $driver = start_driver({ name: 'Starter League - Automated Tests' })
+      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       random_num = rand(10000).to_s
       

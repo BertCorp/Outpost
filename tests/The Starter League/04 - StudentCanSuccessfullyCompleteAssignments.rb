@@ -24,7 +24,7 @@ describe "Student Can Successfully Complete Assignments" do
   
   it "test_04_student_can_successfully_complete_assignments_html" do
     begin
-      $driver = start_driver({ name: 'Starter League - Automated Tests' })
+      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       
       login_as_admin

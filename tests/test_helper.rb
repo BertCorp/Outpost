@@ -54,6 +54,9 @@ end
 
 def start(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/start")
+  sleep(1)
+  $outpost.quit
+  $outpost = nil
 end
 
 def pass(test_id)
@@ -76,8 +79,7 @@ end
 
 # Selenium IDE Helper Functions
 def element_present?(how, what)
-  $driver.find_element(how, what)
-  true
+  $driver.find_elements(how, what).size > 0
 rescue Selenium::WebDriver::Error::NoSuchElementError
   false
 end

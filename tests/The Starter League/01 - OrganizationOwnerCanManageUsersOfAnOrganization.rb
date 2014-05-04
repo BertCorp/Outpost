@@ -24,7 +24,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
   
   it "test_01_organization_owner_can_manage_users_of_an_organization" do
     begin
-      $driver = start_driver({ name: 'Starter League - Automated Tests' })
+      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       
       clear_gmail_inbox
@@ -43,6 +43,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
         option.text == "teacher"
       end.click
       $driver.find_element(:name, "commit").click
+      $driver.find_element(:css, '.alert a').click if element_present?(:id, 'flash-msg')
       $driver.find_element(:link, "Logout").click
 
       sign_into_gmail
@@ -72,6 +73,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:id, "user_terms_of_service").click
       $driver.find_element(:name, "commit").click
+      $driver.find_element(:css, '.alert a').click if element_present?(:id, 'flash-msg')
       # Verify
       ($driver.find_element(:css, "h4").text).should == "Outpost Teacher (" + teacher_email + ")"
       # Verify
@@ -89,6 +91,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "invitation_emails_").send_keys student_email
       $driver.find_element(:id, "invitation_enrollments_0_course_id").click
       $driver.find_element(:name, "commit").click
+      $driver.find_element(:css, '.alert a').click if element_present?(:id, 'flash-msg')
       $driver.find_element(:link, "Logout").click
       
       sleep(5)
@@ -119,6 +122,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:id, "user_terms_of_service").click
       $driver.find_element(:name, "commit").click
+      $driver.find_element(:css, '.alert a').click if element_present?(:id, 'flash-msg')
       # Verify
       ($driver.find_element(:css, "h4").text).should == "Outpost Student (" + student_email + ")"
       # Verify

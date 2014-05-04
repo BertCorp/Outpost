@@ -24,7 +24,7 @@ describe "Teacher Can Create A New Assignment" do
   
   it "test_03_teacher_can_create_a_new_resource" do
     begin
-      $driver = start_driver({ name: 'Starter League - Automated Tests' })
+      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       
       login_as_admin

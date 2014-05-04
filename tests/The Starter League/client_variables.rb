@@ -28,12 +28,11 @@ end
 
 def sign_into_gmail
   $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
-  sleep(2)
-  sign_out_of_gmail if element_present?(:link, "Sign out")
-  begin
+  sleep(1)
+  sign_out_of_gmail if $driver.find_elements(:link, "Sign out").size > 0 #element_present?(:link, "Sign out")
+  if $driver.find_element(:id).displayed?
     $driver.find_element(:id, "Email").clear
     $driver.find_element(:id, "Email").send_keys "test@bertcorp.com"
-  rescue
   end
   $driver.find_element(:id, "Passwd").clear
   $driver.find_element(:id, "Passwd").send_keys "LigReb2013"
@@ -46,6 +45,7 @@ def sign_out_of_gmail
   if alert_present?
     close_alert_and_get_its_text(true)
   end
+  sleep(1)
 end
 
 def type_redactor_field(id, text)

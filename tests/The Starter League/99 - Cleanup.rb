@@ -8,9 +8,10 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 describe "Test Cleanup" do
 
   before(:all) do
+    $outpost.quit if $outpost
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @retry_count = 0
-    $driver = start_driver({ name: 'Starter League - Automated Tests' })
+    $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
     $driver.manage.timeouts.implicit_wait = 3
   end
   
