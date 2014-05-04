@@ -109,7 +109,7 @@ describe "Teacher Can Create A New Assignment" do
       puts "Retry: #{@retry_count}"
       puts ""
       retry if @retry_count < 3 && $is_test_suite
-      fail(@test_id)
+      fail(@test_id, e)
     end
   end
   
