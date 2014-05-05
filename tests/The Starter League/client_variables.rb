@@ -30,7 +30,7 @@ def sign_into_gmail
   $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
   sleep(1)
   sign_out_of_gmail if $driver.find_elements(:link, "Sign out").size > 0 #element_present?(:link, "Sign out")
-  if $driver.find_element(:id).displayed?
+  if $driver.find_element(:id, "Email").displayed?
     $driver.find_element(:id, "Email").clear
     $driver.find_element(:id, "Email").send_keys "test@bertcorp.com"
   end

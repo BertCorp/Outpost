@@ -18,7 +18,7 @@ describe "Student Can Successfully Complete Assignments" do
     # if this is really the end... then quit.
     unless $is_test_suite
       $driver.quit
-      $outpost.quit
+      $outpost.quit if $outpost
     end
   end
   
@@ -38,7 +38,7 @@ describe "Student Can Successfully Complete Assignments" do
       # next, lets get the assignments we need
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.current_url.include? '/courses/' }
+      $wait.until { $driver.find_elements(:css, "table.curriculum-items").size > 0 }
       sleep(2)
       
       assignment_one = nil
@@ -79,6 +79,7 @@ describe "Student Can Successfully Complete Assignments" do
       ($driver.find_element(:css, "h4").text).should == "Outpost Student (" + student_email + ")"
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
+      $wait.until { $driver.find_elements(:link, assignment_one).size > 0 }
       
       # Complete first (completion) exercise
       $driver.find_element(:link, assignment_one).click
@@ -112,14 +113,15 @@ describe "Student Can Successfully Complete Assignments" do
       # Verify
       ($driver.find_element(:css, "div.review-grade > span").text).should == "Your answer is pending review."
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.current_url.include? '/courses/' }
-      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Recent Activity").size > 0 }
       $driver.find_element(:link, "Recent Activity").click
+      $wait.until { $driver.find_elements(:link, "answered " + assignment_two).size > 0 }
       # Verify
       ($driver.find_element(:link, "answered " + assignment_two).text).should == "answered " + assignment_two
       # Verify
       ($driver.find_element(:link, "completed " + assignment_one).text).should == "completed " + assignment_one
       $driver.find_element(:link, "Me").click
+      $wait.until { $driver.find_elements(:link, "answered " + assignment_two).size >= 0 }
       # Verify
       ($driver.find_element(:link, "answered " + assignment_two).text).should == "answered " + assignment_two
       # Verify

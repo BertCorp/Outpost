@@ -18,7 +18,7 @@ describe "Teacher Can Create A New Assignment" do
     # if this is really the end... then quit.
     unless $is_test_suite
       $driver.quit
-      $outpost.quit
+      $outpost.quit if $outpost
     end
   end
   
@@ -94,6 +94,7 @@ describe "Teacher Can Create A New Assignment" do
       ($driver.find_element(:link, "published assignment \"" + assignment_two + "\"").text).should == "published assignment \"" + assignment_two + "\""
       # Check that activity was logged for logged in user.
       $driver.find_element(:link, "Me").click
+      sleep(2)
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_one + "\"").text).should == "published assignment \"" + assignment_one + "\""
       # Verify

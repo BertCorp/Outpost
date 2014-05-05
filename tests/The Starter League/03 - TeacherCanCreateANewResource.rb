@@ -18,7 +18,7 @@ describe "Teacher Can Create A New Assignment" do
     # if this is really the end... then quit.
     unless $is_test_suite
       $driver.quit
-      $outpost.quit
+      $outpost.quit if $outpost
     end
   end
   
@@ -38,7 +38,11 @@ describe "Teacher Can Create A New Assignment" do
       
       $driver.execute_script("document.getElementById('attachment_file').style.height = 'auto';")
       $driver.execute_script("document.getElementById('attachment_file').style.width = 'auto';")
-      $driver.find_element(:id, "attachment_file").send_keys "~/Documents/documents/text-sample1.txt"
+      begin
+        $driver.find_element(:id, "attachment_file").send_keys "~/Documents/documents/text-sample1.txt"
+      rescue
+        $driver.find_element(:id, "attachment_file").send_keys "/Users/test1/Documents/documents/text-sample1.txt"        
+      end
       #$driver.find_element(:css, "input.attachment-file-field").clear
       #$driver.find_element(:css, "input.attachment-file-field").send_keys "~/Dropbox/BertCorp/clients/Lantern/test_document.rtf"
       
@@ -53,6 +57,7 @@ describe "Teacher Can Create A New Assignment" do
       ($driver.find_element(:css, "div.post-content").text).should == "text-sample1.txt (4.03 KB)\nAn uploaded test resource. " + document_one
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
+      $wait.until { $driver.find_elements(:link, "Resources").size > 0 }
       $driver.find_element(:link, "Resources").click
       $driver.find_element(:link, "Text document").click
       

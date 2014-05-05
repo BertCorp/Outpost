@@ -25,7 +25,9 @@ describe "Test Cleanup" do
       login_as_admin
       
       # People Cleanup
+      $wait.until { $driver.find_elements(:link, "People").size > 0 }
       $driver.find_element(:link, "People").click
+      $wait.until { $driver.find_elements(:id, "teaching_staff").size > 0 }
       # Leave one teacher account (and one admin) in the system.
       while $driver.find_elements(:css, '#teaching_staff li').size > 2 do
         #puts "Teachers: " + $driver.find_elements(:css, '#teaching_staff li').size.to_s

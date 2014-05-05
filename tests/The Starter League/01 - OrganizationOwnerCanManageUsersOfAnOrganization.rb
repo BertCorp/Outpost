@@ -18,7 +18,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
     # if this is really the end... then quit.
     unless $is_test_suite
       $driver.quit
-      $outpost.quit
+      $outpost.quit if $outpost
     end
   end
   
@@ -46,6 +46,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:css, '.alert a').click if element_present?(:id, 'flash-msg')
       $driver.find_element(:link, "Logout").click
 
+      sleep(5)
       sign_into_gmail
       
       # Click and view the latest invitation email.
