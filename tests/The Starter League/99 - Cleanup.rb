@@ -168,6 +168,7 @@ describe "Test Cleanup" do
         $driver.find_element(:css, '#course-content > .discussions-table > tbody > tr:nth-child(6) > td.content > a').click
         $wait.until { $driver.find_elements(:link, "Delete").size > 0 }
         $driver.find_element(:link, "Delete").click
+        sleep(1)
         (close_alert_and_get_its_text(true)).should include("Are you sure")
         if element_present?(:id, "flash-msg")
           ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
