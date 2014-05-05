@@ -45,19 +45,21 @@ describe "Student Can Successfully Complete Assignments" do
       assignment_two = nil
       #puts $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').size
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
-        text = elem.find_element(:css, 'td.title > a').text
-        klass = elem.find_element(:css, 'td.actions > a').attribute('class')
-        if klass.include?("no-submissions")
-          #puts text
-          if (assignment_one == nil) && text.include?("Completion Exercise")
-            #puts "COMPLETION!"
-            assignment_one = text
-          elsif (assignment_two == nil) && text.include?("Submission Exercise")
-            #puts "SUBMISSION!"
-            assignment_two = text
+        if elem.find_elements(:css, 'td.actions > a').size > 0
+          text = elem.find_element(:css, 'td.title > a').text
+          klass = elem.find_element(:css, 'td.actions > a').attribute('class')
+          if klass.include?("no-submissions")
+            #puts text
+            if (assignment_one == nil) && text.include?("Completion Exercise")
+              #puts "COMPLETION!"
+              assignment_one = text
+            elsif (assignment_two == nil) && text.include?("Submission Exercise")
+              #puts "SUBMISSION!"
+              assignment_two = text
+            end
           end
+          break if (assignment_one != nil) && (assignment_two != nil)
         end
-        break if (assignment_one != nil) && (assignment_two != nil)
       end
       #puts assignment_one
       #puts assignment_two

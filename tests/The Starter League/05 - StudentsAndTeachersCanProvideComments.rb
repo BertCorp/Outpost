@@ -52,14 +52,16 @@ describe "Students and Teachers Can Provide Comments" do
       assignment_two = nil
       #puts $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').size
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
-        text = elem.find_element(:css, 'td.title > a').text
-        klass = elem.find_element(:css, 'td.actions > a').attribute('class')
-        unless klass.include?("no-submissions")
-          #puts text
-          if text.include?("Submission Exercise")
-            #puts "SUBMISSION!"
-            assignment_two = text
-            break
+        if elem.find_elements(:css, 'td.actions > a').size > 0
+          text = elem.find_element(:css, 'td.title > a').text
+          klass = elem.find_element(:css, 'td.actions > a').attribute('class')
+          unless klass.include?("no-submissions")
+            #puts text
+            if text.include?("Submission Exercise")
+              #puts "SUBMISSION!"
+              assignment_two = text
+              break
+            end
           end
         end
       end

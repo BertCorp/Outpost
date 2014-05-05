@@ -33,6 +33,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       
       # Invite a new teacher
       $driver.find_element(:link, "People").click
+      $wait.until { $driver.find_elements(:id, "add-people-btn").size > 0 }
       $driver.find_element(:id, "add-people-btn").click
       teacher_email = "test+lantern-t" + rand(1000).to_s + "@outpostqa.com"
       $driver.find_element(:id, "invitation_emails_").clear

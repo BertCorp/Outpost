@@ -79,20 +79,24 @@ describe "Test Cleanup" do
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Assignments").click
-      $wait.until { $driver.current_url.include? '/assignments' }
+      $wait.until { $driver.find_elements(:link, "Reorder").size > 0 }
       
       # loop through .assignment and leave the newest 10 
       #assignment_899 > td.title > a
       while $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size > 10 do
         $driver.find_element(:css, '#assignments > .curriculum-items > tbody > tr:nth-child(1) > td.title > a').click
+        sleep(2)
         $wait.until { $driver.find_elements(:link, "change this").size > 0 }
         $driver.find_element(:link, "change this").click
+        sleep(1)
+        $wait.until { $driver.find_elements(:link, "Delete this assignment").size > 0 }
         $driver.find_element(:link, "Delete this assignment").click
         (close_alert_and_get_its_text(true)).should include("Are you sure")
+        sleep(1)
         # Verify
         ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
         $driver.find_element(:link, "Assignments").click
-        $wait.until { $driver.current_url.include? '/assignments' }
+        $wait.until { $driver.find_elements(:link, "Reorder").size > 0 }
       end
       # Verify
       $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size <= 10
