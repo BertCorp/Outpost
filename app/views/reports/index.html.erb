@@ -15,18 +15,22 @@
 	  <tr>
 	    <th>Status</th>
 	    <th>Initiated By</th>
-	    <th>Initiated At</th>
-	    <th>Started At</th>
-	    <th>Time To Complete</th>
+      <th>Initiated</th>
+      <th>Started</th>
+      <th>Completed In</th>
 	    <th></th>
 	  </tr>
 	  <% @reports.each do |report| %>
 	    <tr class="<%= report.status == "Completed" ? "success" : report.status == "Completed With Failures" ? "danger" : "" %>">
 	      <td><%= report.status %></td>
-	      <td><%= report.initiator.name %></td> 
-	      <td><abbr title="<%= (report.initiated_at.present?) ? report.initiated_at.to_formatted_s(:long) : '--' %>"><%= time_ago_in_words(report.initiated_at) %> ago</abbr></td>
-	      <td><abbr title="<%= report.started_at.to_formatted_s(:long) if report.started_at.present? %>"><%= time_ago_in_words(report.started_at) + ' ago' if report.started_at.present? %> </abbr></td>
-	      <td><%= distance_of_time_in_words(report.completed_at, report.started_at) if report.completed_at.present? %></td>
+				<td><%= (report.initiated_by.present?) ? report.initiator.name : "Scheduler" %></td> 
+	      <td><%= raw("<abbr title=\"#{report.initiated_at.to_formatted_s(:long)}\">#{time_ago_in_words(report.initiated_at)} ago</abbr>") if report.initiated_at.present? %></td>
+        <td><%= raw("<abbr title=\"#{report.started_at.to_formatted_s(:long)}\">#{distance_of_time_in_words(report.initiated_at, report.started_at)} later</abbr>") if report.started_at.present? %></td>
+				<% if report.completed_at.present? %>
+				<td><abbr title="<%= report.completed_at.to_formatted_s(:long) %>"><%= (report.completed_at - report.started_at).round(2) %> seconds</abbr></td>
+				<% else %>
+				<td>--</td>
+				<% end %>
 	      <td><%= link_to "View", report_path(report), class: 'btn btn-default' %></td>
 	    </tr>
 	  <% end %>

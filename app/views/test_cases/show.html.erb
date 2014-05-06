@@ -33,20 +33,26 @@
 <table class="table table-bordered table-striped">
   <tr>
     <th>Status</th>
-    <th>Report</th>
-    <th>Started At</th>
-    <th>Ended At</th>
+    <th>Initiated By</th>
+    <th>Initiated</th>
+    <th>Started</th>
+    <th>Completed In</th>
     <th>Summary</th>
   </tr>
-  <% @test_case.results.order('started_at DESC').each do |results| %>
-  <tr class="<%= results.status == "Passed" ? "success" : results.status == "Failed" ? "danger" : "" %>">
-    <td><%= results.status %></td>
-    <td><%= link_to results.report.date, report_path(results.report) %></td>
-    <td><%= results.started_at %></td>
-    <td><%= results.ended_at %></td>
+  <% @test_case.results.order('started_at DESC').each do |results| if results.report.present? %>
+  <tr class="<%= (results.status == "Passed") ? "success" : ((results.status == "Failure") ? "danger" : "") %>">
+    <td><%= link_to results.status, report_path(results.report) %></td>
+		<td><%= (results.report.initiated_by.present?) ? results.report.initiator.name : "Scheduler" %></td> 
+    <td><%= raw("<abbr title=\"#{results.report.initiated_at.to_formatted_s(:long)}\">#{time_ago_in_words(results.report.initiated_at)} ago</abbr>") if results.report.initiated_at.present? %></td>
+    <td><%= raw("<abbr title=\"#{results.report.started_at.to_formatted_s(:long)}\">#{distance_of_time_in_words(results.report.initiated_at, results.report.started_at)} later</abbr>") if results.report.started_at.present? %></td>
+		<% if results.report.completed_at.present? %>
+		<td><abbr title="<%= results.report.completed_at.to_formatted_s(:long) %>"><%= (results.report.completed_at - results.report.started_at).round(2) %> seconds</abbr></td>
+		<% else %>
+		<td>--</td>
+		<% end %>
     <td><%= results.summary %></td>
   </tr>
-  <% end %>
+  <% end end %>
 </table>
 <% elsif ['Awaiting Setup', 'Being Setup'].include? @test_case.status %>
 <p>We are still in the process of getting your test setup. We should have it done soon and we will run your first report and report back to you.</p>

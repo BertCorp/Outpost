@@ -36,17 +36,23 @@
   <tr>
     <th>ID</th>
     <th>Test</th>
+		<th>Completed In</th>
     <th>Results</th>
   </tr>
 	<% @results.order('id ASC').each do |result| %>
   <tr class="<%= result.status == "Passed" ? "success" : result.status == "Failed" ? "danger" : "" %>">
     <td><%= result.id %></td>
     <td><%= result.test_case.title %></td>
+		<% if result.ended_at.present? %>
+		<td><%= (result.ended_at - result.started_at).round(2) %> seconds</td>
+		<% else %>
+		<td>--</td>
+		<% end %>
   	<td><%= link_to result.status, [:admin, result] %></td>
   </tr>
 	<% if result.status != 'Pending' %>
   <tr>
-  	<td colspan="3">
+  	<td colspan="4">
 			Results Summary: 
   		<% if result.summary.present? %>
 	  	<%= htmlify(result.summary) %>
@@ -58,11 +64,11 @@
 	<% end %>
   <% if ["Queued"].include? result.status %>
 	<tr>
-  	<td colspan="3"><%= button_to 'Start Test', edit_admin_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
+  	<td colspan="4"><%= button_to 'Start Test', edit_admin_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
   </tr>
 	<% elsif ["Running"].include? result.status %>
 	<tr>
-  	<td colspan="3"><%= button_to 'Record Test Result', edit_admin_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
+  	<td colspan="4"><%= button_to 'Record Test Result', edit_admin_test_result_path(result), method: :get, class: 'btn btn-success' %></td>
   </tr>
 	<% end %>
 <% end %>

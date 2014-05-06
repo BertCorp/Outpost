@@ -17,7 +17,7 @@
       <th># of Tests</th>
       <th>Initiated</th>
       <th>Started</th>
-      <th>Completed</th>
+      <th>Completed In</th>
       <th></th>
     </tr>
   </thead>
@@ -28,9 +28,13 @@
         <td><%= link_to report.company.name, [:admin, report.company] %></td>
         <td><%= report.status %></td>
         <td><%= link_to report.test_cases.count, [:admin, report] %></td>
-        <td><%= report.initiated_at %></td>
-        <td><%= report.started_at %></td>
-        <td><%= report.completed_at %></td>
+        <td><%= raw("<abbr title=\"#{report.initiated_at.strftime('%D %T')}\">#{time_ago_in_words(report.initiated_at)} ago</abbr>") if report.initiated_at.present? %></td>
+        <td><%= raw("<abbr title=\"#{report.started_at.strftime('%D %T')}\">#{distance_of_time_in_words(report.initiated_at, report.started_at)} later</abbr>") if report.started_at.present? %></td>
+				<% if report.completed_at.present? %>
+				<td><abbr title="<%= report.completed_at.strftime('%D %T') %>"><%= (report.completed_at - report.started_at).round(2) %> seconds</abbr></td>
+				<% else %>
+				<td>--</td>
+				<% end %>
         <td>
 					<%= button_to "View Report", admin_report_path(report), method: :get, class: "btn btn-success" %>
 				</td>

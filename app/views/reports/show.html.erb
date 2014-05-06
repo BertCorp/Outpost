@@ -11,7 +11,7 @@ Report for <%= @report.company.name %> - <%= @report.created_at %>
 
 <p>Initiated At: <%= @report.initiated_at.to_formatted_s(:long) %></p>
 
-<p>Initiated By: <%= @report.initiator.name %></p>
+<p>Initiated By: <%= (@report.initiated_by.present?) ? @report.initiator.name : "Scheduler" %></p>
 
 <% if @report.started_at.present? %>
 <p>Started At: <%= @report.started_at.to_formatted_s(:long) %></p>
@@ -32,12 +32,18 @@ Report for <%= @report.company.name %> - <%= @report.created_at %>
 <table class="table table-bordered table-striped">
   <tr>
     <th>Test</th>
+		<th>Completed In</th>
     <th>Results</th>
   </tr>
 	<% @results.order('status ASC').each do |result| %>
-	<tr class="<%= result.status == "Passed" ? "success" : result.status == "Failed" ? "danger" : "" %>">
-     <td><%= result.test_case.title %></td>
-     <td><%= result.status %></td>
+	<tr class="<%= (result.status == "Passed") ? "success" : ((result.status == "Failure") ? "danger" : "") %>">
+    <td><%= result.test_case.title %></td>
+		<% if result.ended_at.present? %>
+		<td><%= (result.ended_at - result.started_at).round(2) %> seconds</td>
+		<% else %>
+		<td>--</td>
+		<% end %>
+    <td><%= result.status %></td>
   </tr>
   <% if result.summary.present? %>
 	<tr>

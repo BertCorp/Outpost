@@ -5,7 +5,7 @@ We just successfully finished running your tests for the day and everything look
 Here are the individual results:
 <% @report.results.order('id ASC').each do |test| %>
 
-- <%= test.test_case.title %>: <%= test.status %> (executed in <%= test.ended_at - test.started_at %> seconds)
+- <%= test.test_case.title %>: <%= test.status %> (executed in <%= (test.ended_at - test.started_at).round(2) %> seconds)
 <% end %> 
 
 
