@@ -23,7 +23,7 @@
   </thead>
   <tbody>
     <% @reports.order('created_at DESC').each do |report| %>
-      <tr>
+			<tr class="<%= (report.status == "Completed") ? "success" : ((report.status == "Completed With Failures") ? "danger" : "") %>">
         <td><%= link_to report.id, [:admin, report] %></td>
         <td><%= link_to report.company.name, [:admin, report.company] %></td>
         <td><%= report.status %></td>
