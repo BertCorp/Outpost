@@ -49,7 +49,10 @@ class ReportsController < ApplicationController
           @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id, test_environment_id: @report.test_environment_id })
         end
         
-        @report.delay.run!
+        env = @report.test_environment.name.downcase
+        env = 'staging' if env == 'mirror'
+        @report.delay.run!(env, params[:local])
+
         ReportMailer.admin_requested_report_triggered_email(@report).deliver
         ReportMailer.requested_report_triggered_email(@report).deliver
         

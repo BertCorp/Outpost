@@ -93,6 +93,28 @@ class Admin::TestCasesController < ApplicationController
     end
   end
   
+  # GET /tests/1/restart
+  # GET /tests/1/restart.json
+  def restart
+    @test_case = TestCase.find(params[:id])
+    @results = @test_case.results.where(status: 'Running')
+    respond_to do |format|
+      if @results.any?
+        @test_result = @results.last
+        if @test_result.update(started_at: Time.now, status: 'Running')
+          format.html { render text: 'Restarted...' }
+          format.json { head :no_content }
+        else
+          format.html { render text: @test_result.errors.inspect }
+          format.json { render json: @test_result.errors, status: :unprocessable_entity }
+        end
+      else
+        format.html { render text: 'Test not found.'}
+        format.json { head :no_content }
+      end   
+    end
+  end
+  
   # GET /tests/1/stop
   # GET /tests/1/stop.json
   def stop

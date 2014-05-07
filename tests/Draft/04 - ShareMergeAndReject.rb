@@ -10,7 +10,7 @@ describe "Share, Merge and Reject" do
   before(:all) do
     @test_id = "10"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
-    @retry_count = 0
+    @tries = []
     start(@test_id)
   end
   
@@ -38,12 +38,11 @@ describe "Share, Merge and Reject" do
       save_document
       
       go_home_from_document
-      
-      $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
-      sleep(1)
-      $driver.find_element(:css, "#sidebar_content > div:nth-child(5) a:nth-child(1)").click
 
-      share_link = $driver.find_element(:css, "#share_url").text
+      $driver.find_element(:css, ".document:nth-child(1)").find_element(:link, "SHARE").click
+
+      $wait.until { $driver.find_elements(:id, 'share_url').size > 0 }
+      share_link = $driver.find_element(:id, "share_url").text
 
       # $driver.find_element(:link, "Or email someone to help edit your document.").click
       # $driver.find_element(:id, "email_invitation_email").clear
@@ -77,7 +76,8 @@ describe "Share, Merge and Reject" do
       # $driver.get(@base_url + edit_link)
 
       $driver.get(share_link)
-      $driver.find_element(:css, "#sidebar_content div.instruction_copy a.btn").click
+      #sidebar_content > div > div:nth-child(2) > a
+      $driver.find_element(:css, "#sidebar_content div.instruction_copy a").click
       sleep(1)
       $driver.find_element(:link_text, "LOGIN").click
       sleep(1)
@@ -92,22 +92,8 @@ describe "Share, Merge and Reject" do
       save_document
 
       sleep(3)
-      # close intercom modal, if it exists
-      if element_present?(:css, '.ic_close_modal') && $driver.find_element(:css, '.ic_close_modal').displayed?
-        $driver.find_element(:css, '.ic_close_modal').click
-        sleep(1)
-      end
       
-      sleep(3)
-      begin
-        $driver.find_element(:css, "#done_editing_button").click
-      rescue
-        if element_present?(:css, '.ic_close_modal') && $driver.find_element(:css, '.ic_close_modal').displayed?
-          $driver.find_element(:css, '.ic_close_modal').click
-          sleep(1)
-        end
-        $driver.find_element(:css, "#done_editing_button").click
-      end
+      $driver.find_element(:css, "#done_editing_button").click
       
       sleep(3)
       
@@ -132,6 +118,8 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:id, "home_button_drafts").click
       $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
       ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
+      
+      $driver.find_element(:css, 'i.icon-home').click
       $driver.find_element(:link, "LOGOUT").click
 
       $driver.find_element(:link, "LOGIN").click
@@ -156,6 +144,7 @@ describe "Share, Merge and Reject" do
       # Verify
       ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num} Here is another change to this document."
       
+      $driver.find_element(:css, 'i.icon-home').click
       $driver.find_element(:link, "LOGOUT").click
       $driver.find_element(:link, "LOGIN").click
       $driver.find_element(:id, "draft_user_email").clear
@@ -171,17 +160,38 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:link, "VIEW").click
       sleep(1)
       ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
+      
+      $driver.find_element(:css, 'i.icon-home').click
       $driver.find_element(:link, "LOGOUT").click
       
       pass(@test_id)
     rescue => e
-      @retry_count = @retry_count + 1
+      # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="IModalOverlay"'
+        puts ""
+        puts e.inspect
+        puts "Closed intercom modal -- Ignore!"
+        $driver.find_element(:css, '.ic_close_modal').click
+        sleep(3)
+        e.ignore
+      end
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
+      puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
-      puts "Retry: #{@retry_count}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @retry_count < 3
+      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end

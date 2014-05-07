@@ -22,8 +22,6 @@ describe "Test Cleanup" do
       $driver = start_driver({ name: 'Draft - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
 
-      close_alert_and_get_its_text(true) if alert_present?
-
       start_logged_in
 
       count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
@@ -34,11 +32,25 @@ describe "Test Cleanup" do
         $driver.navigate.refresh
       end
       
-      
       #pass(@test_id)
-    #rescue => e
+    rescue => e
+      if e.inspect.include? 'id="IModalOverlay"'
+        puts ""
+        puts e.inspect
+        puts "Closed intercom modal -- Ignore!"
+        $driver.find_element(:css, '.ic_close_modal').click
+        sleep(3)
+        e.ignore
+      end
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        retry
+      end
       #fail(@test_id, e)
-      #raise
+      raise
     end
   end
   

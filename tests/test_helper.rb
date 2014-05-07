@@ -1,4 +1,5 @@
 require "./config/initializers/browserstack"
+require "./tests/ignorable"
 
 # Set Environment Variables
 ENV['ENVIRONMENT'] ||= 'production'
@@ -54,6 +55,13 @@ end
 
 def start(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/start")
+  sleep(1)
+  $outpost.quit
+  $outpost = nil
+end
+
+def restart(test_id)
+  outpost("http://www.outpostqa.com/admin/tests/#{test_id}/restart")
   sleep(1)
   $outpost.quit
   $outpost = nil

@@ -51,8 +51,25 @@ describe "TestPrep" do
         $driver.navigate.refresh
       end
 
-    #rescue => e
-      #raise
+    rescue => e
+      # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="IModalOverlay"'
+        puts ""
+        puts e.inspect
+        puts "Closed intercom modal -- Ignore!"
+        $driver.find_element(:css, '.ic_close_modal').click
+        sleep(3)
+        e.ignore
+      end
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        retry
+      end
+      
+      raise
     end
   end
   

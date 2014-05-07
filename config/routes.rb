@@ -29,6 +29,7 @@ Outpost::Application.routes.draw do
 
     resources :test_cases, path: 'tests' do
       get "start" => "test_cases#start", on: :member
+      get "restart" => "test_cases#restart", on: :member
       get "stop" => "test_cases#stop", on: :member
       post "start" => "test_cases#setup_start", as: :start_setup, on: :member
       put "finish" => "test_cases#setup_finish", as: :finish_setup, on: :member

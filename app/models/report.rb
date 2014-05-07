@@ -24,7 +24,7 @@ class Report < ActiveRecord::Base
     created_at.strftime('%Y-%m-%d %T')
   end
   
-  def run!(env = 'production', local = 'false')
+  def run!(env = 'production', local = false)
     output = Rake::Task['report:run'].invoke(id, env, local)
     logger.info output
   end

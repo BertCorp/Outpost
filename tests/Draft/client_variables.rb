@@ -30,17 +30,13 @@ end
 def start_logged_in
   $driver.get(@base_url + 'documents')
   # close any alerts, if they are present
-  if alert_present?
-    $driver.switch_to.alert.accept
-  end
+  #if alert_present?
+  #  $driver.switch_to.alert.accept
+  #end
   # login, if we aren't already
   if $driver.current_url.include? "draft/users/sign_in"
     $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
     $driver.find_element(:id, "draft_user_password").send_keys "changeme"
     $driver.find_element(:name, "commit").click
-  end
-  # close intercom modal, if it exists
-  if element_present?(:css, '.ic_close_modal') && $driver.find_element(:css, '.ic_close_modal').displayed?
-    $driver.find_element(:css, '.ic_close_modal').click
   end
 end

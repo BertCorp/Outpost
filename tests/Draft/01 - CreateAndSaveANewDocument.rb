@@ -10,7 +10,7 @@ describe "Create and save a new document" do
   before(:all) do
     @test_id = "7"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
-    @retry_count = 0
+    @tries = []
     start(@test_id)
   end
   
@@ -45,13 +45,32 @@ describe "Create and save a new document" do
       
       pass(@test_id)
     rescue => e
-      @retry_count = @retry_count + 1
+      # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="IModalOverlay"'
+        puts ""
+        puts e.inspect
+        puts "Closed intercom modal -- Ignore!"
+        $driver.find_element(:css, '.ic_close_modal').click
+        sleep(3)
+        e.ignore
+      end
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
+      puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
-      puts "Retry: #{@retry_count}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @retry_count < 3
+      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end
