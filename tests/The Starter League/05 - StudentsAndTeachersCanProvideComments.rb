@@ -245,7 +245,7 @@ describe "Students and Teachers Can Provide Comments" do
       # Teacher can comment on a discussion thread.
       $driver.find_element(:css, "div.breadcrumbs > a").click
       $driver.find_element(:link, "Discussions").click
-      $wait.until { $driver.find_elements(:link, "Our class discussion #{random_num}!").size > 0 }
+      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
       $driver.find_element(:link, "Our class discussion #{random_num}!").click
       
       type_redactor_field('comment_content', "The teacher is commenting on the discussion forum. #{random_num}")
@@ -305,7 +305,7 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher! #{random_num}) to #{document_two}").size > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to " + document_two
       $driver.find_element(:link, "Logout").click
-      $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
+      #$wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
       
       pass(@test_id)
     rescue => e

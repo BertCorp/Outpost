@@ -29,6 +29,11 @@ def login_as_admin
     $wait.until { $driver.find_elements(:link, "Forgot your password?").size > 0 }
   end
   
+  if $driver.find_elements(:id, "user_email").size < 0
+    $driver.get(@base_url + 'login')
+    $wait.until { $driver.find_elements(:id, "user_email").size > 0 }    
+  end
+  
   $driver.find_element(:id, "user_email").clear
   $driver.find_element(:id, "user_email").send_keys "test@outpostqa.com"
   $driver.find_element(:id, "user_password").clear
