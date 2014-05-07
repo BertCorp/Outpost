@@ -57,6 +57,7 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:css, '#invite_link > div > a').click
       sleep(1)
       $driver.find_element(:link_text, "LOGOUT").click
+      sleep(1)
       $driver.find_element(:css, "#homepage_titles > h1").text.should == "WRITE BETTER WITH DRAFT"
 
       # gmail
