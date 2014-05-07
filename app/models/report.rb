@@ -25,6 +25,7 @@ class Report < ActiveRecord::Base
   end
   
   def run!(env = 'production', local = false)
+    logger.info "Inside report: #{id}"
     output = Rake::Task['report:run'].invoke(id, env, local)
     logger.info output
   end

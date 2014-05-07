@@ -3,7 +3,7 @@ namespace :report do
   desc "Run Report Tests"
   task :run, [:report_id, :environment, :local] => :environment do |t, args|
     args.with_defaults(:report_id => '0', :environment => 'production', :local => 'false')
-    puts "Run report: #{args}"
+    puts "Run report: #{args.inspect}"
     report = Report.find(args.report_id)
     # Let's get things started...
     report.started_at = Time.now
