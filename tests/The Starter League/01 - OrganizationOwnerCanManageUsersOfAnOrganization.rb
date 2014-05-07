@@ -64,6 +64,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
         close_alert_and_get_its_text(true)
       end
 
+      $driver.get teacher_invite_link if $driver.current_url != teacher_invite_link
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
       $driver.find_element(:id, "user_last_name").clear
@@ -188,7 +189,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n")
+      puts e.backtrace.delete_if { |l| !l.include? '/tests/' }.join("\n") unless $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       retry if @tries.count < 3 && $is_test_suite
