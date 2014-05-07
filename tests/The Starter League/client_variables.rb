@@ -13,32 +13,38 @@ def clear_gmail_inbox
 end
 
 def login_as_admin
+  # go to homepage (http://lanternhq.com/) and login.
   $driver.get(@base_url) unless $driver.current_url == @base_url
   $driver.find_element(:link, "Log in").click
   
-  return true if $driver.find_elements(:link, 'test@outpostqa.com').size > 0
-  
-  if $driver.find_elements(:link, "Logout").size > 0
-    $driver.find_element(:link, "Logout").click
-    $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
+  # we aren't logged in until we are home! /start
+  while $driver.find_elements(:link, 'test@outpostqa.com').size < 1 do
+    # Homepage: http://lanternhq.com/
+    if $driver.find_elements(:link, "Learn more").size > 0
+      $driver.find_element(:link, "Log in").click
+    # Logged in somewhere else on the site
+    elsif $driver.find_elements(:link, "Logout").size > 0
+      $driver.find_element(:link, "Logout").click
+      $driver.find_element(:link, "Logout").click if $driver.find_elements(:link, "Logout").size > 0
+    end
+    # Not the login page
+    if $driver.find_elements(:link, "Forgot your password?").size < 0
+      $driver.get(@base_url)
+      $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
+      $driver.find_element(:link, "Log in").click
+      $wait.until { $driver.find_elements(:link, "Forgot your password?").size > 0 }
+    end
+    # On the login page: /login and need to login:
+    if $driver.find_elements(:id, "user_email").size > 0
+      $driver.find_element(:id, "user_email").clear
+      $driver.find_element(:id, "user_email").send_keys "test@outpostqa.com"
+      $driver.find_element(:id, "user_password").clear
+      $driver.find_element(:id, "user_password").send_keys "LigReb2013"
+      $driver.find_element(:name, "commit").click
+    end
   end
-  
-  if $driver.find_elements(:link, "Forgot your password?").size < 0
-    $driver.get(@base_url + 'login')
-    $wait.until { $driver.find_elements(:link, "Forgot your password?").size > 0 }
-  end
-  
-  if $driver.find_elements(:id, "user_email").size < 0
-    $driver.get(@base_url + 'login')
-    $wait.until { $driver.find_elements(:id, "user_email").size > 0 }    
-  end
-  
-  $driver.find_element(:id, "user_email").clear
-  $driver.find_element(:id, "user_email").send_keys "test@outpostqa.com"
-  $driver.find_element(:id, "user_password").clear
-  $driver.find_element(:id, "user_password").send_keys "LigReb2013"
-  $driver.find_element(:name, "commit").click
-  $wait.until { $driver.find_elements(:link, 'test@outpostqa.com').size > 0 }
+  # kill any flash notifications
+  $driver.find_element(:css, '.alert a').click if $driver.find_elements(:id, 'flash-msg').size > 0
 end
 
 

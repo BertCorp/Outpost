@@ -167,7 +167,7 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:css, "div.breadcrumbs > a").click
       $wait.until { $driver.find_elements(:link, "Discussions").size > 0 }
       $driver.find_element(:link, "Discussions").click
-      $wait.until { $driver.find_elements(:link, "Start a discussion").size > 0 }
+      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
       $driver.find_element(:link, "Start a discussion").click
       $driver.find_element(:id, "discussion_subject").clear
       $driver.find_element(:id, "discussion_subject").send_keys "Our class discussion #{random_num}!"
@@ -310,9 +310,6 @@ describe "Students and Teachers Can Provide Comments" do
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
-        puts ""
-        puts e.inspect
-        puts "Close flash notification -- Ignore!"
         $driver.find_element(:css, '.alert a').click
         sleep(1)
         e.ignore
@@ -330,7 +327,7 @@ describe "Students and Teachers Can Provide Comments" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n") unless $is_test_suite
+      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n")
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       retry if @tries.count < 3 && $is_test_suite

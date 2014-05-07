@@ -104,9 +104,6 @@ describe "Teacher Can Create A New Assignment" do
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
-        puts ""
-        puts e.inspect
-        puts "Close flash notification -- Ignore!"
         $driver.find_element(:css, '.alert a').click
         sleep(1)
         e.ignore
@@ -124,7 +121,7 @@ describe "Teacher Can Create A New Assignment" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n") unless $is_test_suite
+      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n")
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       retry if @tries.count < 3 && $is_test_suite

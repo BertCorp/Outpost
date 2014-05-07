@@ -60,6 +60,12 @@ describe "Test Cleanup" do
       # Warning: verifyTextNotPresent may require manual changes
       #$driver.find_element(:css, "BODY").text.should_not =~ /^[\s\S]*link=Outpost S\.[\s\S]*$/
     rescue => e
+      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="flash-msg"'
+        $driver.find_element(:css, '.alert a').click
+        sleep(1)
+        e.ignore
+      end
       # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
       if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         puts ""
@@ -73,7 +79,7 @@ describe "Test Cleanup" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n") unless $is_test_suite
+      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n")
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       raise
@@ -113,6 +119,12 @@ describe "Test Cleanup" do
       $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size <= 10
 
     rescue => e
+      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="flash-msg"'
+        $driver.find_element(:css, '.alert a').click
+        sleep(1)
+        e.ignore
+      end
       # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
       if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         puts ""
@@ -126,7 +138,7 @@ describe "Test Cleanup" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n") unless $is_test_suite
+      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n")
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       raise
@@ -161,6 +173,12 @@ describe "Test Cleanup" do
       $driver.find_elements(:css, '#resources > table > tbody > tr').size <= 5
       
     rescue => e
+      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="flash-msg"'
+        $driver.find_element(:css, '.alert a').click
+        sleep(1)
+        e.ignore
+      end
       # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
       if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         puts ""
@@ -174,7 +192,7 @@ describe "Test Cleanup" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n") unless $is_test_suite
+      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n")
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       raise
@@ -217,9 +235,6 @@ describe "Test Cleanup" do
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
-        puts ""
-        puts e.inspect
-        puts "Close flash notification -- Ignore!"
         $driver.find_element(:css, '.alert a').click
         sleep(1)
         e.ignore
@@ -237,7 +252,7 @@ describe "Test Cleanup" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n") unless $is_test_suite
+      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n")
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       raise

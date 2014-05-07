@@ -119,7 +119,7 @@ describe "Student Can Successfully Complete Assignments" do
       $driver.find_element(:link, "Outpost Test Class").click
       $wait.until { $driver.find_elements(:link, "Recent Activity").size > 0 }
       $driver.find_element(:link, "Recent Activity").click
-      $wait.until { $driver.find_elements(:link, "answered " + assignment_two).size > 0 }
+      sleep(2)
       # Verify
       ($driver.find_element(:link, "answered " + assignment_two).text).should == "answered " + assignment_two
       # Verify
@@ -156,9 +156,6 @@ describe "Student Can Successfully Complete Assignments" do
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
-        puts ""
-        puts e.inspect
-        puts "Close flash notification -- Ignore!"
         $driver.find_element(:css, '.alert a').click
         sleep(1)
         e.ignore
@@ -176,7 +173,7 @@ describe "Student Can Successfully Complete Assignments" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n") unless $is_test_suite
+      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n")
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       retry if @tries.count < 3 && $is_test_suite
