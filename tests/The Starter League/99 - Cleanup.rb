@@ -76,6 +76,7 @@ describe "Test Cleanup" do
       puts e.backtrace.join("\n") unless $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
+      raise
       #retry if @tries.count < 3 && $is_test_suite
       #fail(@test_id, e)
     end 
@@ -128,6 +129,7 @@ describe "Test Cleanup" do
       puts e.backtrace.join("\n") unless $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
+      raise
       #retry if @tries.count < 3 && $is_test_suite
       #fail(@test_id, e)
     end 
@@ -175,6 +177,7 @@ describe "Test Cleanup" do
       puts e.backtrace.join("\n") unless $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
+      raise
       #retry if @tries.count < 3 && $is_test_suite
       #fail(@test_id, e)
     end 
@@ -183,9 +186,8 @@ describe "Test Cleanup" do
   it "Clean up discussions" do
     begin
       # Why are you being such an a-hole?
-      if $driver.find_elements(:link, "Logout").size > 0
+      while $driver.find_elements(:link, "Logout").size > 0 do
         $driver.find_element(:link, "Logout").click
-        $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
       end
       login_as_admin
       
@@ -229,6 +231,7 @@ describe "Test Cleanup" do
       puts e.backtrace.join("\n") unless $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
+      raise
       #retry if @tries.count < 3 && $is_test_suite
       #fail(@test_id, e)
     end 
