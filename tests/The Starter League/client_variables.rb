@@ -1,6 +1,5 @@
 $environments = { production: "http://lanternhq.com/" }
 
-
 def clear_gmail_inbox
   sign_into_gmail
   

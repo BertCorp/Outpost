@@ -215,6 +215,15 @@ describe "Test Cleanup" do
       $driver.find_elements(:css, '#course-content > .discussions-table > .tbody > tr').size <= 5
       
     rescue => e
+      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="flash-msg"'
+        puts ""
+        puts e.inspect
+        puts "Close flash notification -- Ignore!"
+        $driver.find_element(:css, '.alert a').click
+        sleep(1)
+        e.ignore
+      end
       # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
       if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         puts ""

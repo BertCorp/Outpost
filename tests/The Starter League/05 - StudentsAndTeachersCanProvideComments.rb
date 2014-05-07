@@ -97,7 +97,6 @@ describe "Students and Teachers Can Provide Comments" do
       #puts document_two
       
       #puts $driver.find_elements(:link, "Logout").inspect
-      $driver.find_element(:css, '.alert a').click if element_present?(:id, 'flash-msg')
       $driver.find_elements(:link, "Logout").first.click
       $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
 
@@ -309,6 +308,15 @@ describe "Students and Teachers Can Provide Comments" do
       
       pass(@test_id)
     rescue => e
+      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="flash-msg"'
+        puts ""
+        puts e.inspect
+        puts "Close flash notification -- Ignore!"
+        $driver.find_element(:css, '.alert a').click
+        sleep(1)
+        e.ignore
+      end
       # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
       if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         puts ""
