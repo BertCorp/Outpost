@@ -10,7 +10,7 @@ describe "Teacher Can Create A New Assignment" do
   before(:all) do
     @test_id = "29"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
-    @retry_count = 0
+    @tries = []
     start(@test_id)
   end
   
@@ -92,14 +92,23 @@ describe "Teacher Can Create A New Assignment" do
       
       pass(@test_id)
     rescue => e
-      @retry_count = @retry_count + 1
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
-      puts "Current Page: #{$driver.current_url}"
+      puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
-      puts "Retry: #{@retry_count}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @retry_count < 3 && $is_test_suite
+      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end

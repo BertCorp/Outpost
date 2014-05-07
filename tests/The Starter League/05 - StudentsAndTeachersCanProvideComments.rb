@@ -10,7 +10,7 @@ describe "Students and Teachers Can Provide Comments" do
   before(:all) do
     @test_id = "31"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
-    @retry_count = 0
+    @tries = []
     start(@test_id)
   end
   
@@ -46,15 +46,16 @@ describe "Students and Teachers Can Provide Comments" do
       # Now, we need the submission assignment
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:css, "table.curriculum-items").size > 0 }
-      sleep(2)
+      
+      $driver.find_element(:link, "Assignments").click
+      $wait.until { $driver.find_elements(:link, "Reorder").size > 0 }
       
       assignment_two = nil
       #puts $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').size
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
-        if elem.find_elements(:css, 'td.actions > a').size > 0
+        if elem.find_elements(:css, 'td.actions > a').size == 1
           text = elem.find_element(:css, 'td.title > a').text
-          klass = elem.find_element(:css, 'td.actions > a').attribute('class')
+          klass = elem.find_element(:css, 'td.actions > a:nth-child(1)').attribute('class')
           unless klass.include?("no-submissions")
             #puts text
             if text.include?("Submission Exercise")
@@ -65,7 +66,9 @@ describe "Students and Teachers Can Provide Comments" do
           end
         end
       end
+      #puts assignment_one
       #puts assignment_two
+
       # Add a new submission assigment if we don't have one we can use.
       if assignment_two == nil
         $driver.find_element(:link, "Add a new assignment").click
@@ -86,6 +89,9 @@ describe "Students and Teachers Can Provide Comments" do
         #puts "Added new assignment: #{assignment_two}"
       end
       
+      $driver.find_element(:link, "Resources").click
+      $wait.until { $driver.find_elements(:link, "Text document").size > 0 }
+      
       # And finally, we need to get the created document
       document_two = $driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a').text.gsub($driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a > span').text, '').chomp(" ")
       #puts document_two
@@ -105,7 +111,10 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:name, "commit").click
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      sleep(2)
+
+      $driver.find_element(:link, "Assignments").click
+      $wait.until { $driver.find_elements(:link, assignment_two).size > 0 }
+
       $driver.find_element(:link, assignment_two).click
             
       # Complete second (submission) exercise if we haven't already
@@ -143,9 +152,8 @@ describe "Students and Teachers Can Provide Comments" do
       
       # Student can comment on a resource file.
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "Resources").size > 0 }
       $driver.find_element(:link, "Resources").click
-      sleep(2)
+
       $wait.until { $driver.find_elements(:link, "text-sample1.txt").size > 0 }
       $driver.find_element(:link, "text-sample1.txt").click
       
@@ -200,6 +208,7 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_elements(:link, "posted a comment (This is a comment on #{assignment_two}. #{random_num}) to #{assignment_two} - Submission by Outpost").size > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost").text).should == "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost"
       $driver.find_element(:link, "Logout").click
+      $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
 
       # Login as teacher and comment on a created resource file.
       $driver.find_element(:link, "Log in").click
@@ -296,17 +305,27 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher! #{random_num}) to #{document_two}").size > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to " + document_two
       $driver.find_element(:link, "Logout").click
+      $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
       
       pass(@test_id)
     rescue => e
-      @retry_count = @retry_count + 1
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
-      puts "Current Page: #{$driver.current_url}"
+      puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
-      puts "Retry: #{@retry_count}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @retry_count < 3 && $is_test_suite
+      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end

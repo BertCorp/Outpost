@@ -10,7 +10,7 @@ describe "Test Cleanup" do
   before(:all) do
     $outpost.quit if $outpost
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
-    @retry_count = 0
+    @tries = []
     $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
     $driver.manage.timeouts.implicit_wait = 3
   end
@@ -60,14 +60,24 @@ describe "Test Cleanup" do
       # Warning: verifyTextNotPresent may require manual changes
       #$driver.find_element(:css, "BODY").text.should_not =~ /^[\s\S]*link=Outpost S\.[\s\S]*$/
     rescue => e
-      #@retry_count = @retry_count + 1
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        #restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
-      puts "Current Page: #{$driver.current_url}"
-      puts "Clean up users exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
+      puts "Current url: #{$driver.current_url}"
+      puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      #puts "Retry: #{@retry_count}"
-      #retry if @retry_count < 3
+      #retry if @tries.count < 3 && $is_test_suite
+      #fail(@test_id, e)
     end 
   end
 
@@ -79,7 +89,7 @@ describe "Test Cleanup" do
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Assignments").click
-      $wait.until { $driver.find_elements(:link, "Reorder").size > 0 }
+      $wait.until { $driver.find_elements(:id, "assignments").size > 0 }
       
       # loop through .assignment and leave the newest 10 
       #assignment_899 > td.title > a
@@ -102,15 +112,24 @@ describe "Test Cleanup" do
       $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size <= 10
 
     rescue => e
-      #@retry_count = @retry_count + 1
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        #restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
-      puts "Current Page: #{$driver.current_url}"
-      puts "Clean up assignments exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
+      puts "Current url: #{$driver.current_url}"
+      puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      #puts "Retry: #{@retry_count}"
-      #raise
-      #retry if @retry_count < 3
+      #retry if @tries.count < 3 && $is_test_suite
+      #fail(@test_id, e)
     end 
   end
 
@@ -122,7 +141,7 @@ describe "Test Cleanup" do
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Resources").click
-      $wait.until { $driver.current_url.include? '/resources' }
+      $wait.until { $driver.find_elements(:id, "resources").size > 0 }
       
       # loop through .assignment and leave the newest 5
       while $driver.find_elements(:css, '#resources > table > tbody > tr').size > 5 do
@@ -140,31 +159,41 @@ describe "Test Cleanup" do
       $driver.find_elements(:css, '#resources > table > tbody > tr').size <= 5
       
     rescue => e
-      #@retry_count = @retry_count + 1
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        #restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
-      puts "Current Page: #{$driver.current_url}"
-      puts "Clean up resources exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
+      puts "Current url: #{$driver.current_url}"
+      puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      #puts "Retry: #{@retry_count}"
-      #raise
-      #retry if @retry_count < 3
+      #retry if @tries.count < 3 && $is_test_suite
+      #fail(@test_id, e)
     end 
   end
   
   it "Clean up discussions" do
     begin
       # Why are you being such an a-hole?
-      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
-      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
-      
+      if $driver.find_elements(:link, "Logout").size > 0
+        $driver.find_element(:link, "Logout").click
+        $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
+      end
       login_as_admin
       
       # Delete Resources
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Discussions").click
-      $wait.until { $driver.current_url.include? '/discussions' }
+      $wait.until { $driver.find_elements(:id, "course-content").size > 0 }
       
       # loop through .assignment and leave the newest 5
       # #course-content > table > tbody > tr:nth-child(6)
@@ -184,15 +213,24 @@ describe "Test Cleanup" do
       $driver.find_elements(:css, '#course-content > .discussions-table > .tbody > tr').size <= 5
       
     rescue => e
-      #@retry_count = @retry_count + 1
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        #restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
-      puts "Current Page: #{$driver.current_url}"
-      puts "Clean up discussions exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
+      puts "Current url: #{$driver.current_url}"
+      puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      #puts "Retry: #{@retry_count}"
-      #raise
-      #retry if @retry_count < 3
+      #retry if @tries.count < 3 && $is_test_suite
+      #fail(@test_id, e)
     end 
   end
 

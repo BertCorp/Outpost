@@ -10,7 +10,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
   before(:all) do
     @test_id = "27"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
-    @retry_count = 0
+    @tries = []
     start(@test_id)
   end
   
@@ -100,7 +100,14 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       sign_into_gmail
       
       # Click and view the latest invitation email.
-      $wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
+      if $driver.find_elements(:css, "table td span b").size > 0
+        begin
+          $wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
+        rescue
+          sleep(10)
+          $wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
+        end
+      end
       $driver.find_elements(:css, "table td span b").find do |subject|
         subject.text == "You're invited to join Outpost"
       end.click
@@ -150,14 +157,23 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       
       pass(@test_id)
     rescue => e
-      @retry_count = @retry_count + 1
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
-      puts "Current Page: #{$driver.current_url}"
+      puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
-      puts "Retry: #{@retry_count}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @retry_count < 3 && $is_test_suite
+      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end

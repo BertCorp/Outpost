@@ -10,7 +10,7 @@ describe "Student Can Successfully Complete Assignments" do
   before(:all) do
     @test_id = "30"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
-    @retry_count = 0
+    @tries = []
     start(@test_id)
   end
   
@@ -38,16 +38,16 @@ describe "Student Can Successfully Complete Assignments" do
       # next, lets get the assignments we need
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:css, "table.curriculum-items").size > 0 }
-      sleep(2)
+      $driver.find_element(:link, "Assignments").click
+      $wait.until { $driver.find_elements(:link, "Reorder").size > 0 }
       
       assignment_one = nil
       assignment_two = nil
       #puts $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').size
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
-        if elem.find_elements(:css, 'td.actions > a').size > 0
+        if elem.find_elements(:css, 'td.actions > a').size == 1
           text = elem.find_element(:css, 'td.title > a').text
-          klass = elem.find_element(:css, 'td.actions > a').attribute('class')
+          klass = elem.find_element(:css, 'td.actions > a:nth-child(1)').attribute('class')
           if klass.include?("no-submissions")
             #puts text
             if (assignment_one == nil) && text.include?("Completion Exercise")
@@ -81,10 +81,12 @@ describe "Student Can Successfully Complete Assignments" do
       ($driver.find_element(:css, "h4").text).should == "Outpost Student (" + student_email + ")"
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, assignment_one).size > 0 }
+      $driver.find_element(:link, "Assignments").click
       
       # Complete first (completion) exercise
+      $wait.until { $driver.find_elements(:link, assignment_one).size > 0 }
       $driver.find_element(:link, assignment_one).click
+      $wait.until { $driver.find_elements(:name, "complete").size > 0 }
       $driver.find_element(:name, "complete").click
       # Verify
       ($driver.find_element(:css, "span.done.reviewed").text).should == ""
@@ -152,14 +154,23 @@ describe "Student Can Successfully Complete Assignments" do
       
       pass(@test_id)
     rescue => e
-      @retry_count = @retry_count + 1
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
       puts ""
-      puts "Current Page: #{$driver.current_url}"
+      puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n")
-      puts "Retry: #{@retry_count}"
+      puts e.backtrace.join("\n") unless $is_test_suite
+      puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @retry_count < 3 && $is_test_suite
+      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end
