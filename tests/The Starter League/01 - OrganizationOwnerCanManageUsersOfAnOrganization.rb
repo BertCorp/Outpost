@@ -112,9 +112,13 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       end
       # still no email? Let's come back another time.
       if $driver.find_elements(:css, "table td span b").size < 1
-        sleep(10*60)
-        restart(@test_id)
-        retry
+        begin
+          raise
+        rescue
+          sleep(10*60)
+          restart(@test_id)
+          retry
+        end
       end
       
       $driver.find_elements(:css, "table td span b").find do |subject|
