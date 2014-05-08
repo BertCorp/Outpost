@@ -60,7 +60,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       #$driver.find_elements(:css, "table table table a").each do |link|
       #  teacher_invite_link = link.attribute('href') if link.text == "Click here to create your account"
       #end
-      teacher_invite_link = $driver.find_element(:css, "table table table").find(:link, 'Click here to create your account').attribute('href')
+      teacher_invite_link = $driver.find_element(:css, "table table table").find_element(:link, 'Click here to create your account').attribute('href')
       puts "Teacher invite link: #{teacher_invite_link}"
       $driver.get teacher_invite_link
       puts "After teacher invite link gotten. Current url: #{$driver.current_url} (65)"
@@ -137,7 +137,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       #$driver.find_elements(:css, "table table table a").each do |link|
       #  student_invite_link = link.attribute('href') if link.text == "Click here to create your account"
       #end
-      student_invite_link = $driver.find_element(:css, "table table table").find(:link, 'Click here to create your account').attribute('href')
+      student_invite_link = $driver.find_element(:css, "table table table").find_element(:link, 'Click here to create your account').attribute('href')
       puts "Student invite link: #{student_invite_link}"
       $driver.get student_invite_link
       puts "After student invite link gotten. Current url: #{$driver.current_url} (143)"
