@@ -64,9 +64,7 @@ describe "Student Can Successfully Complete Assignments" do
       #puts assignment_one
       #puts assignment_two
       
-      #puts $driver.find_elements(:link, "Logout").inspect
-      $driver.find_elements(:link, "Logout").first.click
-      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
+      ensure_user_logs_out
       
       # Login as student
       $driver.get(@base_url)
@@ -130,8 +128,8 @@ describe "Student Can Successfully Complete Assignments" do
       ($driver.find_element(:link, "answered " + assignment_two).text).should == "answered " + assignment_two
       # Verify
       ($driver.find_element(:link, "completed " + assignment_one).text).should == "completed " + assignment_one
-      $driver.find_elements(:link, "Logout").first.click
-      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
+
+      ensure_user_logs_out
       
       login_as_admin
       
@@ -150,7 +148,8 @@ describe "Student Can Successfully Complete Assignments" do
       # Verify
       ($driver.find_element(:link, "Pending review").text).should == "Pending review"
       $driver.find_element(:link, "Go back").click
-      $driver.find_element(:link, "Logout").click
+
+      ensure_user_logs_out
       
       pass(@test_id)
     rescue => e

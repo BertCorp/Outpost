@@ -3,30 +3,28 @@ $environments = { production: "http://lanternhq.com/" }
 def clear_gmail_inbox
   sign_into_gmail
   
-  $driver.find_element(:css, "div[data-tooltip=\"Select\"] span").click
-  delete_link = $driver.find_element(:css, "div[data-tooltip=\"Delete\"]")
-  if delete_link.displayed? == true
-    delete_link.click
+  while $driver.find_elements(:css, "table td span b").size > 0 do
+    $driver.find_element(:css, "div[data-tooltip=\"Select\"] span").click
+    delete_link = $driver.find_element(:css, "div[data-tooltip=\"Delete\"]")
+    if delete_link.displayed? == true
+      delete_link.click
+      sleep(1)
+    end
   end
   
   sign_out_of_gmail
 end
 
 def ensure_user_logs_out
-  puts "First logout: #{$driver.current_url}"
+  puts "Before logout: #{$driver.current_url}"
   if $driver.find_elements(:id, 'flash-msg').size > 0
-    puts "Closing alert notification."
     $driver.find_element(:css, '.alert a').click
-    puts "Closed alert notification."
     sleep(1)
   end
-  puts "Enter while loop to logout if `Logout` link is present: #{$driver.find_elements(:link, "Logout").size > 0}"
   while $driver.find_elements(:link, "Logout").size > 0 do
-    puts "In while loop. Click `Logout` link: #{$driver.current_url}"
     $driver.find_element(:link, "Logout").click
-    puts "Clicked `Logout` link: #{$driver.current_url}"
   end
-  puts "Outside of while loop: #{$driver.current_url}"
+  puts "After logout: #{$driver.current_url}"
 end
 
 def login_as_admin
@@ -42,10 +40,7 @@ def login_as_admin
       $driver.find_element(:link, "Log in").click
     # Logged in somewhere else on the site
     elsif $driver.find_elements(:link, "Logout").size > 0
-      $driver.find_element(:link, "Logout").click
-      if $driver.find_elements(:link, "Logout").size > 0
-        $driver.find_element(:link, "Logout").click 
-      end
+      ensure_user_logs_out
     end
     # Not the login page
     if $driver.find_elements(:link, "Forgot your password?").size < 0
@@ -100,4 +95,33 @@ def type_redactor_field(id, text)
   $driver.find_element(:id, id).clear
   $driver.find_element(:id, id).send_keys "<p>" + text + "</p>"
   sleep(2)
+end
+
+def wait_for_email
+  # Click and view the latest invitation email.
+  while $driver.find_elements(:css, "table td span b").size < 1 do
+    sleep(5)
+    if $driver.find_elements(:css, "table td span b").size < 1
+      begin
+        extended_wait = Selenium::WebDriver::Wait.new(:timeout => 180) # seconds
+        extended_wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
+      rescue => e
+        sleep(5)
+        if $driver.find_elements(:css, "table td span b").size < 1
+          sleep(60 * 5)
+          e.ignore
+        end
+      end
+    end
+    # still no email? Let's come back another time.
+    if $driver.find_elements(:css, "table td span b").size < 1
+      begin
+        raise
+      rescue
+        sleep(10*60)
+        restart(@test_id)
+        retry
+      end
+    end
+  end
 end

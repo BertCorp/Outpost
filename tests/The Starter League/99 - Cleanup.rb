@@ -203,10 +203,7 @@ describe "Test Cleanup" do
   
   it "Clean up discussions" do
     begin
-      # Why are you being such an a-hole?
-      while $driver.find_elements(:link, "Logout").size > 0 do
-        $driver.find_element(:link, "Logout").click
-      end
+      ensure_user_logs_out
       login_as_admin
       
       # Delete Resources

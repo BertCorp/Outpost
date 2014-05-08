@@ -96,9 +96,7 @@ describe "Students and Teachers Can Provide Comments" do
       document_two = $driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a').text.gsub($driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a > span').text, '').chomp(" ")
       #puts document_two
       
-      #puts $driver.find_elements(:link, "Logout").inspect
-      $driver.find_elements(:link, "Logout").first.click
-      $driver.find_element(:link, "Logout").click if element_present?(:link, "Logout")
+      ensure_user_logs_out
 
       # Login as student
       $driver.get(@base_url)
@@ -206,8 +204,8 @@ describe "Students and Teachers Can Provide Comments" do
       # Verify
       $driver.find_elements(:link, "posted a comment (This is a comment on #{assignment_two}. #{random_num}) to #{assignment_two} - Submission by Outpost").size > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost").text).should == "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost"
-      $driver.find_element(:link, "Logout").click
-      $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
+
+      ensure_user_logs_out
 
       # Login as teacher and comment on a created resource file.
       $driver.find_element(:link, "Log in").click
@@ -303,8 +301,7 @@ describe "Students and Teachers Can Provide Comments" do
       # Verify
       $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher! #{random_num}) to #{document_two}").size > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to " + document_two
-      $driver.find_element(:link, "Logout").click
-      #$wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
+      ensure_user_logs_out
       
       pass(@test_id)
     rescue => e

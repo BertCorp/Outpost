@@ -50,8 +50,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       sleep(5)
       sign_into_gmail
       
-      # Click and view the latest invitation email.
-      $wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
+      wait_for_email
+      
       $driver.find_elements(:css, "table td span b").find do |subject|
         subject.text == "You're invited to join Outpost"
       end.click
@@ -60,16 +60,13 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       #$driver.find_elements(:css, "table table table a").each do |link|
       #  teacher_invite_link = link.attribute('href') if link.text == "Click here to create your account"
       #end
-      teacher_invite_link = $driver.find_element(:css, "table table table").find_element(:link, 'Click here to create your account').attribute('href')
+      teacher_invite_link = $driver.find_element(:link, 'Click here to create your account').attribute('href')
       puts "Teacher invite link: #{teacher_invite_link}"
       $driver.get teacher_invite_link
-      puts "After teacher invite link gotten. Current url: #{$driver.current_url} (65)"
       if alert_present?
         close_alert_and_get_its_text(true)
       end
-      puts "After closed alert (if present). Current url: #{$driver.current_url} (69)"
       $driver.get teacher_invite_link if $driver.current_url != teacher_invite_link
-      puts "After teacher invite link gotten (again). Current url: #{$driver.current_url} (71)"
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
       $driver.find_element(:id, "user_last_name").clear
@@ -104,30 +101,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       sleep(5)
       sign_into_gmail
       
-      # Click and view the latest invitation email.
-      sleep(5)
-      if $driver.find_elements(:css, "table td span b").size < 1
-        begin
-          extended_wait = Selenium::WebDriver::Wait.new(:timeout => 180) # seconds
-          extended_wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
-        rescue => e
-          sleep(5)
-          if $driver.find_elements(:css, "table td span b").size < 1
-            sleep(60 * 5)
-            e.ignore
-          end
-        end
-      end
-      # still no email? Let's come back another time.
-      if $driver.find_elements(:css, "table td span b").size < 1
-        begin
-          raise
-        rescue
-          sleep(10*60)
-          restart(@test_id)
-          retry
-        end
-      end
+      wait_for_email
       
       $driver.find_elements(:css, "table td span b").find do |subject|
         subject.text == "You're invited to join Outpost"
@@ -137,16 +111,13 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       #$driver.find_elements(:css, "table table table a").each do |link|
       #  student_invite_link = link.attribute('href') if link.text == "Click here to create your account"
       #end
-      student_invite_link = $driver.find_element(:css, "table table table").find_element(:link, 'Click here to create your account').attribute('href')
+      student_invite_link = $driver.find_element(:link, 'Click here to create your account').attribute('href')
       puts "Student invite link: #{student_invite_link}"
       $driver.get student_invite_link
-      puts "After student invite link gotten. Current url: #{$driver.current_url} (143)"
       if alert_present?
         close_alert_and_get_its_text(true)
       end
-      puts "After closed alert (if present). Current url: #{$driver.current_url} (147)"
       $driver.get student_invite_link if $driver.current_url != student_invite_link
-      puts "After student invite link gotten (again). Current url: #{$driver.current_url} (149)"
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
       $driver.find_element(:id, "user_last_name").clear

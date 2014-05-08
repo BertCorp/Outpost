@@ -88,7 +88,8 @@ describe "Teacher Can Create A New Assignment" do
       ($driver.find_element(:link, "added resource \"text-sample1.txt\" in \"Outpost Test Class\"").text).should == "added resource \"text-sample1.txt\" in \"Outpost Test Class\""
       # Verify
       ($driver.find_element(:link, "added resource \"" + document_two + "\" in \"Outpost Test Class\"").text).should == "added resource \"" + document_two + "\" in \"Outpost Test Class\""
-      $driver.find_element(:link, "Logout").click
+
+      ensure_user_logs_out
       
       pass(@test_id)
     rescue => e
