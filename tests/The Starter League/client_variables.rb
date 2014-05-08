@@ -8,10 +8,11 @@ def clear_gmail_inbox
     delete_link = $driver.find_element(:css, "div[data-tooltip=\"Delete\"]")
     if delete_link.displayed? == true
       delete_link.click
-      sleep(1)
-      $driver.navigate.refresh
-      sleep(1)
     end
+    sleep(1)
+    $driver.navigate.refresh
+    sleep(2)
+    $wait.until { $driver.find_elements(:css, "div[data-tooltip=\"Select\"] span").size > 0 }    
   end
   
   sign_out_of_gmail

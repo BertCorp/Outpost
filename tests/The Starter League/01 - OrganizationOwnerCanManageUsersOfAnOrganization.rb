@@ -60,6 +60,12 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       #$driver.find_elements(:css, "table table table a").each do |link|
       #  teacher_invite_link = link.attribute('href') if link.text == "Click here to create your account"
       #end
+      
+      if $driver.find_elements(:link, 'Click here to create your account').size < 0
+        $driver.find_element(:css, 'img.ajT').click
+        sleep(2)
+      end
+      
       teacher_invite_link = $driver.find_element(:link, 'Click here to create your account').attribute('href')
       puts "Teacher invite link: #{teacher_invite_link}"
       $driver.get teacher_invite_link
