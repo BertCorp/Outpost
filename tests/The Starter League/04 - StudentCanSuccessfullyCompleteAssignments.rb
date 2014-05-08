@@ -121,8 +121,8 @@ describe "Student Can Successfully Complete Assignments" do
       ($driver.find_element(:css, "div.review-grade > span").text).should == "Your answer is pending review."
       $driver.find_element(:link, "Outpost Test Class").click
       sleep(2)
-      $wait.until { $driver.find_elements(:link, "Add a text document").size > 0 }
-      $driver.find_element(:link, "Recent Activity").click
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      $driver.find_element(:link, "See all activity...").click
       sleep(2)
       # Verify
       ($driver.find_element(:link, "answered " + assignment_two).text).should == "answered " + assignment_two

@@ -9,7 +9,8 @@ def clear_gmail_inbox
     if delete_link.displayed? == true
       delete_link.click
       sleep(1)
-      driver.navigate.refresh
+      $driver.navigate.refresh
+      sleep(1)
     end
   end
   
