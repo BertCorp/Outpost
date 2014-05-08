@@ -35,9 +35,6 @@ describe "Test Cleanup" do
       #pass(@test_id)
     rescue => e
       if e.inspect.include? 'id="IModalOverlay"'
-        puts ""
-        puts e.inspect
-        puts "Closed intercom modal -- Ignore!"
         $driver.find_element(:css, '.ic_close_modal').click
         sleep(3)
         e.ignore
