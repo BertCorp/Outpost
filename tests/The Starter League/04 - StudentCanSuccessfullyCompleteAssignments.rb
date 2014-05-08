@@ -80,7 +80,7 @@ describe "Student Can Successfully Complete Assignments" do
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       sleep(2)
-      $wait.until { $driver.find_elements(:link, "Add a text document").size > 0 }
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
       $driver.find_element(:link, "Assignments").click
       
       # Complete first (completion) exercise

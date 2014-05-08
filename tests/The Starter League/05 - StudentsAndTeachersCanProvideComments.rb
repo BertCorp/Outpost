@@ -216,8 +216,10 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:name, "commit").click
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
+      sleep(2)
       $wait.until { $driver.find_elements(:link, "Resources").size > 0 }
       $driver.find_element(:link, "Resources").click
+      sleep(2)
       $wait.until { $driver.find_elements(:link, document_two + " A written test resource body of content.").size > 0 }
       $driver.find_element(:link, document_two + " A written test resource body of content.").click
       
