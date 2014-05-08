@@ -16,7 +16,7 @@ def clear_gmail_inbox
 end
 
 def ensure_user_logs_out
-  puts "Before logout: #{$driver.current_url}"
+  #puts "Before logout: #{$driver.current_url}"
   if $driver.find_elements(:id, 'flash-msg').size > 0
     $driver.find_element(:css, '.alert a').click
     sleep(1)
@@ -24,7 +24,7 @@ def ensure_user_logs_out
   while $driver.find_elements(:link, "Logout").size > 0 do
     $driver.find_element(:link, "Logout").click
   end
-  puts "After logout: #{$driver.current_url}"
+  #puts "After logout: #{$driver.current_url}"
 end
 
 def login_as_admin
