@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Teacher Can Create A New Assignment" do
+describe "Teacher Can Create A New Resource" do
 
   before(:all) do
     @test_id = "29"
@@ -84,6 +84,8 @@ describe "Teacher Can Create A New Assignment" do
       # Verify
       ($driver.find_element(:link, "added resource \"" + document_two + "\" in \"Outpost Test Class\"").text).should == "added resource \"" + document_two + "\" in \"Outpost Test Class\""
       $driver.find_element(:link, "Me").click
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       # Verify
       ($driver.find_element(:link, "added resource \"text-sample1.txt\" in \"Outpost Test Class\"").text).should == "added resource \"text-sample1.txt\" in \"Outpost Test Class\""
       # Verify

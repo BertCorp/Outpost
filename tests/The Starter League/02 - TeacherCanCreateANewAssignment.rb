@@ -95,6 +95,7 @@ describe "Teacher Can Create A New Assignment" do
       # Check that activity was logged for logged in user.
       $driver.find_element(:link, "Me").click
       sleep(2)
+      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_one + "\"").text).should == "published assignment \"" + assignment_one + "\""
       # Verify

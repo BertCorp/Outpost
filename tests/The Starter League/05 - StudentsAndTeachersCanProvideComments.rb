@@ -292,6 +292,7 @@ describe "Students and Teachers Can Provide Comments" do
       #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to " + document_two
       $driver.find_element(:link, "Me").click
       sleep(2)
+      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       # Verify
       $driver.find_elements(:link, "posted a comment (A teacher's comment on an exercise #{random_num}) to #{assignment_two} - Submission by Outpost Student").size > 0
       #($driver.find_element(:link, "posted a comment (A teacher's comment on an exercise) to " + assignment_two + " - Submission by Outpost Student").text).should == "posted a comment (A teacher's comment on an exercise​) to " + assignment_two + " - Submission by Outpost Student"

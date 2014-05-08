@@ -123,7 +123,8 @@ describe "Student Can Successfully Complete Assignments" do
       # Verify
       ($driver.find_element(:link, "completed " + assignment_one).text).should == "completed " + assignment_one
       $driver.find_element(:link, "Me").click
-      $wait.until { $driver.find_elements(:link, "answered " + assignment_two).size >= 0 }
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       # Verify
       ($driver.find_element(:link, "answered " + assignment_two).text).should == "answered " + assignment_two
       # Verify
