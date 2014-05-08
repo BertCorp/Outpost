@@ -15,6 +15,8 @@ def clear_gmail_inbox
     $wait.until { $driver.find_elements(:css, "div[data-tooltip=\"Select\"] span").size > 0 }    
   end
   
+  puts "Emails still in inbox: #{$driver.find_elements(:css, "table td span b").size}"
+  
   sign_out_of_gmail
 end
 
