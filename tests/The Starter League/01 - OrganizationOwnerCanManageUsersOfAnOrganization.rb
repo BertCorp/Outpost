@@ -47,27 +47,33 @@ describe "Organization Owner Can Manage Users Of An Organization" do
 
       ensure_user_logs_out
       
-      sleep(5)
-      sign_into_gmail
-      
-      wait_for_email
-      
-      $driver.find_elements(:css, "table td span b").find do |subject|
-        subject.text == "You're invited to join Outpost"
-      end.click
-      # Copy and go to the invite link.
-      if $driver.find_elements(:link, 'Click here to create your account').size < 1
-        puts "Multiple emails potentially found! Trying to click expander image: #{$driver.find_elements(:css, "div[data-tooltip=\"Show trimmed content\"] img").size > 0}"
-        $driver.find_element(:css, "div[data-tooltip=\"Show trimmed content\"] img").click
-        puts "clicked. does link exist now? #{$driver.find_elements(:link, 'Click here to create your account').size > 0}"
+      teacher_invite_link = nil
+      while teacher_invite_link == nil
+        sleep(5)
+        sign_into_gmail
+
+        wait_for_email
+
+        $driver.find_elements(:css, "table td span b").find do |subject|
+          subject.text == "You're invited to join Outpost"
+        end.click
+        # Copy and go to the invite link.
+        if $driver.find_elements(:link, 'Click here to create your account').size < 1
+          puts "Multiple emails potentially found! Trying to click expander image: #{$driver.find_elements(:css, "div[data-tooltip=\"Show trimmed content\"] img").size > 0}"
+          $driver.find_element(:css, "div[data-tooltip=\"Show trimmed content\"] img").click
+          puts "clicked. does link exist now? #{$driver.find_elements(:link, 'Click here to create your account').size > 0}"
+        end
+        teacher_invite_link = $driver.find_element(:link, 'Click here to create your account').attribute('href')
+
+        if teacher_invite_link == nil
+          puts "Teacher invite link is missing! Try again."
+        end
       end
-      teacher_invite_link = $driver.find_element(:link, 'Click here to create your account').attribute('href')
-      puts "Teacher invite link: #{teacher_invite_link}"
       $driver.get teacher_invite_link
       if alert_present?
         close_alert_and_get_its_text(true)
       end
-      $driver.get teacher_invite_link if $driver.current_url != teacher_invite_link
+
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
       $driver.find_element(:id, "user_last_name").clear
@@ -99,22 +105,29 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       
       ensure_user_logs_out
       
-      sleep(5)
-      sign_into_gmail
-      
-      wait_for_email
-      
-      $driver.find_elements(:css, "table td span b").find do |subject|
-        subject.text == "You're invited to join Outpost"
-      end.click
-      # Copy and go to the invite link.
-      if $driver.find_elements(:link, 'Click here to create your account').size < 1
-        puts "Multiple emails potentially found! Trying to click expander image: #{$driver.find_elements(:css, "div[data-tooltip=\"Show trimmed content\"] img").size > 0}"
-        $driver.find_element(:css, "div[data-tooltip=\"Show trimmed content\"] img").click
-        puts "clicked. does link exist now? #{$driver.find_elements(:link, 'Click here to create your account').size > 0}"
+      student_invite_link = nil
+      while student_invite_link == nil
+        sleep(5)
+        sign_into_gmail
+
+        wait_for_email
+
+        $driver.find_elements(:css, "table td span b").find do |subject|
+          subject.text == "You're invited to join Outpost"
+        end.click
+        # Copy and go to the invite link.
+        if $driver.find_elements(:link, 'Click here to create your account').size < 1
+          puts "Multiple emails potentially found! Trying to click expander image: #{$driver.find_elements(:css, "div[data-tooltip=\"Show trimmed content\"] img").size > 0}"
+          $driver.find_element(:css, "div[data-tooltip=\"Show trimmed content\"] img").click
+          puts "clicked. does link exist now? #{$driver.find_elements(:link, 'Click here to create your account').size > 0}"
+        end
+        student_invite_link = $driver.find_element(:link, 'Click here to create your account').attribute('href')
+
+        if student_invite_link == nil
+          puts "Student invite link is missing! Try again."
+        end
       end
-      student_invite_link = $driver.find_element(:link, 'Click here to create your account').attribute('href')
-      puts "Student invite link: #{student_invite_link}"
+      
       $driver.get student_invite_link
       if alert_present?
         close_alert_and_get_its_text(true)
