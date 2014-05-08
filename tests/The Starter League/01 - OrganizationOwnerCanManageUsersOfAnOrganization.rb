@@ -27,7 +27,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       
-      #clear_gmail_inbox
+      clear_gmail_inbox
       
       login_as_admin
       
