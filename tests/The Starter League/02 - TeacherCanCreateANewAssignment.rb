@@ -121,7 +121,7 @@ describe "Teacher Can Create A New Assignment" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.delete_if { |l| !l.include? './tests/' }.join("\n") unless $is_test_suite
+      puts e.backtrace.delete_if { |l| !l.include? '/tests/' }.join("\n") unless $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
       retry if @tries.count < 3 && $is_test_suite

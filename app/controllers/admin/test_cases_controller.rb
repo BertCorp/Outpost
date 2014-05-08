@@ -119,15 +119,14 @@ class Admin::TestCasesController < ApplicationController
   # GET /tests/1/stop.json
   def stop
     @test_case = TestCase.find(params[:id])
-    @results = @test_case.results.where(status: 'Running')
+    @results = @test_case.results
     respond_to do |format|
       if @results.any?
         @test_result = @results.last
-        unless @test_result.ended_at.present?
+        #unless @test_result.ended_at.present?
           r = { 
             ended_at: Time.now, 
-            status: params[:status], 
-            execution_time: params[:execution] 
+            status: params[:status]
           }
           r[:errors_raw] = params[:message] if params[:message].present?
           
@@ -138,10 +137,10 @@ class Admin::TestCasesController < ApplicationController
             format.html { render text: @test_result.errors.inspect }
             format.json { render json: @test_result.errors, status: :unprocessable_entity }
           end
-        else
-          format.html { render text: 'Test already stopped.'}
-          format.json { head :no_content }
-        end
+        #else
+        #  format.html { render text: 'Test already stopped.'}
+        #  format.json { head :no_content }
+        #end
       else
         format.html { render text: 'Eligible test not found.'}
         format.json { head :no_content }
