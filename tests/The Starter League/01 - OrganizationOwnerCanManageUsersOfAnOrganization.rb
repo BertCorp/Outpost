@@ -44,8 +44,9 @@ describe "Organization Owner Can Manage Users Of An Organization" do
         option.text == "teacher"
       end.click
       $driver.find_element(:name, "commit").click
-      $driver.find_element(:link, "Logout").click
 
+      ensure_user_logs_out
+      
       sleep(5)
       sign_into_gmail
       
@@ -56,15 +57,19 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       end.click
       # Copy and go to the invite link.
       teacher_invite_link = nil
-      $driver.find_elements(:css, "table table table a").each do |link|
-        teacher_invite_link = link.attribute('href') if link.text == "Click here to create your account"
-      end
+      #$driver.find_elements(:css, "table table table a").each do |link|
+      #  teacher_invite_link = link.attribute('href') if link.text == "Click here to create your account"
+      #end
+      teacher_invite_link = $driver.find_element(:css, "table table table").find(:link, 'Click here to create your account').attribute('href')
+      puts "Teacher invite link: #{teacher_invite_link}"
       $driver.get teacher_invite_link
+      puts "After teacher invite link gotten. Current url: #{$driver.current_url} (65)"
       if alert_present?
         close_alert_and_get_its_text(true)
       end
-
+      puts "After closed alert (if present). Current url: #{$driver.current_url} (69)"
       $driver.get teacher_invite_link if $driver.current_url != teacher_invite_link
+      puts "After teacher invite link gotten (again). Current url: #{$driver.current_url} (71)"
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
       $driver.find_element(:id, "user_last_name").clear
@@ -79,7 +84,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       ($driver.find_element(:css, "h4").text).should == "Outpost Teacher (" + teacher_email + ")"
       # Verify
       ($driver.find_element(:css, "section.enrollments > ul > li > a").text).should == "Outpost Test Class"
-      $driver.find_element(:link, "Logout").click
+      
+      ensure_user_logs_out
 
       clear_gmail_inbox
 
@@ -92,7 +98,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "invitation_emails_").send_keys student_email
       $driver.find_element(:id, "invitation_enrollments_0_course_id").click
       $driver.find_element(:name, "commit").click
-      $driver.find_element(:link, "Logout").click
+      
+      ensure_user_logs_out
       
       sleep(5)
       sign_into_gmail
@@ -127,14 +134,19 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       end.click
       # Copy and go to the invite link.
       student_invite_link = nil
-      $driver.find_elements(:css, "table table table a").each do |link|
-        student_invite_link = link.attribute('href') if link.text == "Click here to create your account"
-      end
+      #$driver.find_elements(:css, "table table table a").each do |link|
+      #  student_invite_link = link.attribute('href') if link.text == "Click here to create your account"
+      #end
+      student_invite_link = $driver.find_element(:css, "table table table").find(:link, 'Click here to create your account').attribute('href')
+      puts "Student invite link: #{student_invite_link}"
       $driver.get student_invite_link
+      puts "After student invite link gotten. Current url: #{$driver.current_url} (143)"
       if alert_present?
         close_alert_and_get_its_text(true)
       end
-      
+      puts "After closed alert (if present). Current url: #{$driver.current_url} (147)"
+      $driver.get student_invite_link if $driver.current_url != student_invite_link
+      puts "After student invite link gotten (again). Current url: #{$driver.current_url} (149)"
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
       $driver.find_element(:id, "user_last_name").clear
@@ -149,7 +161,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       ($driver.find_element(:css, "h4").text).should == "Outpost Student (" + student_email + ")"
       # Verify
       ($driver.find_element(:css, "h6").text).should == "You're a student in:"
-      $driver.find_element(:link, "Logout").click
+
+      ensure_user_logs_out
       
       login_as_admin
       
