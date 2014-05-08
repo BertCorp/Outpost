@@ -155,19 +155,23 @@ describe "Test Cleanup" do
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Resources").click
+      sleep(2)
       $wait.until { $driver.find_elements(:id, "resources").size > 0 }
       
       # loop through .assignment and leave the newest 5
       while $driver.find_elements(:css, '#resources > table > tbody > tr').size > 5 do
-        $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(1) > td.content > a').click
-        $wait.until { $driver.find_elements(:link, "Delete").size > 0 }
-        $driver.find_element(:link, "Delete").click
-        (close_alert_and_get_its_text(true)).should include("Are you sure")
-        if element_present?(:id, "flash-msg")
-          ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+        if $driver.find_elements(:css, '#resources > table > tbody > tr:nth-child(1) > td.content > a').size > 0
+          $driver.find_element(:css, '#resources > table > tbody > tr:nth-child(1) > td.content > a').click
+          $wait.until { $driver.find_elements(:link, "Delete").size > 0 }
+          $driver.find_element(:link, "Delete").click
+          (close_alert_and_get_its_text(true)).should include("Are you sure")
+          if element_present?(:id, "flash-msg")
+            ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+          end
         end
         $driver.find_element(:link, "Resources").click
-        $wait.until { $driver.current_url.include? '/resources' }
+        sleep(1)
+        $wait.until { $driver.find_elements(:id, "resources").size > 0 }
       end
       # Verify
       $driver.find_elements(:css, '#resources > table > tbody > tr').size <= 5
@@ -210,21 +214,25 @@ describe "Test Cleanup" do
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Discussions").click
+      sleep(2)
       $wait.until { $driver.find_elements(:id, "course-content").size > 0 }
       
       # loop through .assignment and leave the newest 5
       # #course-content > table > tbody > tr:nth-child(6)
       while $driver.find_elements(:css, '#course-content > .discussions-table > tbody > tr').size > 5 do
-        $driver.find_element(:css, '#course-content > .discussions-table > tbody > tr:nth-child(6) > td.content > a').click
-        $wait.until { $driver.find_elements(:link, "Delete").size > 0 }
-        $driver.find_element(:link, "Delete").click
-        sleep(1)
-        (close_alert_and_get_its_text(true)).should include("Are you sure")
-        if element_present?(:id, "flash-msg")
-          ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+        if $driver.find_elements(:css, '#course-content > .discussions-table > tbody > tr:nth-child(6) > td.content > a').size > 0
+          $driver.find_element(:css, '#course-content > .discussions-table > tbody > tr:nth-child(6) > td.content > a').click
+          $wait.until { $driver.find_elements(:link, "Delete").size > 0 }
+          $driver.find_element(:link, "Delete").click
+          sleep(1)
+          (close_alert_and_get_its_text(true)).should include("Are you sure")
+          if element_present?(:id, "flash-msg")
+            ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+          end
         end
         $driver.find_element(:link, "Discussions").click
-        $wait.until { $driver.current_url.include? '/discussions' }
+        sleep(1)
+        $wait.until { $driver.find_elements(:id, "course-content").size > 0 }
       end
       # Verify
       $driver.find_elements(:css, '#course-content > .discussions-table > .tbody > tr').size <= 5

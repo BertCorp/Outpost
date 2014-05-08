@@ -57,8 +57,10 @@ describe "Teacher Can Create A New Resource" do
       ($driver.find_element(:css, "div.post-content").text).should == "text-sample1.txt (4.03 KB)\nAn uploaded test resource. " + document_one
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "Resources").size > 0 }
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Add a text document").size > 0 }
       $driver.find_element(:link, "Resources").click
+      $wait.until { $driver.find_elements(:link, "Text document").size > 0 }
       $driver.find_element(:link, "Text document").click
       
       document_two = "Resource #" + rand(10000).to_s
@@ -79,6 +81,7 @@ describe "Teacher Can Create A New Resource" do
       # Verify
       ($driver.find_element(:link, document_two + " A written test resource body of content.").text).should == document_two + " A written test resource body of content."
       $driver.find_element(:link, "Recent Activity").click
+      sleep(2)
       # Verify
       ($driver.find_element(:link, "added resource \"text-sample1.txt\" in \"Outpost Test Class\"").text).should == "added resource \"text-sample1.txt\" in \"Outpost Test Class\""
       # Verify
