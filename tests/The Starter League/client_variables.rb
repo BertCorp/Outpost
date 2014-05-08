@@ -11,6 +11,9 @@ def clear_gmail_inbox
     end
     sleep(1)
     $driver.navigate.refresh
+    if alert_present?
+      close_alert_and_get_its_text(true)
+    end
     sleep(2)
     $wait.until { $driver.find_elements(:css, "div[data-tooltip=\"Select\"] span").size > 0 }    
   end
