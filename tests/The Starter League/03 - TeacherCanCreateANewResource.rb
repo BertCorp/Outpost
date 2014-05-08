@@ -76,6 +76,7 @@ describe "Teacher Can Create A New Resource" do
       # Verify
       ($driver.find_element(:css, "div.post-content").text).should == "A written test resource body of content."
       $driver.find_element(:link, "Resources").click
+      sleep(2)
       # Verify
       ($driver.find_element(:link, "text-sample1.txt").text).should == "text-sample1.txt"
       # Verify
@@ -117,10 +118,10 @@ describe "Teacher Can Create A New Resource" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.delete_if { |l| !l.include? '/tests/' }.join("\n") unless $is_test_suite
+      puts e.backtrace.join("\n")
+      retry if @tries.count < 3 && $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end

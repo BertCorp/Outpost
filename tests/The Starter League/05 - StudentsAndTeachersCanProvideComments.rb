@@ -262,10 +262,12 @@ describe "Students and Teachers Can Provide Comments" do
       ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "The teacher is commenting on the discussion forum. #{random_num}"
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "Assignments").size > 0 }
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
       $driver.find_element(:link, "Assignments").click
+      sleep(2)
       $wait.until { $driver.find_elements(:link, assignment_two).size > 0 }
       $driver.find_element(:link, assignment_two).click
+      sleep(1)
       # Verify
       ($driver.find_element(:css, "div.content").text).should == "Test content for #{assignment_two}"
       $driver.find_element(:link, "Review submissions").click
@@ -334,10 +336,10 @@ describe "Students and Teachers Can Provide Comments" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.delete_if { |l| !l.include? '/tests/' }.join("\n") unless $is_test_suite
+      puts e.backtrace.join("\n")
+      retry if @tries.count < 3 && $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end
