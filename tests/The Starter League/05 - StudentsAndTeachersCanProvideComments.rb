@@ -108,10 +108,11 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:name, "commit").click
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
       $driver.find_element(:link, "Assignments").click
+      sleep(2)
       $wait.until { $driver.find_elements(:link, assignment_two).size > 0 }
-
       $driver.find_element(:link, assignment_two).click
             
       # Complete second (submission) exercise if we haven't already
@@ -122,8 +123,10 @@ describe "Students and Teachers Can Provide Comments" do
 
         $driver.find_element(:name, "draft").click
         $driver.find_element(:link, "← Assignments").click
+        sleep(2)
         $wait.until { $driver.find_elements(:link, assignment_two).size > 0 }
         $driver.find_element(:link, assignment_two).click
+        sleep(1)
         # Verify
         ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
 
@@ -158,6 +161,7 @@ describe "Students and Teachers Can Provide Comments" do
       #$driver.find_element(:css, "textarea#comment_content").clear
       #$driver.find_element(:css, "textarea#comment_content").send_keys "This is a comment on a resource."
       $driver.find_element(:name, "commit").click
+      sleep(1)
       # Verify
       ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "This is a comment on a resource. #{random_num}"
       
@@ -175,12 +179,14 @@ describe "Students and Teachers Can Provide Comments" do
       #$driver.find_element(:css, "textarea#discussion_content").send_keys "My first discussion thread"
       $driver.find_elements(:id, "subscription_type_none").last.click
       $driver.find_element(:name, "commit").click
+      sleep(1)
       # Verify
       ($driver.find_element(:css, "strong").text).should == "Outpost Student"
       # Verify
       ($driver.find_element(:css, "div.col-xs-11.content > div.content").text).should == "My discussion thread #{random_num}"
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
+      sleep(1)
       $wait.until { $driver.find_elements(:link, "Recent Activity").size > 0 }
       $driver.find_element(:link, "Recent Activity").click
       sleep(2)
@@ -280,7 +286,8 @@ describe "Students and Teachers Can Provide Comments" do
       # Verify
       ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "A teacher's comment on an exercise #{random_num}"
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "Recent Activity").size > 0 }
+      sleep(1)
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
       $driver.find_element(:link, "Recent Activity").click
       sleep(2)
       # Verify
