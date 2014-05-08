@@ -79,6 +79,8 @@ describe "Student Can Successfully Complete Assignments" do
       ($driver.find_element(:css, "h4").text).should == "Outpost Student (" + student_email + ")"
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Add a text document").size > 0 }
       $driver.find_element(:link, "Assignments").click
       
       # Complete first (completion) exercise
@@ -86,6 +88,7 @@ describe "Student Can Successfully Complete Assignments" do
       $driver.find_element(:link, assignment_one).click
       $wait.until { $driver.find_elements(:name, "complete").size > 0 }
       $driver.find_element(:name, "complete").click
+      sleep(1)
       # Verify
       ($driver.find_element(:css, "span.done.reviewed").text).should == ""
 
@@ -97,8 +100,9 @@ describe "Student Can Successfully Complete Assignments" do
       
       $driver.find_element(:name, "draft").click
       $driver.find_element(:link, "← Assignments").click
-      $wait.until { $driver.current_url.include? '/assignments' }
+      sleep(2)
       $driver.find_element(:link, assignment_two).click
+      sleep(1)
       # Verify
       ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
       
@@ -110,12 +114,14 @@ describe "Student Can Successfully Complete Assignments" do
       end
       sleep(2)
       $driver.find_element(:link, assignment_two).click
+      sleep(1)
       # Verify
       ($driver.find_element(:css, "div.assignment-submission-content > div.content").text).should == "This is my first answer to a Lantern exercise. I hope I get it right! " + assignment_two + " Now with a change to it!"
       # Verify
       ($driver.find_element(:css, "div.review-grade > span").text).should == "Your answer is pending review."
       $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "Recent Activity").size > 0 }
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Add a text document").size > 0 }
       $driver.find_element(:link, "Recent Activity").click
       sleep(2)
       # Verify
@@ -136,9 +142,10 @@ describe "Student Can Successfully Complete Assignments" do
       
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
+      sleep(1)
       $wait.until { $driver.find_elements(:link, "See an overview of your students' progress").size > 0 }
-      
       $driver.find_element(:link, "See an overview of your students' progress").click
+      
       $wait.until { $driver.find_elements(:link, "Go back").size > 0 }
       # Verify
       ($driver.find_element(:css, "h5").text).should == "Here's how your students are progressing in Outpost Test Class"
@@ -149,6 +156,8 @@ describe "Student Can Successfully Complete Assignments" do
       # Verify
       ($driver.find_element(:link, "Pending review").text).should == "Pending review"
       $driver.find_element(:link, "Go back").click
+      
+      $wait.until { $driver.find_elements(:link, "Logout").size > 0 }
 
       ensure_user_logs_out
       
