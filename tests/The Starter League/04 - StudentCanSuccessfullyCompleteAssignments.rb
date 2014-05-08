@@ -82,10 +82,11 @@ describe "Student Can Successfully Complete Assignments" do
       sleep(2)
       $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
       $driver.find_element(:link, "Assignments").click
-      
+      sleep(2)
       # Complete first (completion) exercise
-      $wait.until { $driver.find_elements(:link, assignment_one).size > 0 }
+      $wait.until { $driver.find_elements(:link, "Reorder").size > 0 }
       $driver.find_element(:link, assignment_one).click
+      sleep(2)
       $wait.until { $driver.find_elements(:name, "complete").size > 0 }
       $driver.find_element(:name, "complete").click
       sleep(1)
