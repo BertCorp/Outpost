@@ -80,9 +80,14 @@ describe "Import a file from Dropbox" do
       
       pass(@test_id)
     rescue => e
+      if e.inspect.include? 'UnhandledAlertError'
+        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        sleep(1)
+        e.ignore
+      end
       # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="IModalOverlay"'
-        $driver.find_element(:css, '.ic_close_modal').click
+        puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
         sleep(3)
         e.ignore
       end
