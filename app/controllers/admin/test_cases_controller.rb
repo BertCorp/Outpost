@@ -69,13 +69,16 @@ class Admin::TestCasesController < ApplicationController
   # GET /tests/1/start
   # GET /tests/1/start.json
   def start
-    @test_case = TestCase.find(params[:id])
-    @results = @test_case.results.where(status: 'Queued')
+    #@test_case = TestCase.find(params[:id])
+    #@results = @test_case.results.where(status: 'Queued')
+    @report = TestCase.find(params[:id]).company.test_suites.first.reports.where("(completed_at IS NULL) OR (status = ?)", 'Under Review').order('initiated_at DESC').first
+    @test_result = @report.results.where(test_case_id: params[:id]).first
+    
     respond_to do |format|
       if @results.any?
         @test_result = @results.last
         unless @test_result.started_at.present?
-          if @test_result.update(started_at: Time.now, status: 'Running')
+          if @test_result.update(started_at: Time.now, ended_at: nil, status: 'Running')
             format.html { render text: 'Running...' }
             format.json { head :no_content }
           else
@@ -96,12 +99,16 @@ class Admin::TestCasesController < ApplicationController
   # GET /tests/1/restart
   # GET /tests/1/restart.json
   def restart
-    @test_case = TestCase.find(params[:id])
-    @results = @test_case.results.where(status: 'Running')
+    #@test_case = TestCase.find(params[:id])
+    #@results = @test_case.results.where("(status = 'Running') OR (status = 'Failure')")
+    
+    @report = TestCase.find(params[:id]).company.test_suites.first.reports.where("(completed_at IS NULL) OR (status = ?)", 'Under Review').order('initiated_at DESC').first
+    @results = @report.results.where(test_case_id: params[:id])
+    
     respond_to do |format|
       if @results.any?
         @test_result = @results.last
-        if @test_result.update(started_at: Time.now, status: 'Running')
+        if @test_result.update(started_at: Time.now, ended_at: nil, status: 'Running')
           format.html { render text: 'Restarted...' }
           format.json { head :no_content }
         else
@@ -118,11 +125,11 @@ class Admin::TestCasesController < ApplicationController
   # GET /tests/1/stop
   # GET /tests/1/stop.json
   def stop
-    @test_case = TestCase.find(params[:id])
-    @results = @test_case.results
     respond_to do |format|
-      if @results.any?
-        @test_result = @results.last
+      begin
+        raise unless params[:status].present?
+        @report = TestCase.find(params[:id]).company.test_suites.first.reports.where("(completed_at IS NULL) OR (status = ?)", 'Under Review').order('initiated_at DESC').first
+        @test_result = @report.results.where(test_case_id: params[:id]).first
         #unless @test_result.ended_at.present?
           r = { 
             ended_at: Time.now, 
@@ -141,7 +148,7 @@ class Admin::TestCasesController < ApplicationController
         #  format.html { render text: 'Test already stopped.'}
         #  format.json { head :no_content }
         #end
-      else
+      rescue
         format.html { render text: 'Eligible test not found.'}
         format.json { head :no_content }
       end   

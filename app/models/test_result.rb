@@ -1,6 +1,6 @@
 class TestResult < ActiveRecord::Base
   
-  belongs_to :report
+  belongs_to :report, dependent: :destroy
   belongs_to :test_case
   belongs_to :test_environment
 
