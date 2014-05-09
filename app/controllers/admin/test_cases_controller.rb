@@ -69,14 +69,13 @@ class Admin::TestCasesController < ApplicationController
   # GET /tests/1/start
   # GET /tests/1/start.json
   def start
-    #@test_case = TestCase.find(params[:id])
-    #@results = @test_case.results.where(status: 'Queued')
-    @report = TestCase.find(params[:id]).company.test_suites.first.reports.where("(completed_at IS NULL) OR (status = ?)", 'Under Review').order('initiated_at DESC').first
-    @test_result = @report.results.where(test_case_id: params[:id]).first
-    
     respond_to do |format|
-      if @results.any?
-        @test_result = @results.last
+      begin
+        #@test_case = TestCase.find(params[:id])
+        #@results = @test_case.results.where(status: 'Queued')
+        @report = TestCase.find(params[:id]).company.test_suites.first.reports.where("(completed_at IS NULL) OR (status = ?)", 'Under Review').order('initiated_at DESC').first
+        @test_result = @report.results.where(test_case_id: params[:id]).first
+      
         unless @test_result.started_at.present?
           if @test_result.update(started_at: Time.now, ended_at: nil, status: 'Running')
             format.html { render text: 'Running...' }
@@ -86,10 +85,10 @@ class Admin::TestCasesController < ApplicationController
             format.json { render json: @test_result.errors, status: :unprocessable_entity }
           end
         else
-          format.html { render text: 'Test not started.'}
+          format.html { render text: 'Already running...'}
           format.json { head :no_content }
         end
-      else
+      rescue
         format.html { render text: 'Test not found.'}
         format.json { head :no_content }
       end   
@@ -99,15 +98,14 @@ class Admin::TestCasesController < ApplicationController
   # GET /tests/1/restart
   # GET /tests/1/restart.json
   def restart
-    #@test_case = TestCase.find(params[:id])
-    #@results = @test_case.results.where("(status = 'Running') OR (status = 'Failure')")
-    
-    @report = TestCase.find(params[:id]).company.test_suites.first.reports.where("(completed_at IS NULL) OR (status = ?)", 'Under Review').order('initiated_at DESC').first
-    @results = @report.results.where(test_case_id: params[:id])
-    
     respond_to do |format|
-      if @results.any?
-        @test_result = @results.last
+      begin
+        #@test_case = TestCase.find(params[:id])
+        #@results = @test_case.results.where("(status = 'Running') OR (status = 'Failure')")
+    
+        @report = TestCase.find(params[:id]).company.test_suites.first.reports.where("(completed_at IS NULL) OR (status = ?)", 'Under Review').order('initiated_at DESC').first
+        @test_result = @report.results.where(test_case_id: params[:id]).first
+    
         if @test_result.update(started_at: Time.now, ended_at: nil, status: 'Running')
           format.html { render text: 'Restarted...' }
           format.json { head :no_content }
@@ -115,7 +113,7 @@ class Admin::TestCasesController < ApplicationController
           format.html { render text: @test_result.errors.inspect }
           format.json { render json: @test_result.errors, status: :unprocessable_entity }
         end
-      else
+      rescue
         format.html { render text: 'Test not found.'}
         format.json { head :no_content }
       end   
