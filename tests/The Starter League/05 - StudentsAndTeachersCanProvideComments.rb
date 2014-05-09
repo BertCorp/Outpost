@@ -153,7 +153,7 @@ describe "Students and Teachers Can Provide Comments" do
       # Student can comment on a resource file.
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Resources").click
-
+      sleep(2)
       $wait.until { $driver.find_elements(:link, "text-sample1.txt").size > 0 }
       $driver.find_element(:link, "text-sample1.txt").click
       
