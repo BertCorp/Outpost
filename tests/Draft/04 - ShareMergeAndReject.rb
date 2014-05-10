@@ -182,8 +182,13 @@ describe "Share, Merge and Reject" do
       pass(@test_id)
     rescue => e
       if e.inspect.include? 'UnhandledAlertError'
-        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        if $driver.switch_to().alert() == "If you're done editing, do you want to stay on the page to click 'You're Done Editing'?"
+          puts "Dismissed unexpected alert: #{close_alert_and_get_its_text(false)}"
+        else
+          puts "Accepted unexpected alert: #{close_alert_and_get_its_text(true)}"
+        end
         sleep(1)
+        puts "Current url: #{$driver.current_url}"
         e.ignore
       end
       # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
