@@ -15,7 +15,6 @@ describe "TestPrep" do
     # if this is really the end... then quit.
     unless $is_test_suite
       $driver.quit
-      $outpost.quit
     end
   end
   
@@ -46,8 +45,28 @@ describe "TestPrep" do
       count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
       count.times do
         $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
-        $driver.find_element(:css, 'li:nth-child(2) > a').click
+        $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE DOCUMENT").click
         $driver.switch_to.alert.accept
+        sleep(1)
+        $driver.navigate.refresh
+      end
+      
+      $driver.find_element(:link, "LOGOUT").click
+      sleep(1)
+      
+      $driver.find_element(:link, "LOGIN").click
+      $driver.find_element(:id, "draft_user_email").clear
+      $driver.find_element(:id, "draft_user_email").send_keys "test+draft_editor@bertcorp.com"
+      $driver.find_element(:id, "draft_user_password").clear
+      $driver.find_element(:id, "draft_user_password").send_keys "testcase12"
+      $driver.find_element(:name, "commit").click
+      
+      count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
+      count.times do
+        $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
+        $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE DOCUMENT").click
+        $driver.switch_to.alert.accept
+        sleep(1)
         $driver.navigate.refresh
       end
 

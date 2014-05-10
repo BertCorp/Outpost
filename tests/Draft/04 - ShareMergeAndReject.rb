@@ -103,6 +103,7 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:css, "form > input[name=\"commit\"]").click
       close_alert_and_get_its_text(true) if alert_present?
       $driver.find_element(:link, "LOGOUT").click
+      sleep(1)
 
       $driver.find_element(:link, "LOGIN").click
       $driver.find_element(:id, "draft_user_email").clear
@@ -122,6 +123,7 @@ describe "Share, Merge and Reject" do
       
       $driver.find_element(:css, 'i.icon-home').click
       $driver.find_element(:link, "LOGOUT").click
+      sleep(1)
 
       $driver.find_element(:link, "LOGIN").click
       $driver.find_element(:id, "draft_user_email").clear
@@ -129,6 +131,8 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:id, "draft_user_password").clear
       $driver.find_element(:id, "draft_user_password").send_keys "testcase12"
       $driver.find_element(:name, "commit").click
+      sleep(1)
+      
       $driver.find_element(:link, "EDIT").click
       $driver.find_element(:id, "document_content").clear
       $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num} Here is another change to this document."
@@ -147,6 +151,8 @@ describe "Share, Merge and Reject" do
       
       $driver.find_element(:css, 'i.icon-home').click
       $driver.find_element(:link, "LOGOUT").click
+      sleep(1)
+      
       $driver.find_element(:link, "LOGIN").click
       $driver.find_element(:id, "draft_user_email").clear
       $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"
@@ -191,10 +197,10 @@ describe "Share, Merge and Reject" do
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
-      puts e.backtrace.join("\n") unless $is_test_suite
+      puts e.backtrace.join("\n")
+      retry if @tries.count < 3 && $is_test_suite
       puts "Retrying `#{self.class.description}`: #{@tries.count}"
       puts ""
-      retry if @tries.count < 3 && $is_test_suite
       fail(@test_id, e)
     end
   end
