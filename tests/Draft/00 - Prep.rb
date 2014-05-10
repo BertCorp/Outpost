@@ -69,6 +69,9 @@ describe "TestPrep" do
         sleep(1)
         $driver.navigate.refresh
       end
+      
+      $driver.find_element(:link, "LOGOUT").click
+      sleep(1)
 
     rescue => e
       if e.inspect.include? 'UnhandledAlertError'
