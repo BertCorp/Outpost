@@ -91,6 +91,8 @@ describe "Share, Merge and Reject" do
       if $driver.find_elements(:css, '#done_editing_button').size < 1
         $driver.get(share_link)
         sleep(1)
+        $driver.find_element(:css, "#sidebar_content div.instruction_copy a").click
+        sleep(1)
       end
       
       $driver.find_element(:id, "document_content").clear
