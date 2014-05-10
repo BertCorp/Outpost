@@ -94,9 +94,7 @@ describe "Share, Merge and Reject" do
       sleep(1)
       $driver.find_element(:id, "draft_user_email").send_keys "test+draft_editor@bertcorp.com"
       $driver.find_element(:id, "draft_user_password").send_keys "testcase12"
-      $driver.find_element(:name, "commit").click
-      sleep(1)
-      
+      $driver.find_element(:name, "commit").click      
       
       if $driver.find_elements(:css, '#done_editing_button').size < 1
         puts "Current location before share link: #{$driver.current_url}"
@@ -114,12 +112,14 @@ describe "Share, Merge and Reject" do
       
       $driver.find_element(:css, "#done_editing_button").click
       
-      sleep(3)
-      
-      $driver.find_element(:id, "note").clear
-      $driver.find_element(:id, "note").send_keys "I edited this document."
-      $driver.find_element(:css, "form > input[name=\"commit\"]").click
+      if $driver.find_elements(:id, "note").size > 0
+        $driver.find_element(:id, "note").clear
+        $driver.find_element(:id, "note").send_keys "I edited this document."
+        $driver.find_element(:css, "form > input[name=\"commit\"]").click
+      end
+
       close_alert_and_get_its_text(true) if alert_present?
+      
       $driver.find_element(:link, "LOGOUT").click
       sleep(1)
 

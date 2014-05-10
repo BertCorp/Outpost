@@ -18,7 +18,6 @@ def save_document
     edit_menu = $driver.find_element(:id, "edit_menu")
     $driver.action.move_to(edit_menu).perform
     edit_menu.click unless $driver.find_element(:id, "mark_draft_button").displayed?
-    sleep(1)
     $driver.find_element(:id, "mark_draft_button").click
   rescue
   end
