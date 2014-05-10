@@ -32,12 +32,7 @@ def start_logged_in
   # close any alerts, if they are present
   #if alert_present?
   #  $driver.switch_to.alert.accept
-  #end
-  if $driver.find_elements(:link, "LOGOUT").size > 0 
-    $driver.find_element(:link, "LOGOUT").click
-    sleep(1)
-  end
-
+  #end  
   # login, if we aren't already
   if $driver.current_url.include? "draft/users/sign_in"
     $driver.find_element(:id, "draft_user_email").send_keys "test+draft@bertcorp.com"

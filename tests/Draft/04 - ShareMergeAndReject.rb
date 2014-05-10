@@ -29,6 +29,16 @@ describe "Share, Merge and Reject" do
       $driver = start_driver({ name: 'Draft - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
 
+      # Start on main homepage...
+      $driver.get(@base_url + 'documents')
+      # But we don't know which user we are logged in as, so let's just make sure we are logged out.
+      if $driver.find_elements(:link, "LOGOUT").size > 0 
+        $driver.find_element(:link, "LOGOUT").click
+        sleep(1)
+        $driver.find_element(:link, "LOGIN").click
+        sleep(1)
+      end
+      # now make sure we login as main user
       start_logged_in
       
       # just create a new document for this
@@ -182,13 +192,8 @@ describe "Share, Merge and Reject" do
       pass(@test_id)
     rescue => e
       if e.inspect.include? 'UnhandledAlertError'
-        if $driver.switch_to().alert() == "If you're done editing, do you want to stay on the page to click 'You're Done Editing'?"
-          puts "Dismissed unexpected alert: #{close_alert_and_get_its_text(false)}"
-        else
-          puts "Accepted unexpected alert: #{close_alert_and_get_its_text(true)}"
-        end
+        puts "Accepted unexpected alert: #{close_alert_and_get_its_text(true)}"
         sleep(1)
-        puts "Current url: #{$driver.current_url}"
         e.ignore
       end
       # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
