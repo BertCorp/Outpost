@@ -81,7 +81,9 @@ describe "TestPrep" do
       end
       # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="IModalOverlay"'
-        puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
+        if $driver.find_element(:css, '.ic_close_modal').displayed?
+          puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
+        end
         sleep(3)
         e.ignore
       end
