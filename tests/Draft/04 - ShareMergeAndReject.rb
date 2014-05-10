@@ -89,6 +89,8 @@ describe "Share, Merge and Reject" do
       
       
       if $driver.find_elements(:css, '#done_editing_button').size < 1
+        puts "Current location before share link: #{$driver.current_url}"
+        puts "Go to share link: #{share_link}"
         $driver.get(share_link)
         sleep(1)
         $driver.find_element(:css, "#sidebar_content div.instruction_copy a").click
