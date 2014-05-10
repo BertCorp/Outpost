@@ -87,12 +87,16 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:name, "commit").click
       sleep(1)
       
+      
+      if $driver.find_elements(:css, '#done_editing_button').size < 1
+        $driver.get(share_link)
+        sleep(1)
+      end
+      
       $driver.find_element(:id, "document_content").clear
       $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
       
       save_document
-
-      sleep(3)
       
       $driver.find_element(:css, "#done_editing_button").click
       
