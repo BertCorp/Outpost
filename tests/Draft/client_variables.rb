@@ -34,7 +34,7 @@ def start_logged_in
   #  $driver.switch_to.alert.accept
   #end
   if $driver.find_elements(:link, "LOGOUT").size > 0 
-    $driver.find_elements(:link, "LOGOUT").click
+    $driver.find_element(:link, "LOGOUT").click
     sleep(1)
   end
 
