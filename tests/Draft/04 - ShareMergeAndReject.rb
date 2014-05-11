@@ -32,7 +32,7 @@ describe "Share, Merge and Reject" do
       # Start on main homepage...
       $driver.get(@base_url + 'documents')
       # But we don't know which user we are logged in as, so let's just make sure we are logged out.
-      if $driver.find_elements(:link, "LOGOUT").size > 0 
+      if $driver.find_elements(:link_text, "LOGOUT").size > 0 
         $driver.find_element(:link, "LOGOUT").click
         sleep(1)
         $driver.find_element(:link, "LOGIN").click
@@ -158,9 +158,15 @@ describe "Share, Merge and Reject" do
       save_document
       
       $driver.find_element(:css, "#done_editing_button").click
-      $driver.find_element(:id, "note").clear
-      $driver.find_element(:id, "note").send_keys "Here is my second change to ignore."
-      $driver.find_element(:css, "form > input[name=\"commit\"]").click
+      
+      if $driver.find_elements(:id, "note").size > 0
+        $driver.find_element(:id, "note").clear
+        $driver.find_element(:id, "note").send_keys "I edited this document."
+        $driver.find_element(:css, "form > input[name=\"commit\"]").click
+      end
+
+      close_alert_and_get_its_text(true) if alert_present?
+      
       sleep(1)
       $driver.find_element(:link, "VIEW").click
       sleep(1)

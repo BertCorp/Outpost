@@ -34,23 +34,32 @@ def start_driver(cs = {})
 end # setup_driver
 
 def outpost(url)
-  if $outpost == nil
-    if ENV['LOCAL'] == 'true'
-      url = url.gsub('http://www.outpostqa.com/', 'http://localhost:3000/')
-      $outpost = Selenium::WebDriver.for :firefox
-    else
-      caps = Selenium::WebDriver::Remote::Capabilities.new
-      caps['browser'] = 'Firefox'
-      caps['browser_version'] = '27.0'
-      caps['os'] = 'Windows'
-      caps['os_version'] = '8.1'
-      caps[:name] = "Automated Testing - Outpost URLs"
-      $outpost = Selenium::WebDriver.for(:remote,
-        :url => "http://#{ENV['BS_USERNAME']}:#{ENV['BS_AUTHKEY']}@hub.browserstack.com/wd/hub",
-        :desired_capabilities => caps)
+  begin
+    unless $outpost
+      if ENV['LOCAL'] == 'true'
+        url = url.gsub('http://www.outpostqa.com/', 'http://localhost:3000/')
+        $outpost = Selenium::WebDriver.for :firefox
+      else
+        caps = Selenium::WebDriver::Remote::Capabilities.new
+        caps['browser'] = 'Firefox'
+        caps['browser_version'] = '27.0'
+        caps['os'] = 'Windows'
+        caps['os_version'] = '8.1'
+        caps[:name] = "Automated Testing - Outpost URLs"
+        $outpost = Selenium::WebDriver.for(:remote,
+          :url => "http://#{ENV['BS_USERNAME']}:#{ENV['BS_AUTHKEY']}@hub.browserstack.com/wd/hub",
+          :desired_capabilities => caps)
+      end
+    end
+    $outpost.navigate.to url
+  rescue => e
+    if e.inspect.include? "Session not started"
+      "Session missing. Retrying to restart in 5."
+      $outpost = nil
+      sleep(5)
+      outpost(url)
     end
   end
-  $outpost.navigate.to url
 end
 
 def start(test_id)
