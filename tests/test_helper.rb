@@ -65,14 +65,14 @@ end
 def start(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/start")
   sleep(1)
-  $outpost.quit
+  $outpost.quit if $outpost
   $outpost = nil
 end
 
 def restart(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/restart")
   sleep(1)
-  $outpost.quit
+  $outpost.quit if $outpost
   $outpost = nil
 end
 

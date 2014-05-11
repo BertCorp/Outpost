@@ -18,7 +18,7 @@ describe "Share, Merge and Reject" do
     # if this is really the end... then quit.
     #unless $is_test_suite
       $driver.quit
-      $outpost.quit
+      $outpost.quit if $outpost
     #end
   end
   
