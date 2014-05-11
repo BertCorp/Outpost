@@ -137,6 +137,7 @@ describe "Share, Merge and Reject" do
 
       $driver.find_element(:id, "home_button_drafts").click
       $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
+      sleep(1)
       ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
       
       $driver.find_element(:css, 'i.icon-home').click

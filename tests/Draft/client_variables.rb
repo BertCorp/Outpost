@@ -14,16 +14,16 @@ def go_home_from_document
 end
 
 def save_document
-  begin
-    edit_menu = $driver.find_element(:id, "edit_menu")
-    $driver.action.move_to(edit_menu).perform
-    edit_menu.click unless $driver.find_element(:id, "mark_draft_button").displayed?
-    $driver.find_element(:id, "mark_draft_button").click
-  rescue
-  end
   sleep(1)
-  # Verify
-  $driver.find_element(:id, "saving_indicator").text.should == "SAVED"
+  while $driver.find_element(:id, "saving_indicator").text != "SAVED" do
+    begin
+      edit_menu = $driver.find_element(:id, "edit_menu")
+      $driver.action.move_to(edit_menu).perform
+      edit_menu.click unless $driver.find_element(:id, "mark_draft_button").displayed?
+      $driver.find_element(:id, "mark_draft_button").click
+    rescue
+    end
+  end
 end
 
 def start_logged_in
