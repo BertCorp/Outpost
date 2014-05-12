@@ -29,7 +29,7 @@ describe "Test Cleanup" do
       $driver.find_element(:link, "People").click
       $wait.until { $driver.find_elements(:id, "teaching_staff").size > 0 }
       # Leave one teacher account (and one admin) in the system.
-      while $driver.find_elements(:css, '#teaching_staff li').size > 2 do
+      while $driver.find_elements(:css, '#teaching_staff li').size > 3 do
         #puts "Teachers: " + $driver.find_elements(:css, '#teaching_staff li').size.to_s
         #puts $driver.find_element(:id, 'teaching_staff').find_element(:link, "Outpost T.").attribute('href')
         # Verify
@@ -41,7 +41,7 @@ describe "Test Cleanup" do
         #$driver.navigate.back      
       end
       # Leave one student account in the system.
-      while $driver.find_elements(:css, "#students li").size >= 2 do
+      while $driver.find_elements(:css, "#students li").size >= 3 do
         #puts "Students: " + $driver.find_elements(:css, '#students li').size.to_s
         #puts $driver.find_element(:link, "Outpost S.").attribute('href')
         # Verify

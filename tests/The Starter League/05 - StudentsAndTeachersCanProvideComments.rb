@@ -27,19 +27,20 @@ describe "Students and Teachers Can Provide Comments" do
       $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       random_num = rand(10000).to_s
+      puts "Random num: #{random_num}"
       
       # Need to get: student_email, teacher_email, assignment_two (submission), document_two (created)
       login_as_admin
       
-      # First, let's do some prep and get the student's email
+      # First, let's do some prep and get the first student's email
       $driver.find_element(:link, "People").click
-      $driver.find_element(:id, "students").find_element(:link, "Outpost S.").click
+      $driver.find_element(:id, "students").find_elements(:link, "Outpost S.").first.click
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
       #puts student_email
       
       # Next, let's get the teacher's email
       $driver.find_element(:link, "People").click
-      $driver.find_element(:id, "teaching_staff").find_element(:link, "Outpost T.").click
+      $driver.find_element(:id, "teaching_staff").find_elements(:link, "Outpost T.").first.click
       teacher_email = $driver.find_element(:css, "#profile h4 > small > a").text
       #puts teacher_email
       
@@ -313,7 +314,6 @@ describe "Students and Teachers Can Provide Comments" do
       # Verify
       $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher! #{random_num}) to #{document_two}").size > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to " + document_two
-      ensure_user_logs_out
       
       pass(@test_id)
     rescue => e
