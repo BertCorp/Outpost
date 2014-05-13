@@ -32,9 +32,9 @@ describe "Share, Merge and Reject" do
       # Start on main homepage...
       $driver.get(@base_url + 'documents')
       # But we don't know which user we are logged in as, so let's just make sure we are logged out.
-      if $driver.find_elements(:link_text, "LOGOUT").size > 0 
-        $driver.find_element(:link, "LOGOUT").click
-        sleep(1)
+      if $driver.find_elements(:link_text, "LOGOUT").size.to_i > 0 
+        ensure_user_logs_out
+        
         $driver.find_element(:link, "LOGIN").click
         sleep(1)
       end
@@ -51,8 +51,19 @@ describe "Share, Merge and Reject" do
 
       $driver.find_element(:css, ".document:nth-child(1)").find_element(:link, "SHARE").click
 
-      $wait.until { $driver.find_elements(:id, 'share_url').size > 0 }
-      share_link = $driver.find_element(:id, "share_url").text
+      share_link = nil
+      while share_link == nil
+        begin
+          $wait.until { $driver.find_elements(:id, 'share_url').size > 0 }
+        rescue
+          $driver.get(@base_url + 'documents')
+          sleep(1)
+          $driver.find_element(:css, ".document:nth-child(1)").find_element(:link, "SHARE").click
+        end
+        if $driver.find_elements(:id, 'share_url').size > 0
+          share_link = $driver.find_element(:id, "share_url").text
+        end
+      end
 
       # $driver.find_element(:link, "Or email someone to help edit your document.").click
       # $driver.find_element(:id, "email_invitation_email").clear
@@ -66,9 +77,8 @@ describe "Share, Merge and Reject" do
       
       $driver.find_element(:css, '#invite_link > div > a').click
       sleep(1)
-      $driver.find_element(:link_text, "LOGOUT").click
-      sleep(1)
-      $driver.find_element(:css, "#homepage_titles > h1").text.should == "WRITE BETTER WITH DRAFT"
+      
+      ensure_user_logs_out
 
       # gmail
       # $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
@@ -112,16 +122,12 @@ describe "Share, Merge and Reject" do
       
       $driver.find_element(:css, "#done_editing_button").click
       
-      if $driver.find_elements(:id, "note").size > 0
-        $driver.find_element(:id, "note").clear
-        $driver.find_element(:id, "note").send_keys "I edited this document."
-        $driver.find_element(:css, "form > input[name=\"commit\"]").click
-      end
-
-      close_alert_and_get_its_text(true) if alert_present?
+      $wait.until { $driver.find_elements(:id, "note").size > 0 }
+      $driver.find_element(:id, "note").clear
+      $driver.find_element(:id, "note").send_keys "I edited this document."
+      $driver.find_element(:css, "form > input[name=\"commit\"]").click
       
-      $driver.find_element(:link, "LOGOUT").click
-      sleep(1)
+      ensure_user_logs_out
 
       $driver.find_element(:link, "LOGIN").click
       $driver.find_element(:id, "draft_user_email").clear
@@ -141,9 +147,9 @@ describe "Share, Merge and Reject" do
       ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
       
       $driver.find_element(:css, 'i.icon-home').click
-      $driver.find_element(:link, "LOGOUT").click
-      sleep(1)
-
+      
+      ensure_user_logs_out
+      
       $driver.find_element(:link, "LOGIN").click
       $driver.find_element(:id, "draft_user_email").clear
       $driver.find_element(:id, "draft_user_email").send_keys "test+draft_editor@bertcorp.com"
@@ -160,12 +166,11 @@ describe "Share, Merge and Reject" do
       
       $driver.find_element(:css, "#done_editing_button").click
       
-      if $driver.find_elements(:id, "note").size > 0
-        $driver.find_element(:id, "note").clear
-        $driver.find_element(:id, "note").send_keys "I edited this document."
-        $driver.find_element(:css, "form > input[name=\"commit\"]").click
-      end
-
+      $wait.until { $driver.find_elements(:id, "note").size > 0 }
+      $driver.find_element(:id, "note").clear
+      $driver.find_element(:id, "note").send_keys "I edited this document."
+      $driver.find_element(:css, "form > input[name=\"commit\"]").click
+      
       close_alert_and_get_its_text(true) if alert_present?
       
       sleep(1)
@@ -175,8 +180,8 @@ describe "Share, Merge and Reject" do
       ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num} Here is another change to this document."
       
       $driver.find_element(:css, 'i.icon-home').click
-      $driver.find_element(:link, "LOGOUT").click
-      sleep(1)
+
+      ensure_user_logs_out
       
       $driver.find_element(:link, "LOGIN").click
       $driver.find_element(:id, "draft_user_email").clear
@@ -194,7 +199,8 @@ describe "Share, Merge and Reject" do
       ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
       
       $driver.find_element(:css, 'i.icon-home').click
-      $driver.find_element(:link, "LOGOUT").click
+      
+      ensure_user_logs_out
       
       pass(@test_id)
     rescue => e

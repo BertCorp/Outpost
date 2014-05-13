@@ -44,10 +44,13 @@ describe "TestPrep" do
       
       count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
       count.times do
-        $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
-        $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE DOCUMENT").click
-        $driver.switch_to.alert.accept
-        sleep(1)
+        begin
+          $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
+          $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE DOCUMENT").click
+          $driver.switch_to.alert.accept
+          sleep(1)
+        rescue
+        end
         $driver.navigate.refresh
       end
       
@@ -63,10 +66,13 @@ describe "TestPrep" do
       
       count = $driver.find_elements(:css, ".document button.dropdown-toggle").count
       count.times do
-        $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
-        $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE DOCUMENT").click
-        $driver.switch_to.alert.accept
-        sleep(1)
+        begin
+          $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
+          $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE DOCUMENT").click
+          $driver.switch_to.alert.accept
+          sleep(1)
+        rescue
+        end
         $driver.navigate.refresh
       end
       
