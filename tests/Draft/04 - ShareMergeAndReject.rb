@@ -120,7 +120,16 @@ describe "Share, Merge and Reject" do
       
       save_document
       
-      $driver.find_element(:css, "#done_editing_button").click
+      sleep(2)
+      
+      begin
+        $driver.find_element(:css, "#done_editing_button").click
+      rescue
+        $driver.navigate.refresh
+        close_alert_and_get_its_text(true) if alert_present?
+        sleep(1)
+        $driver.find_element(:css, "#done_editing_button").click
+      end
       
       $wait.until { $driver.find_elements(:id, "note").size > 0 }
       $driver.find_element(:id, "note").clear
@@ -164,7 +173,16 @@ describe "Share, Merge and Reject" do
 
       save_document
       
-      $driver.find_element(:css, "#done_editing_button").click
+      sleep(2)
+      
+      begin
+        $driver.find_element(:css, "#done_editing_button").click
+      rescue
+        $driver.navigate.refresh
+        close_alert_and_get_its_text(true) if alert_present?
+        sleep(1)
+        $driver.find_element(:css, "#done_editing_button").click
+      end
       
       $wait.until { $driver.find_elements(:id, "note").size > 0 }
       $driver.find_element(:id, "note").clear
