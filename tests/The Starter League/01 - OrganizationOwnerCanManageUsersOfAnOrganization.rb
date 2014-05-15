@@ -157,15 +157,15 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       # Verify
       ($driver.find_element(:link, "See an overview of your students' progress").text).should == "See an overview of your students' progress"
       $driver.find_element(:link, "See an overview of your students' progress").click
-      $wait.until { $driver.find_elements(:link, "Go back").size > 0 }
+      $wait.until { $driver.find_elements(:link, "Export to Excel").size > 0 }
       # Verify
       ($driver.find_element(:css, "h5").text).should == "Here's how your students are progressing in Outpost Test Class"
       # Verify
-      ($driver.find_element(:link, "Student, Outpost").text).should == "Student, Outpost"
-      $driver.find_element(:link, "Student, Outpost").click
+      ($driver.find_elements(:link, "Student, Outpost").size).should >= 3
+      #$driver.find_element(:link, "Student, Outpost").click
       #$driver.find_element(:link, "Go back").click
       # Verify
-      ($driver.find_element(:css, "#profile .user-details h4 a").text).should == student_email
+      #($driver.find_element(:css, "#profile .user-details h4 a").text).should == student_email
       
       pass(@test_id)
     rescue => e

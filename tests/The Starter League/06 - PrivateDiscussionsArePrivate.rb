@@ -27,7 +27,7 @@ describe "Private Discussions Are Private" do
       $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       random_num = rand(10000).to_s
-      puts "Random num: #{random_num}"
+      puts "Test num: #{random_num}"
       
       # Need to get: student_email/id, teacher_email/id, assignment_two (submission), document_two (created)
       login_as_admin
@@ -36,40 +36,34 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_elements(:link, "Outpost S.").first.click
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      student_id = $driver.current_url.gsub('http://lanternhq.com/15/profiles/', '')
+      student_id = $driver.current_url.split('/').last
       #puts student_email
       
       # Next, let's do some prep and get the second student's email
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_elements(:link, "Outpost S.").last.click
       student2_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      student2_id = $driver.current_url.gsub('http://lanternhq.com/15/profiles/', '')
+      student2_id = $driver.current_url.split('/').last
       
       # Next, let's get the teacher's email
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "teaching_staff").find_elements(:link, "Outpost T.").first.click
       teacher_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      teacher_id = $driver.current_url.gsub('http://lanternhq.com/15/profiles/', '')
+      teacher_id = $driver.current_url.split('/').last
       #puts teacher_email
 
       # Next, let's get the second teacher's email
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "teaching_staff").find_elements(:link, "Outpost T.").last.click
       teacher2_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      teacher2_id = $driver.current_url.gsub('http://lanternhq.com/15/profiles/', '')
+      teacher2_id = $driver.current_url.split('/').last
       #puts teacher_email
       
-      puts student_email
-      puts student_id
+      puts "Student A: #{student_email} // #{student_id}"
+      puts "Student B: #{student2_email} // #{student2_id}"
       
-      puts student2_email
-      puts student2_id
-      
-      puts teacher_email
-      puts teacher_id
-      
-      puts teacher2_email
-      puts teacher2_id
+      puts "Teacher A: #{teacher_email} // #{teacher_id}"
+      puts "Teacher B: #{teacher2_email} // #{teacher2_id}"
       
       # Ensure that a private discussion is not shown anywhere to a user that doesn’t participant on it.
       # Need: admin, teacher A, teacher B, student A, student B?
