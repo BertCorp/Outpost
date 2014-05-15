@@ -27,7 +27,7 @@ describe "Students and Teachers Can Provide Comments" do
       $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       random_num = rand(10000).to_s
-      puts "Random num: #{random_num}"
+      puts "Test identifier: #{random_num}"
       
       # Need to get: student_email, teacher_email, assignment_two (submission), document_two (created)
       login_as_admin
@@ -36,13 +36,13 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_elements(:link, "Outpost S.").first.click
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      #puts student_email
+      puts "Student: #{student_email}"
       
       # Next, let's get the teacher's email
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "teaching_staff").find_elements(:link, "Outpost T.").first.click
       teacher_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      #puts teacher_email
+      puts "Teacher: #{teacher_email}"
       
       # Now, we need the submission assignment
       $driver.find_element(:link, "Classes").click
@@ -56,7 +56,7 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
         if elem.find_elements(:css, 'td.actions > a').size == 1
           text = elem.find_element(:css, 'td.title > a').text
-          klass = elem.find_element(:css, 'td.actions > a:nth-child(1)').attribute('class')
+          klass = elem.find_element(:css, 'td.actions > a:nth-last-child(1)').attribute('class')
           unless klass.include?("no-submissions")
             #puts text
             if text.include?("Submission Exercise")
@@ -67,8 +67,7 @@ describe "Students and Teachers Can Provide Comments" do
           end
         end
       end
-      #puts assignment_one
-      #puts assignment_two
+      puts "Submission Assignment?: #{assignment_two}"
 
       # Add a new submission assigment if we don't have one we can use.
       if assignment_two == nil
@@ -88,7 +87,7 @@ describe "Students and Teachers Can Provide Comments" do
         $wait.until { $driver.find_elements(:link, assignment_two).size > 0 }
         # Verify
         ($driver.find_element(:link, assignment_two).text).should == assignment_two
-        #puts "Added new assignment: #{assignment_two}"
+        puts "Added new assignment: #{assignment_two}"
       end
       
       $driver.find_element(:link, "Resources").click
@@ -96,7 +95,7 @@ describe "Students and Teachers Can Provide Comments" do
       
       # And finally, we need to get the created document
       document_two = $driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a').text.gsub($driver.find_element(:css, '.resources-table > tbody > tr.text-resource > td.content > a > span').text, '').chomp(" ")
-      #puts document_two
+      puts "Document: #{document_two}"
       
       ensure_user_logs_out
 
@@ -160,8 +159,7 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:link, "text-sample1.txt").click
       
       type_redactor_field('comment_content', "This is a comment on a resource. #{random_num}")
-      #$driver.find_element(:css, "textarea#comment_content").clear
-      #$driver.find_element(:css, "textarea#comment_content").send_keys "This is a comment on a resource."
+      
       $driver.find_element(:name, "commit").click
       sleep(1)
       # Verify
@@ -177,8 +175,7 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:id, "discussion_subject").send_keys "Our class discussion #{random_num}!"
       
       type_redactor_field('discussion_content', "My discussion thread #{random_num}")
-      #$driver.find_element(:css, "textarea#discussion_content").clear
-      #$driver.find_element(:css, "textarea#discussion_content").send_keys "My first discussion thread"
+      
       $driver.find_elements(:id, "subscription_type_none").last.click
       $driver.find_element(:name, "commit").click
       sleep(1)
@@ -243,9 +240,9 @@ describe "Students and Teachers Can Provide Comments" do
         type_redactor_field('comment_content', "This is a comment on an document from a teacher! #{random_num}")
         $driver.find_element(:name, "commit").click
       end
-      sleep(2)  
+      sleep(2)      
       # Verify
-      ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "This is a comment on an document from a teacher! #{random_num}"
+      ($driver.find_element(:css, ".comments > .comment:nth-last-child(1) > div.comment-content > div.content").text).should == "This is a comment on an document from a teacher! #{random_num}"
       # Verify
       ($driver.find_element(:link, "Outpost Teacher").text).should == "Outpost Teacher"
       

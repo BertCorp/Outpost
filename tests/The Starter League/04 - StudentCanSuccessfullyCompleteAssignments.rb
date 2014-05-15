@@ -33,7 +33,7 @@ describe "Student Can Successfully Complete Assignments" do
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_element(:link, "Outpost S.").click
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
-      #puts student_email
+      puts "Student: #{student_email}"
       
       # next, lets get the assignments we need
       $driver.find_element(:link, "Classes").click
@@ -61,8 +61,8 @@ describe "Student Can Successfully Complete Assignments" do
           break if (assignment_one != nil) && (assignment_two != nil)
         end
       end
-      #puts assignment_one
-      #puts assignment_two
+      puts "Completion Assignment: #{assignment_one}"
+      puts "Submission Assignment: #{assignment_two}"
       
       ensure_user_logs_out
       
@@ -102,7 +102,8 @@ describe "Student Can Successfully Complete Assignments" do
       $driver.find_element(:link, "← Assignments").click
       sleep(2)
       $driver.find_element(:link, assignment_two).click
-      sleep(1)
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
       # Verify
       ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
       
@@ -146,7 +147,7 @@ describe "Student Can Successfully Complete Assignments" do
       $wait.until { $driver.find_elements(:link, "See an overview of your students' progress").size > 0 }
       $driver.find_element(:link, "See an overview of your students' progress").click
       
-      $wait.until { $driver.find_elements(:link, "Go back").size > 0 }
+      $wait.until { $driver.find_elements(:link, "Export to Excel").size > 0 }
       # Verify
       ($driver.find_element(:css, "h5").text).should == "Here's how your students are progressing in Outpost Test Class"
       # Verify
@@ -155,7 +156,7 @@ describe "Student Can Successfully Complete Assignments" do
       ($driver.find_element(:css, "td.completed").text).should == "Completed"
       # Verify
       ($driver.find_element(:link, "Pending review").text).should == "Pending review"
-      $driver.find_element(:link, "Go back").click
+      $driver.find_element(:link, "Outpost Test Class").click
       
       $wait.until { $driver.find_elements(:link, "Logout").size > 0 }
 

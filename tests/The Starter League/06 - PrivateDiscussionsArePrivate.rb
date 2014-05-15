@@ -27,7 +27,7 @@ describe "Private Discussions Are Private" do
       $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
       $driver.manage.timeouts.implicit_wait = 3
       random_num = rand(10000).to_s
-      puts "Test num: #{random_num}"
+      puts "Test identifier: #{random_num}"
       
       # Need to get: student_email/id, teacher_email/id, assignment_two (submission), document_two (created)
       login_as_admin
