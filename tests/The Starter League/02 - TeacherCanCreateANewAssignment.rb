@@ -123,9 +123,11 @@ describe "Teacher Can Create A New Assignment" do
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
-      retry if @tries.count < 3 && $is_test_suite
-      puts "Retrying `#{self.class.description}`: #{@tries.count}"
-      puts ""
+      if @tries.count < 3 && $is_test_suite
+        puts "Retrying `#{self.class.description}`: #{@tries.count}"
+        puts ""
+        retry
+      end
       fail(@test_id, e)
     end
   end

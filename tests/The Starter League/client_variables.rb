@@ -1,4 +1,4 @@
-$environments = { production: "http://lanternhq.com/" }
+$environments = { production: "http://lanternhq.com/", staging: 'http://beta.lanternhq.com' }
 
 def clear_gmail_inbox
   sign_into_gmail

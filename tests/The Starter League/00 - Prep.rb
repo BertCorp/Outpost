@@ -5,17 +5,25 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Test Cleanup" do
-
+describe "Test Prep/Cleanup" do
+  
   before(:all) do
+    print "** Starting #{self.class.description}"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
     $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
     $driver.manage.timeouts.implicit_wait = 3
+    puts ""
+    print "#{x.example.description}: "
   end
   
   after(:all) do
     # if this is really the end... then quit.
+    puts ""
+    puts "** Finished #{self.class.description}"
     unless $is_test_suite
       $driver.quit
     end
@@ -81,10 +89,12 @@ describe "Test Cleanup" do
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
-      puts "Retrying `#{self.class.description}`: #{@tries.count}"
-      puts ""
       raise
-      #retry if @tries.count < 3 && $is_test_suite
+      #if @tries.count < 3 && $is_test_suite
+      #  puts "Retrying `#{self.class.description}`: #{@tries.count}"
+      #  puts ""
+      #  retry
+      #end
       #fail(@test_id, e)
     end 
   end
@@ -140,10 +150,12 @@ describe "Test Cleanup" do
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
-      puts "Retrying `#{self.class.description}`: #{@tries.count}"
-      puts ""
       raise
-      #retry if @tries.count < 3 && $is_test_suite
+      #if @tries.count < 3 && $is_test_suite
+      #  puts "Retrying `#{self.class.description}`: #{@tries.count}"
+      #  puts ""
+      #  retry
+      #end
       #fail(@test_id, e)
     end 
   end
@@ -198,10 +210,12 @@ describe "Test Cleanup" do
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
-      puts "Retrying `#{self.class.description}`: #{@tries.count}"
-      puts ""
       raise
-      #retry if @tries.count < 3 && $is_test_suite
+      #if @tries.count < 3 && $is_test_suite
+      #  puts "Retrying `#{self.class.description}`: #{@tries.count}"
+      #  puts ""
+      #  retry
+      #end
       #fail(@test_id, e)
     end 
   end
@@ -238,6 +252,8 @@ describe "Test Cleanup" do
       # Verify
       $driver.find_elements(:css, '#course-content > .discussions-table > .tbody > tr').size <= 5
       
+      ensure_user_logs_out
+      
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
@@ -259,10 +275,12 @@ describe "Test Cleanup" do
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
-      puts "Retrying `#{self.class.description}`: #{@tries.count}"
-      puts ""
       raise
-      #retry if @tries.count < 3 && $is_test_suite
+      #if @tries.count < 3 && $is_test_suite
+      #  puts "Retrying `#{self.class.description}`: #{@tries.count}"
+      #  puts ""
+      #  retry
+      #end
       #fail(@test_id, e)
     end 
   end

@@ -322,8 +322,7 @@ describe "Private Discussions Are Private" do
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       # Verify
-      # IGNORE FOR NOW until they update
-      #$driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should > 0
+      $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should > 0
       
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
@@ -359,8 +358,7 @@ describe "Private Discussions Are Private" do
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       
       # Verify
-      # IGNORE FOR NOW.
-      #$driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should == 0
+      $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should == 0
       
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
@@ -380,6 +378,7 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:css, 'h3').text.should == 'We seem to have lost you in space'
       $driver.navigate.back
       
+      ensure_user_logs_out
       
       pass(@test_id)
     rescue => e
@@ -403,9 +402,11 @@ describe "Private Discussions Are Private" do
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
-      retry if @tries.count < 3 && $is_test_suite
-      puts "Retrying `#{self.class.description}`: #{@tries.count}"
-      puts ""
+      if @tries.count < 3 && $is_test_suite
+        puts "Retrying `#{self.class.description}`: #{@tries.count}"
+        puts ""
+        retry
+      end
       fail(@test_id, e)
     end
   end

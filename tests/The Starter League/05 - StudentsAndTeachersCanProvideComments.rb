@@ -243,7 +243,7 @@ describe "Students and Teachers Can Provide Comments" do
         type_redactor_field('comment_content', "This is a comment on an document from a teacher! #{random_num}")
         $driver.find_element(:name, "commit").click
       end
-        
+      sleep(2)  
       # Verify
       ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "This is a comment on an document from a teacher! #{random_num}"
       # Verify
@@ -338,9 +338,11 @@ describe "Students and Teachers Can Provide Comments" do
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
-      retry if @tries.count < 3 && $is_test_suite
-      puts "Retrying `#{self.class.description}`: #{@tries.count}"
-      puts ""
+      if @tries.count < 3 && $is_test_suite
+        puts "Retrying `#{self.class.description}`: #{@tries.count}"
+        puts ""
+        retry
+      end
       fail(@test_id, e)
     end
   end
