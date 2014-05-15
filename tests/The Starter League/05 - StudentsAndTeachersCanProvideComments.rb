@@ -85,6 +85,7 @@ describe "Students and Teachers Can Provide Comments" do
 
         $driver.find_element(:link, "Publish...").click
         $driver.find_element(:name, "publish_and_notify").click
+        $wait.until { $driver.find_elements(:link, assignment_two).size > 0 }
         # Verify
         ($driver.find_element(:link, assignment_two).text).should == assignment_two
         #puts "Added new assignment: #{assignment_two}"

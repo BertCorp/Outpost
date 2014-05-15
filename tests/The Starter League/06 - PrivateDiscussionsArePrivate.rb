@@ -16,10 +16,10 @@ describe "Private Discussions Are Private" do
   
   after(:all) do
     # if this is really the end... then quit.
-    unless $is_test_suite
+    #unless $is_test_suite
       $driver.quit
       $outpost.quit if $outpost
-    end
+    #end
   end
   
   it "test_06_private_discussions_are_private" do
@@ -274,6 +274,112 @@ describe "Private Discussions Are Private" do
       # Verify
       $driver.find_element(:css, 'h3').text.should == 'We seem to have lost you in space'
       $driver.navigate.back
+      
+      # Now, let's edit the discussion and replace Student A with Student B and confirm:
+      ensure_user_logs_out
+      
+      login_as_admin
+      
+      $driver.find_element(:link, "Classes").click
+      $driver.find_element(:link, "Outpost Test Class").click
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      # Verify
+      $driver.find_elements(:link, discussion1_title).size.should > 0
+      
+      $driver.find_element(:link, "Discussions").click
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      # Verify
+      $driver.find_elements(:link, discussion1_title).size.should > 0
+      
+      $driver.find_element(:link, discussion1_title).click
+      sleep(1)
+      # Verify
+      $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
+      
+      $driver.find_element(:link, "Edit").click
+      
+      $driver.find_element(:id, 'discussion_participant_ids')
+      $driver.execute_script("document.getElementById('discussion_participant_ids').style.display = 'block';")
+      select = Selenium::WebDriver::Support::Select.new($driver.find_element(:id, 'discussion_participant_ids'))
+      select.deselect_all()
+      select.select_by(:value, student2_id)
+      select.select_by(:value, teacher_id)
+      $driver.find_element(:name, "commit").click
+      
+      ensure_user_logs_out
+
+      # Student B can view the discussion
+      $driver.find_element(:link, "Log in").click
+      $driver.find_element(:id, "user_email").clear
+      $driver.find_element(:id, "user_email").send_keys student2_email
+      $driver.find_element(:id, "user_password").clear
+      $driver.find_element(:id, "user_password").send_keys "test12"
+      $driver.find_element(:name, "commit").click
+      
+      # confirm student can see the new discussion
+      $driver.find_element(:link, "Me").click
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      # Verify
+      # IGNORE FOR NOW until they update
+      #$driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should > 0
+      
+      $driver.find_element(:link, "Classes").click
+      $driver.find_element(:link, "Outpost Test Class").click
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      # Verify
+      $driver.find_elements(:link, discussion1_title).size.should > 0
+      
+      $driver.find_element(:link, "Discussions").click
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      # Verify
+      $driver.find_elements(:link, discussion1_title).size.should > 0
+      
+      $driver.find_element(:link, discussion1_title).click
+      sleep(1)
+      # Verify
+      $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
+
+      # Now check to make sure people who don't have access can't see the discussion
+      ensure_user_logs_out
+      
+      # Student A can NOT view the discussion
+      $driver.find_element(:link, "Log in").click
+      $driver.find_element(:id, "user_email").clear
+      $driver.find_element(:id, "user_email").send_keys student_email
+      $driver.find_element(:id, "user_password").clear
+      $driver.find_element(:id, "user_password").send_keys "test12"
+      $driver.find_element(:name, "commit").click
+      
+      # confirm student can NOT see the new discussion
+      $driver.find_element(:link, "Me").click
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      
+      # Verify
+      # IGNORE FOR NOW.
+      #$driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should == 0
+      
+      $driver.find_element(:link, "Classes").click
+      $driver.find_element(:link, "Outpost Test Class").click
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      # Verify
+      $driver.find_elements(:link, discussion1_title).size.should == 0
+      
+      $driver.find_element(:link, "Discussions").click
+      sleep(2)
+      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      # Verify
+      $driver.find_elements(:link, discussion1_title).size.should == 0
+      
+      $driver.get discussion1_url
+      sleep(1)
+      # Verify
+      $driver.find_element(:css, 'h3').text.should == 'We seem to have lost you in space'
+      $driver.navigate.back
+      
       
       pass(@test_id)
     rescue => e

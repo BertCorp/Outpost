@@ -8,7 +8,6 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 describe "Test Cleanup" do
 
   before(:all) do
-    $outpost.quit if $outpost
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
     $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
@@ -17,7 +16,9 @@ describe "Test Cleanup" do
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit
+    unless $is_test_suite
+      $driver.quit
+    end
   end
   
   it "Clean up users" do
