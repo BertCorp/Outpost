@@ -1,4 +1,4 @@
-$environments = { production: "http://lanternhq.com/", staging: 'http://beta.lanternhq.com' }
+$environments = { production: 'http://beta.lanternhq.com' }
 
 def clear_gmail_inbox
   sign_into_gmail
@@ -38,9 +38,8 @@ def ensure_user_logs_out
 end
 
 def login_as_admin
-  # go to homepage (http://lanternhq.com/) and login.
-  $driver.get(@base_url) unless $driver.current_url == @base_url
-  
+  $driver.get(@base_url)
+  $wait.until { $driver.find_elements(:link, "Log in").size > 0 }
   $driver.find_element(:link, "Log in").click
   
   # we aren't logged in until we are home! /start

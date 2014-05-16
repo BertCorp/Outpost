@@ -54,16 +54,14 @@ describe "Students and Teachers Can Provide Comments" do
       assignment_two = nil
       #puts $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').size
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
-        if elem.find_elements(:css, 'td.actions > a').size == 1
-          text = elem.find_element(:css, 'td.title > a').text
-          klass = elem.find_element(:css, 'td.actions > a:nth-last-child(1)').attribute('class')
-          unless klass.include?("no-submissions")
-            #puts text
-            if text.include?("Submission Exercise")
-              #puts "SUBMISSION!"
-              assignment_two = text
-              break
-            end
+        text = elem.find_element(:css, 'td.title > a').text
+        klass = elem.find_element(:css, 'td.actions > a:nth-last-child(1)').attribute('class')
+        unless klass.include?("no-submissions")
+          #puts text
+          if text.include?("Submission Exercise")
+            #puts "SUBMISSION!"
+            assignment_two = text
+            break
           end
         end
       end
@@ -286,9 +284,11 @@ describe "Students and Teachers Can Provide Comments" do
       ($driver.find_element(:css, "div.reviewing-assignment-submission > div.assignment-submission-content > div.content").text).should == "This is my first answer to a Lantern exercise. I hope I get it right! #{assignment_two} Now with a change to it!"
       # Verify
       ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "A teacher's comment on an exercise #{random_num}"
-      $driver.find_element(:link, "Outpost Test Class").click
+      $driver.find_elements(:css, ".breadcrumb-navigation a").first.click
       sleep(1)
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      $driver.find_element(:link, "← Assignments").click
+      
+      $wait.until { $driver.find_elements(:link, "Recent Activity").size > 0 }
       $driver.find_element(:link, "Recent Activity").click
       sleep(2)
       # Verify
