@@ -39,6 +39,9 @@ end
 
 def login_as_admin
   $driver.get(@base_url)
+  if alert_present?
+    close_alert_and_get_its_text(true)
+  end
   $wait.until { $driver.find_elements(:link, "Log in").size > 0 }
   $driver.find_element(:link, "Log in").click
   
@@ -74,6 +77,9 @@ end
 
 def sign_into_gmail
   $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
+  if alert_present?
+    close_alert_and_get_its_text(true)
+  end
   sleep(1)
   if $driver.find_elements(:link, "test@bertcorp.com").size > 0 || $driver.find_elements(:link, "Sign out").size > 0
     sign_out_of_gmail
