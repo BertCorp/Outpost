@@ -50,8 +50,7 @@ class ReportMailer < ActionMailer::Base
   def scheduled_report_successful_email(report)
     @report = report
     
-    mail(to: @report.company.users.collect { |u| u.email }.join(", "), subject: "Outpost test results: #{@report.status} (#{@report.completed_at.strftime('%m/%d/%Y')})")
-    mail(to: 'zack@outpostqa.com', subject: "Outpost test results: #{@report.status} (#{@report.completed_at.strftime('%m/%d/%Y')}) -- #{@report.company.users.collect { |u| u.email }.join(", ")}")    
+    mail(to: "#{@report.company.users.collect { |u| u.email }.join(", ")}", bcc: 'zack@outpostqa.com', subject: "Outpost Test Results: #{@report.status} (#{@report.completed_at.strftime('%m/%d/%Y')})", from: 'zack@outpostqa.com')
   end
     
 end
