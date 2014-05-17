@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  
+    
   def after_sign_in_path_for(resource)
     dashboard_path
   end
@@ -20,6 +20,19 @@ class ApplicationController < ActionController::Base
     def authenticate_admin!
       authenticate_user!
       redirect_to dashboard_path, notice: "Sorry, but you don't have permission to do that." unless current_user.is_admin?
+    end
+    
+    # From: https://gist.github.com/josevalim/fb706b1e933ef01e4fb6
+    # Insecure token authentication system. Simple requires providing the token
+    def authenticate_user_from_token!
+      user_token = params[:user_token].presence
+      user       = user_token && User.find_by_authentication_token(user_token.to_s)
+
+      if user
+        # The user is not actually stored in the session and a token is needed for every request. 
+        # If you want the token to work as a sign in token, you can simply remove store: false.
+        sign_in user, store: false
+      end
     end
         
 end
