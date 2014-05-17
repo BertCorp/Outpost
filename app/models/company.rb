@@ -8,9 +8,17 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :users
   #validates_associated :users
   
+  before_save :ensure_authentication_token
+  
   def chatroom
     return chatroom_url if chatroom_url.present?
     'http://www.hipchat.com/gpxnJo0u8' # should probably store in database to be updated easily from admin and not require code deploy.
+  end
+  
+  def ensure_authentication_token
+    if authentication_token.blank?
+      self.authentication_token = generate_authentication_token
+    end
   end
   
   def pending_tests
@@ -27,6 +35,15 @@ class Company < ActiveRecord::Base
       return suite.reports.order('created_at DESC').first.status if (suite.reports.count > 0) && (suite.reports.order('created_at DESC').first.status != 'Completed')
     end
     "Completed"
+  end
+  
+  private
+
+  def generate_authentication_token
+    loop do
+      token = "c_#{Devise.friendly_token}"
+      break token unless Company.where(authentication_token: token).first
+    end
   end
     
 end

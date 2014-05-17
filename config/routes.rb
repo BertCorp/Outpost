@@ -46,6 +46,9 @@ Outpost::Application.routes.draw do
   resources :users
   
   resources :reports
+  get "report/:token" => "reports#webhook"
+  post "report/:token" => "reports#webhook", as: :webhook
+
   resources :test_cases, path: 'tests'
   resources :test_results, path: 'results'
   resources :test_environments, path: 'environments'

@@ -1,9 +1,9 @@
 class ReportsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_from_token!, only: [:webhook]
+  before_action :authenticate_user!, except: [:webhook]
   before_action :set_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_admin!, only: [:edit, :update]
   
-
   # GET /reports
   # GET /reports.json
   def index
@@ -98,6 +98,12 @@ class ReportsController < ApplicationController
         format.json { render json: @report.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  # GET /report/:token
+  # POST /report/:token
+  def webhook
+    render json: "Hi!"
   end
 
   # PATCH/PUT /reports/1
