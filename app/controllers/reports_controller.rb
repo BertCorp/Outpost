@@ -1,5 +1,4 @@
 class ReportsController < ApplicationController
-  before_action :authenticate_from_token!, only: [:webhook]
   before_action :authenticate_user!, except: [:webhook]
   before_action :set_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_admin!, only: [:edit, :update]
@@ -84,7 +83,7 @@ class ReportsController < ApplicationController
     respond_to do |format|
       if @report.save
         
-        @report.test_suite.test_cases.each do |test_case|
+        @report.test_suite.test_cases.order('id ASC').each do |test_case|
           @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id})
         end
         
@@ -103,7 +102,62 @@ class ReportsController < ApplicationController
   # GET /report/:token
   # POST /report/:token
   def webhook
-    render json: "Hi!"
+    # From: https://gist.github.com/josevalim/fb706b1e933ef01e4fb6
+    # Insecure token authentication system. Simple requires providing the token
+    # Should be extracted into an authenticate_with_token! method if used in more than one place.
+    token = params[:token].presence
+    logger.debug "Token: #{token.to_s}"
+    if token[0] == 'u' # using a user's auth token
+      user = User.find_by(authentication_token: token.to_s)
+      # http://stackoverflow.com/questions/10253366/need-to-return-json-formatted-404-error-in-rails
+      return render json: { error: "not-found" }.to_json, status: 404 if !user
+      company = user.company
+    elsif token[0] == 'c' # using a company's auth token
+      company = Company.find_by(authentication_token: token.to_s)
+      # http://stackoverflow.com/questions/10253366/need-to-return-json-formatted-404-error-in-rails
+      return render json: { error: "not-found" }.to_json, status: 404 if !company
+      # TODO: use optional params[:user] to swap token and identify user as one that triggered
+    else # unknown auth token
+      # http://stackoverflow.com/questions/10253366/need-to-return-json-formatted-404-error-in-rails
+      return render json: { error: "not-found" }.to_json, status: 404
+    end
+    
+    # Set delay to default (15 seconds) if not set
+    params[:delay] ||= '15'
+    
+    # TODO: Flesh out to handle multiple test suites
+    # TODO: Use optional params[:url] to identify testing suite
+    # need to get test suite (default: first)
+    test_suite = company.test_suites.first
+    # TODO: Flesh out to handle multiple test environments properly
+    # TODO: Use optional params[:environment] to identify testing environment
+    # need to get test_environment (default: first || production)
+    test_environment = test_suite.test_environments.first
+    
+    #render json: { company: company, test_suite: test_suite, test_environment: test_environment }
+    @report = Report.new(company_id: company.id, test_suite_id: test_suite.id, test_environment_id: test_environment.id)
+    @report.initiated_at = Time.now
+    @report.initiated_by = token # store webhook as initiator
+    @report.status = "Queued"
+    
+    if @report.save
+      
+      @report.test_suite.test_cases.order('id ASC').each do |test_case|
+        @report.results.create({ status: 'Queued', report_id: @report, test_case_id: test_case.id, test_environment_id: @report.test_environment_id })
+      end
+      
+      env = @report.test_environment.name.downcase
+      env = 'staging' if env == 'mirror'
+      @report.delay(run_at: params[:delay].to_i.seconds.from_now).run!(env, params[:local])
+
+      # TODO: make sure proper mail is sent.
+      ReportMailer.delay(run_at: params[:delay].to_i.seconds.from_now).admin_requested_report_triggered_email(@report)
+      ReportMailer.delay(run_at: params[:delay].to_i.seconds.from_now).requested_report_triggered_email(@report)
+
+      render json: @report, status: :created, location: @report
+    else
+      render json: @report.errors, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /reports/1

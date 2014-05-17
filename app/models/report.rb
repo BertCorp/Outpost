@@ -10,7 +10,7 @@ class Report < ActiveRecord::Base
   has_many :results, class_name: 'TestResult', dependent: :destroy
   has_many :test_cases, through: :results
   
-  belongs_to :initiator, class_name: 'User', foreign_key: 'initiated_by'
+  #belongs_to :initiator, class_name: 'User', foreign_key: 'initiated_by'
   belongs_to :monitorer, class_name: 'User', foreign_key: 'monitored_by'
   belongs_to :test_environment
 
@@ -24,10 +24,22 @@ class Report < ActiveRecord::Base
     created_at.strftime('%Y-%m-%d %T')
   end
   
+  def initiator
+    if initiated_by.is_numeric?
+      User.find(initiated_by)
+    elsif initiated_by[0] == 'u'
+      User.find_by(authentication_token: initiated_by)
+    elsif initiated_by[0] == 'c'
+      Company.find_by(authentication_token: initiated_by)
+    end
+  end
+  
   def run!(env = 'production', local = false)
     logger.info "Inside report: #{id}"
     Rake::Task['report:run'].reenable
     output = Rake::Task['report:run'].invoke(id, env, local)
     logger.info output
   end
+  #handle_asynchronously :run!
+  
 end
