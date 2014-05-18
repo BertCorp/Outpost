@@ -13,22 +13,31 @@ Dashboard
 		</div>
 		<% else %>
 
-		<%= form_for(@report) do |f| %>
-		  <%= f.hidden_field :test_suite_id, value: suite.id %>
-			<%= f.hidden_field :test_environment_id, value: suite.test_environments.first.id if suite.test_environments.count == 1 %>
-		  <%= f.hidden_field :company_id, value: current_user.company.id %>
-		  <%= f.hidden_field :initiated_by, value: current_user.id %>
-		  <%= f.hidden_field :initiated_at, value: DateTime.now %>
-			<%= f.hidden_field :status, value: 'Queued' %>
-		  <%= f.submit 'Run Your Tests!', class: "btn btn-success btn-lg btn-block" %>
+			<% if Rails.env.production? || (suite.test_environments.size > 0) %>
+			<div class="btn-group btn-block">
+			  <button type="button" class="btn btn-lg btn-block btn-success dropdown-toggle" data-toggle="dropdown">
+			    Run Your Tests <span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu" role="menu">
+					<% suite.test_environments.each do |e| %>
+						<% if Rails.env.production? %>
+				   <li><%= link_to "#{e.name}", run_reports_path(company: current_user.company.id, suite: suite.id, environment: e.id) %></li>			
+						<% else %>
+			    <li><%= link_to "#{e.name} (browserstack)", run_reports_path(company: current_user.company.id, suite: suite.id, environment: e.id) %></li>
+			    <li><%= link_to "#{e.name} (locally)", run_reports_path(company: current_user.company.id, suite: suite.id, environment: e.id, local: true) %></li>
+						<% end %>
+					<% end %>
+			  </ul>
+			</div>
+			<% else %>
+			<%= link_to "Run Your Tests", run_reports_path(company: current_user.company.id, suite: suite.id, environment: suite.test_environments.first.id), class: 'btn btn-success btn-block btn-lg' %>
+			<% end %>
 			<p id="report-explanation" style="text-align: center; font-size: 12px; margin-top: 10px; margin-bottom: -10px;"><a href="#" data-title="What does 'Run Your Tests!' Mean?" data-trigger="hover" data-placement="bottom" data-content="Clicking this button will queue up your tests. We are immediately alerted and start running your tests to make sure everything on your site is running properly. As soon as we are done running your tests, we will notify you and send you a report with the results.">What does this mean?</a></p>
 			<script>
 				$(function() {
 					$('#report-explanation a').popover();
 				});
-			</script>
-		<% end %>
-	
+			</script>	
 		<% end %>
 	
 		<hr/>

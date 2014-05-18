@@ -35,9 +35,9 @@ end # setup_driver
 
 def outpost(url)
   begin
+    url = url.gsub('http://www.outpostqa.com/', 'http://localhost:3000/') if ENV['LOCAL'] == 'true'
     unless $outpost
       if ENV['LOCAL'] == 'true'
-        url = url.gsub('http://www.outpostqa.com/', 'http://localhost:3000/')
         $outpost = Selenium::WebDriver.for :firefox
       else
         caps = Selenium::WebDriver::Remote::Capabilities.new
@@ -64,7 +64,7 @@ end
 
 def start(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/start")
-  sleep(1)
+  sleep(2)
   $outpost.quit if $outpost
   $outpost = nil
 end

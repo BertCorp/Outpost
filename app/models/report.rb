@@ -25,7 +25,7 @@ class Report < ActiveRecord::Base
   end
   
   def initiator
-    if initiated_by.is_numeric?
+    if initiated_by.to_s.is_numeric?
       User.find(initiated_by)
     elsif initiated_by[0] == 'u'
       User.find_by(authentication_token: initiated_by)

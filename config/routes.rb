@@ -49,7 +49,9 @@ Outpost::Application.routes.draw do
   
   resources :users
   
-  resources :reports
+  resources :reports do
+    get "run" => "reports#run", on: :collection, as: :run
+  end
   get "report/:token" => "reports#webhook"
   post "report/:token" => "reports#webhook", as: :webhook
 

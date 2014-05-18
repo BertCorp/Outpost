@@ -35,7 +35,7 @@ Report for <%= @report.company.name %> - <%= @report.created_at %>
 		<th>Completed In</th>
     <th>Results</th>
   </tr>
-	<% @results.order('status ASC').each do |result| %>
+	<% @results.order('id ASC').each do |result| %>
 	<tr class="<%= (result.status == "Passed") ? "success" : ((result.status == "Failure") ? "danger" : "") %>">
     <td><%= result.test_case.title %></td>
 		<% if result.ended_at.present? %>

@@ -35,10 +35,10 @@ class ReportsController < ApplicationController
   
   # GET /reports/run
   def run
+    params[:local] ||= false
     @report = Report.new(company_id: params[:company], test_suite_id: params[:suite], test_environment_id: params[:environment])
     @report.initiated_at = Time.now
     @report.initiated_by = current_user.id
-    @report.monitored_by = current_user.id if current_user.is_admin?
     @report.status = "Queued"
     
     respond_to do |format|
@@ -51,16 +51,16 @@ class ReportsController < ApplicationController
         env = @report.test_environment.name.downcase
         env = 'staging' if env == 'mirror'
         @report.delay.run!(env, params[:local])
-
+        
         ReportMailer.admin_requested_report_triggered_email(@report).deliver
         ReportMailer.requested_report_triggered_email(@report).deliver
-        
+
         format.html { redirect_to @report, notice: 'Your report has been queued and will start soon.' }
         format.json { render action: 'show', status: :created, location: @report }
       else
         format.html { render action: 'new' }
         format.json { render json: @report.errors, status: :unprocessable_entity }
-      end
+      end  
     end
   end
 

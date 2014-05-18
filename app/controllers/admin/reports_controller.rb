@@ -50,8 +50,8 @@ class Admin::ReportsController < ApplicationController
         
         env = @report.test_environment.name.downcase
         env = 'staging' if env == 'mirror'
-        puts "Environment: #{env}"
         @report.delay.run!(env, params[:local])
+        
         ReportMailer.admin_triggered_report_email(@report).deliver
         
         format.html { redirect_to [:admin, @report], notice: 'Report has been queued and will start running soon.' }

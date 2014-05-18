@@ -37,7 +37,7 @@ class ReportMailer < ActionMailer::Base
   def requested_report_under_review_email(report)
     @report = report
     @initiator = @report.initiator
-    to_emails = (@initiator.class.eql?(User)) ? @initiator.email : @initiator.users.collect { |u| u.email }.join(", ")}
+    to_emails = (@initiator.class.eql?(User)) ? @initiator.email : (@initiator.users.collect { |u| u.email }.join(", "))
     
     mail(to: to_emails, subject: "Outpost: Your report is currently UNDER REVIEW (#{Time.now.strftime('%m/%d/%Y')})")
   end
@@ -45,7 +45,7 @@ class ReportMailer < ActionMailer::Base
   def requested_report_successful_email(report)
     @report = report
     @initiator = @report.initiator
-    to_emails = (@initiator.class.eql?(User)) ? @initiator.email : @initiator.users.collect { |u| u.email }.join(", ")}
+    to_emails = (@initiator.class.eql?(User)) ? @initiator.email : (@initiator.users.collect { |u| u.email }.join(", "))
     
     mail(to: to_emails, subject: "Outpost: Your report has successfully COMPLETED (#{Time.now.strftime('%m/%d/%Y')})")
   end
@@ -53,7 +53,7 @@ class ReportMailer < ActionMailer::Base
   def requested_report_triggered_email(report)
     @report = report
     @initiator = @report.initiator
-    to_emails = (@initiator.class.eql?(User)) ? @initiator.email : @initiator.users.collect { |u| u.email }.join(", ")}
+    to_emails = (@initiator.class.eql?(User)) ? @initiator.email : (@initiator.users.collect { |u| u.email }.join(", "))
     
     mail(to: to_emails, subject: "Outpost: A new report has been QUEUED (#{Time.now.strftime('%m/%d/%Y')})")
   end

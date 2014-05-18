@@ -1,4 +1,4 @@
-# $ bundle exec rake company:run[3,staging]
+# $ bundle exec rake company:run[3,staging,true]
 namespace :company do
   desc "Test run Company Tests (no report!)"
   task :test, [:company_id, :environment] => :environment do |t, args|
@@ -10,8 +10,8 @@ namespace :company do
   end
   
   desc "Run Company Tests (report is generated!)"
-  task :run, [:company_id, :environment] => :environment do |t, args|
-    args.with_defaults(:company_id => '0', :environment => 'production')
+  task :run, [:company_id, :environment, :local] => :environment do |t, args|
+    args.with_defaults(:company_id => '0', :environment => 'production', :local => 'false')
     puts "Try to run tests for: #{args}"
     company = Company.find(args.company_id)
     environment = company.test_suites.first.test_environments.where('lower(name) LIKE ?', args.environment).first
@@ -30,23 +30,32 @@ namespace :company do
     
     env = args.environment
     env = 'staging' if env == 'mirror'
-    output = %x{ENVIRONMENT=#{env} LOCAL=false bundle exec rspec "./tests/#{company.name}/test_suite.rb" }
+    output = %x{ENVIRONMENT=#{env} LOCAL=#{args.local} bundle exec rspec "./tests/#{company.name}/test_suite.rb" }
     
     report.completed_at = Time.now
     report.errors_raw = output
-    report.status = ((output == '') || output.include?('FAILED:')) ? "Under Review" : "Completed"
-    report.save!
     # Mark any tests that weren't run as Skipped.
     report.results.where(status: 'Queued').each do |test|
       test.status = 'Skipped'
       test.save!
     end
+    # Mark any tests that are still running as failed
+    report.results.where(status: 'Running').each do |test|
+      test.status = 'Failed'
+      test.ended_at = Time.now
+      test.save!
+    end
+    report.status = ((output == '') || output.include?('FAILED:')) ? "Under Review" : "Completed"
+    report.results.each do |test|
+      report.status = 'Under Review' unless ['Passed', 'Skipped'].include? test.status
+    end
+    report.save!
     # mail results to admin, regardless
     ReportMailer.admin_scheduled_report_status_email(report, output).deliver
     
     if report.company.notify?
       if report.status == 'Completed'
-        ReportMailer.requested_report_success_email(report).deliver
+        ReportMailer.requested_report_successful_email(report).deliver
       else
         ReportMailer.requested_report_under_review_email(report).deliver
       end
