@@ -1,0 +1,20 @@
+Hello,
+
+We just finished running your tests and ran into some issues that we are looking into and will report back to you ASAP. You can look over the initial report here: <%= report_url(@report) %>
+
+And here is a quick overview:
+<% @report.results.order('id ASC').each do |test| %>
+
+- <%= test.test_case.title %>: <%= test.status %> <% if test.status == 'Passed' %>(executed in <%= (test.ended_at - test.started_at).round(2) %> seconds)<% end %>
+<% end %> 
+
+
+Hopefully this is just a false negative, but like we said, we are looking into what happened and will get back to you ASAP. 
+
+Thanks,
+
+Mark & Zack
+
+-- 
+Sick of finding bugs and broken user flows? Lets talk. 
+(630) 881-4532 @outpostqa www.outpostqa.com

@@ -21,11 +21,15 @@ namespace :report do
       test.status = 'Skipped'
       test.save!
     end
-    # mail results to admin, regardless
+    # mail results to admins
     ReportMailer.admin_requested_report_status_email(report, output).deliver
-
-    if (report.status == 'Completed') && !report.initiator.is_admin?
-      ReportMailer.requested_report_successful_email(report).deliver
+    # mail results to client if they should be notified and an admin didnt request the report.
+    if report.company.notify? && (report.initiator && !report.initiator.is_admin?)
+      if report.status == 'Completed'
+        ReportMailer.requested_report_success_email(report).deliver
+      else
+        ReportMailer.requested_report_under_review_email(report).deliver
+      end
     end
     
     puts output

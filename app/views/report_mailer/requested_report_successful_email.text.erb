@@ -2,6 +2,13 @@ Hello <%= @initiator.name %>,
 
 We finished running your tests and everything looks good. You can find your report: <%= report_url(@report) %>
 
+Here are the individual results:
+<% @report.results.order('id ASC').each do |test| %>
+
+- <%= test.test_case.title %>: <%= test.status %> <% if test.status == 'Passed' %>(executed in <%= (test.ended_at - test.started_at).round(2) %> seconds)<% end %> 
+<% end %> 
+
+
 Please let us know if you have any questions or if we can help out with anything else.
 
 

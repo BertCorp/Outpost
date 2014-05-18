@@ -21,6 +21,14 @@ class Company < ActiveRecord::Base
     end
   end
   
+  def is_admin?
+    false
+  end
+  
+  def notify?
+    test_suite.start_notifying_at.present?
+  end
+  
   def pending_tests
     test_cases.where("setup_started_at IS NULL")
   end
@@ -35,6 +43,10 @@ class Company < ActiveRecord::Base
       return suite.reports.order('created_at DESC').first.status if (suite.reports.count > 0) && (suite.reports.order('created_at DESC').first.status != 'Completed')
     end
     "Completed"
+  end
+  
+  def test_suite
+    test_suites.first
   end
   
   private

@@ -21,7 +21,7 @@ class TestResult < ActiveRecord::Base
     return started_at.strftime('%Y-%m-%d %T') if started_at.present?
     created_at.strftime('%Y-%m-%d %T')
   end
-
+  
   def statuses
     [
 			["Queued - In the queue to be run.", "Queued"],

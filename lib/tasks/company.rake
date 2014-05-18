@@ -44,8 +44,12 @@ namespace :company do
     # mail results to admin, regardless
     ReportMailer.admin_scheduled_report_status_email(report, output).deliver
     
-    if report.status == 'Completed'
-      ReportMailer.scheduled_report_successful_email(report).deliver
+    if report.company.notify?
+      if report.status == 'Completed'
+        ReportMailer.requested_report_success_email(report).deliver
+      else
+        ReportMailer.requested_report_under_review_email(report).deliver
+      end
     end
     
     puts output
