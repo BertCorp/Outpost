@@ -55,9 +55,9 @@ namespace :company do
     
     if report.company.notify?
       if report.status == 'Completed'
-        ReportMailer.requested_report_successful_email(report).deliver
+        ReportMailer.scheduled_report_successful_email(report).deliver
       else
-        ReportMailer.requested_report_under_review_email(report).deliver
+        ReportMailer.scheduled_report_under_review_email(report).deliver
       end
     end
     
