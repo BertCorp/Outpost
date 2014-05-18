@@ -1,6 +1,15 @@
 <div style="margin-bottom: 20px;">
 	<%= hidden_field_tag "company[users_attributes][#{user.id}][id]", user.id if user.id.present? %>
-	<%= text_field_tag "company[users_attributes][#{(user.id.present?) ? user.id : Time.now}][name]", user.name, class: "form-control", placeholder: 'Name' %>
+	<div class="input-group">
+		<%= text_field_tag "company[users_attributes][#{(user.id.present?) ? user.id : Time.now}][name]", user.name, class: "form-control", placeholder: 'Name' %>
+		<span class="input-group-btn">
+			<% if user.authentication_token.present? %>
+			<%= link_to 'Login As', "/admin/#{user.authentication_token}", class: 'btn btn-default' %>
+			<% else %>
+			<%= link_to 'Generate Key', admin_generate_token_path(type: 'user', id: user.id), method: :post, class: 'btn btn-default' %>
+			<% end %>
+		</span>
+  </div>
 	<%= text_field_tag "company[users_attributes][#{(user.id.present?) ? user.id : Time.now}][email]", user.email, class: "form-control", placeholder: 'Email' %>
 	<%= text_field_tag "company[users_attributes][#{Time.now}][password]", '', class: "form-control", placeholder: 'Password' unless user.id.present? %>
 </div>

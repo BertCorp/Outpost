@@ -25,6 +25,14 @@
 			<span class="help-block">If no individual chatroom url is supplied, we'll use the generic Outpost one: <a href="http://www.hipchat.com/gpxnJo0u8">http://www.hipchat.com/gpxnJo0u8</a></span>
 		</div>
 	</div>
+	
+	<div class="form-group">
+		<%= f.label :authentication_token, "API Key", class: 'col-sm-3 control-label' %>
+  	<div class="col-sm-9">
+			<%= f.text_field :authentication_token, class: "form-control" %>
+			<span class="help-block"><%= link_to "Generate a new one?", admin_generate_token_path(type: 'company', id: @company.id), method: :post %></span>
+		</div>
+	</div>
 		
 	<div class="form-group">
 		<label class="col-sm-3 control-label">User(s)</label>

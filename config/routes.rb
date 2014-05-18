@@ -23,6 +23,9 @@ Outpost::Application.routes.draw do
   
   namespace 'admin' do
     root 'admin#index'
+    # takes type (company | user) + id
+    post "token/generate" => 'admin#generate_token', as: :generate_token
+    
     resources :users
     resources :companies
     resources :test_suites # not sure if we need this...
@@ -42,6 +45,7 @@ Outpost::Application.routes.draw do
     
     resources :test_results, path: 'results'
   end
+  get "admin/:token" => 'admin/admin#login_via_users_token', as: :login_as_user 
   
   resources :users
   
