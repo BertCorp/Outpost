@@ -25,6 +25,7 @@ class Report < ActiveRecord::Base
   end
   
   def initiator
+    return nil unless initiated_by.present?
     if initiated_by.to_s.is_numeric?
       User.find(initiated_by)
     elsif initiated_by[0] == 'u'
