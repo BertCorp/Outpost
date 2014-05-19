@@ -42,11 +42,11 @@
 				<div class="pull-right">
 		      <ul class="nav nav-pills">
 						<% if current_user %>
-						<% if current_user.is_admin? %>
-						<li<%= raw(' class="active"') if request.fullpath[0..5] == '/admin' %>><%= link_to 'Admin', admin_root_path %></li>
+							<% if current_user.is_admin? %>
+							<li<%= raw(' class="active"') if request.fullpath[0..5] == '/admin' %>><%= link_to 'Admin', admin_root_path %></li>
+							<% end %>
 						<li<%= raw(' class="active"') if request.fullpath[0..5] != '/admin' %>><%= link_to 'Dashboard', dashboard_path %></li>
-						<% end %>
-		        <li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %></li>
+						<li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %></li>
 						<% else%>
 						<li><%= link_to 'Login', dashboard_path %></li>
 				  	<% end %>
