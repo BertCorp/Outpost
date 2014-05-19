@@ -20,6 +20,8 @@ Outpost::Application.routes.draw do
     patch "/company" => "companies#update"
     put "/company" => "companies#update"
   end
+  get "tools" => "users#tools"
+  
   
   namespace 'admin' do
     root 'admin#index'

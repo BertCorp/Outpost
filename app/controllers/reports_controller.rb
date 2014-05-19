@@ -154,7 +154,7 @@ class ReportsController < ApplicationController
       ReportMailer.delay(run_at: params[:delay].to_i.seconds.from_now).admin_requested_report_triggered_email(@report)
       ReportMailer.delay(run_at: params[:delay].to_i.seconds.from_now).requested_report_triggered_email(@report)
 
-      render json: @report, status: :created, location: @report
+      render json: @report.to_json( :only => [:id, :initiated_at, :initiated_by, :status, :created_at] ), status: :created, location: @report
     else
       render json: @report.errors, status: :unprocessable_entity
     end

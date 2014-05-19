@@ -1,0 +1,64 @@
+<% content_for :title do %>
+Tools
+<% end %>
+
+<h1>Tools</h1>
+<p>Here you will find some tools and resources that should help make using Outpost a little easier and smoother for you and your team. We will be constantly adding new tools and will be sure to notify you as we release them.</p>
+
+
+<h3>HTTP Webhook Endpoint</h3>
+
+<h5>Sample Request:</h5>
+<code>POST http://outpostqa.com/report/<%= current_user.authentication_token %></code>
+
+<h5>Optional Parameters:</h5>
+<table class="table table-striped">
+	<tr>
+		<th>Field</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+		<th></th>
+	</tr>
+	<tbody>
+		<!--<tr>
+			<td>url</td>
+			<td>String</td>
+			<td>'<%= current_user.company.test_suites.first.test_environments.first.url %>'</td>
+			<td>URL of app. Used to define test suite &amp; environment.</td>
+		</tr>
+		<tr>
+			<td>user</td>
+			<td>String</td>
+			<td>'<%= current_user.email %>'</td>
+			<td>Email of the user deploying the app.</td>
+		</tr>
+		<tr>
+			<td>environment</td>
+			<td>String</td>
+			<td>'production'</td>
+			<td>Name of test suite environment.</td>
+		</tr>-->
+		<tr>
+			<td>delay</td>
+			<td>Integer</td>
+			<td>15</td>
+			<td># of seconds to wait before triggering report.</td>
+		</tr>
+	</tbody>
+</table>
+
+<h5>Sample Success Response:</h5>
+<pre>{
+	"id": 105,
+	"initiated_at": "<%= Time.now %>",
+	"initiated_by": "<%= current_user.authentication_token %>",
+	"status": "Queued",
+	"created_at": "<%= Time.now %>",
+	"updated_at": "<%= Time.now %>"
+}</pre>
+
+<h5>Sample Failed Response</h5>
+<pre>{
+	"error": "not-found"
+}</pre>
