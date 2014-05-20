@@ -17,8 +17,8 @@ describe "Create and save a new document" do
   after(:all) do
     # if this is really the end... then quit.
     unless $is_test_suite
-      $driver.quit
-      $outpost.quit
+      $driver.quit if $driver
+      $outpost.quit if $outpost
     end
   end
   
@@ -66,6 +66,7 @@ describe "Create and save a new document" do
       end
       # otherwise, let's try again
       @tries << { exception: e.inspect, backtrace: e.backtrace }      
+      close_alert_and_get_its_text(true) if alert_present?
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"

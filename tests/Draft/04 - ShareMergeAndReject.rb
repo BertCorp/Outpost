@@ -17,7 +17,7 @@ describe "Share, Merge and Reject" do
   after(:all) do
     # if this is really the end... then quit.
     #unless $is_test_suite
-      $driver.quit
+      $driver.quit if $driver
       $outpost.quit if $outpost
     #end
   end
@@ -122,14 +122,10 @@ describe "Share, Merge and Reject" do
       
       sleep(2)
       
-      begin
-        $driver.find_element(:css, "#done_editing_button").click
-      rescue
-        $driver.navigate.refresh
-        close_alert_and_get_its_text(true) if alert_present?
-        sleep(1)
-        $driver.find_element(:css, "#done_editing_button").click
+      if !$driver.find_element(:css, "#done_editing_button").displayed?
+        $driver.execute_script("document.getElementById('done_editing_button').style.display = 'block'")
       end
+      $driver.find_element(:css, "#done_editing_button").click
       
       $wait.until { $driver.find_elements(:id, "note").size > 0 }
       $driver.find_element(:id, "note").clear
@@ -175,14 +171,10 @@ describe "Share, Merge and Reject" do
       
       sleep(2)
       
-      begin
-        $driver.find_element(:css, "#done_editing_button").click
-      rescue
-        $driver.navigate.refresh
-        close_alert_and_get_its_text(true) if alert_present?
-        sleep(1)
-        $driver.find_element(:css, "#done_editing_button").click
+      if !$driver.find_element(:css, "#done_editing_button").displayed?
+        $driver.execute_script("document.getElementById('done_editing_button').style.display = 'block'")
       end
+      $driver.find_element(:css, "#done_editing_button").click
       
       $wait.until { $driver.find_elements(:id, "note").size > 0 }
       $driver.find_element(:id, "note").clear
@@ -243,6 +235,7 @@ describe "Share, Merge and Reject" do
       end
       # otherwise, let's try again
       @tries << { exception: e.inspect, backtrace: e.backtrace }      
+      close_alert_and_get_its_text(true) if alert_present?
       puts ""
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"

@@ -1,4 +1,4 @@
-require "./config/initializers/browserstack"
+require "./config/initializers/saucelabs"
 require "./tests/ignorable"
 
 # Set Environment Variables
@@ -11,23 +11,28 @@ def start_driver(cs = {})
   if ENV['LOCAL'] == 'true'
     $driver = Selenium::WebDriver.for :firefox
   else
-    caps = Selenium::WebDriver::Remote::Capabilities.new
+    if cs['browser']
+      browser = cs['browser']
+      cs.delete('browser')
+    end
+    browser ||= 'Chrome'
+    caps = get_cap_declaration(browser)
     cs.each do |k,v|
       caps[k] = v
     end
-    caps['browser'] ||= 'Chrome'
-    caps['os'] ||= 'Windows'
-    caps['os_version'] ||= '8.1'
-    caps['resolution'] ||= '1280x1024'
-    caps[:name] ||= "Automated Testing"
-    $driver = Selenium::WebDriver.for(:remote,
-      :url => "http://#{ENV['BS_USERNAME']}:#{ENV['BS_AUTHKEY']}@hub.browserstack.com/wd/hub",
-      :desired_capabilities => caps)
+    caps["platform"] ||= 'OS X 10.8'
+    caps["version"] ||= ''
+    caps["screen-resolution"] ||= '1280x1024'
+    $driver = Selenium::WebDriver.for(
+      :remote,
+      :url => "http://#{ENV['SL_USERNAME']}:#{ENV['SL_AUTHKEY']}@ondemand.saucelabs.com:80/wd/hub",
+      :desired_capabilities => caps
+    )
     $driver.manage().window().maximize()
-    $driver.file_detector = lambda do |args|
-      str = args.first.to_s
-      str if File.exist?(str)
-    end
+    #$driver.file_detector = lambda do |args|
+    #  str = args.first.to_s
+    #  str if File.exist?(str)
+    #end
   end
   $wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
   $driver

@@ -14,7 +14,7 @@ describe "TestPrep" do
   after(:all) do
     # if this is really the end... then quit.
     unless $is_test_suite
-      $driver.quit
+      $driver.quit if $driver
     end
   end
   
