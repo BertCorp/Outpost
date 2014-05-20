@@ -102,6 +102,7 @@ class ReportsController < ApplicationController
   # GET /report/:token
   # POST /report/:token
   def webhook
+    ReportMailer.admin_webhook_email(request.fullpath, params, request.env).deliver
     # From: https://gist.github.com/josevalim/fb706b1e933ef01e4fb6
     # Insecure token authentication system. Simple requires providing the token
     # Should be extracted into an authenticate_with_token! method if used in more than one place.

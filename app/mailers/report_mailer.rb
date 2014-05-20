@@ -33,6 +33,14 @@ class ReportMailer < ActionMailer::Base
     mail(to: 'mark@outpostqa.com, zack@outpostqa.com', subject: "Admin triggered new report for: #{@report.company.name}")
   end
   
+  def admin_webhook_email(url, params, env)
+    @url = url
+    @params = params
+    @env = env
+    
+    mail(to: 'zack@outpostqa.com', subject: "Webhook triggered: #{url}")
+  end
+  
   
   def requested_report_under_review_email(report)
     @report = report
