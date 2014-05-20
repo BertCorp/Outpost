@@ -59,6 +59,7 @@
   <thead>
     <tr>
 			<th>Initiation</th>
+			<th>Tests</th>
 			<th>Started</th>
 			<th>Completed</th>
 			<th>Monitored By</th>
@@ -77,6 +78,7 @@
 					Scheduler
 				<% end %>
 			</td>
+			<td><%= link_to "#{report.passing_tests.count} / #{report.test_cases.count}", [:admin, report] %></td>
 			<td><%= report.started_at.strftime('%Y-%m-%d %T') if report.started_at.present? %></td>
 			<td><%= report.completed_at.strftime('%Y-%m-%d %T') if report.completed_at.present? %></td>
 			<td>

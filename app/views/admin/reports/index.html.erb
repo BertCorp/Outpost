@@ -14,7 +14,7 @@
       <th>ID</th>
       <th>Company</th>
       <th>Status</th>
-      <th># of Tests</th>
+      <th>Tests</th>
       <th>Initiated</th>
       <th>Started</th>
       <th>Completed In</th>
@@ -27,7 +27,7 @@
         <td><%= link_to report.id, [:admin, report] %></td>
         <td><%= link_to report.company.name, [:admin, report.company] %></td>
         <td><%= report.status %></td>
-        <td><%= link_to report.test_cases.count, [:admin, report] %></td>
+        <td><%= link_to "#{report.passing_tests.count} / #{report.test_cases.count}", [:admin, report] %></td>
         <td><%= raw("<abbr title=\"#{report.initiated_at.strftime('%D %T')}\">#{time_ago_in_words(report.initiated_at)} ago</abbr>") if report.initiated_at.present? %></td>
         <td><%= raw("<abbr title=\"#{report.started_at.strftime('%D %T')}\">#{distance_of_time_in_words(report.initiated_at, report.started_at)} later</abbr>") if report.started_at.present? %></td>
 				<% if report.completed_at.present? %>

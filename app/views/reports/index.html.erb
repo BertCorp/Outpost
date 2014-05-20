@@ -14,6 +14,7 @@
 	<table class="table table-bordered table-striped">
 	  <tr>
 	    <th>Status</th>
+			<th>Tests</th>
 	    <th>Initiated By</th>
       <th>Initiated</th>
       <th>Started</th>
@@ -22,7 +23,8 @@
 	  </tr>
 	  <% @reports.each do |report| %>
 	    <tr class="<%= report.status == "Completed" ? "success" : report.status == "Completed With Failures" ? "danger" : "" %>">
-	      <td><%= report.status %></td>
+        <td><%= report.status %></td>
+				<td><%= "#{report.passing_tests.count} / #{report.test_cases.count}" %></td>
 				<td><%= (report.initiated_by.present?) ? report.initiator.name : "Scheduler" %></td> 
 	      <td><%= raw("<abbr title=\"#{report.initiated_at.to_formatted_s(:long)}\">#{time_ago_in_words(report.initiated_at)} ago</abbr>") if report.initiated_at.present? %></td>
         <td><%= raw("<abbr title=\"#{report.started_at.to_formatted_s(:long)}\">#{distance_of_time_in_words(report.initiated_at, report.started_at)} later</abbr>") if report.started_at.present? %></td>

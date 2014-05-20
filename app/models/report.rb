@@ -35,6 +35,10 @@ class Report < ActiveRecord::Base
     end
   end
   
+  def passing_tests
+    results.delete_if { |r| r.status != 'Passed' }
+  end
+  
   def run!(env = 'production', local = false)
     logger.info "Inside report: #{id}"
     Rake::Task['report:run'].reenable
