@@ -8,14 +8,13 @@ require File.dirname(__FILE__) + '/client_variables.rb'
 describe "Test Prep/Cleanup" do
   
   before(:all) do
-    print "** Starting #{self.class.description}"
+    print "** Starting: #{self.class.description} **"
   end
 
   before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
-    $driver.manage.timeouts.implicit_wait = 3
+    $driver = start_driver()
     puts ""
     print "#{x.example.description}: "
   end
@@ -23,7 +22,7 @@ describe "Test Prep/Cleanup" do
   after(:all) do
     # if this is really the end... then quit.
     puts ""
-    puts "** Finished #{self.class.description}"
+    puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
       $driver.quit
     end

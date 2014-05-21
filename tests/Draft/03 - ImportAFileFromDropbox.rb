@@ -9,24 +9,29 @@ describe "Import a file from Dropbox" do
 
   before(:all) do
     @test_id = "9"
+    print "** Starting: #{self.class.description} (Test ##{@test_id}) **"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
+    $driver = start_driver()
+    start(@test_id)
+    puts ""
+    print "#{x.example.description}: "
   end
   
   after(:all) do
     # if this is really the end... then quit.
+    puts ""
+    puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
-      $driver.quit if $driver
+      $driver.quit
     end
   end
   
-  it "test_3_import_a_file_from_dropbox" do
-    begin
-      $driver = start_driver()
-      $driver.manage.timeouts.implicit_wait = 3
-      
-      start(@test_id)
- 
+  it "Import a file from Dropbox" do
+    begin 
       start_logged_in
       
       begin

@@ -11,7 +11,6 @@ describe "HomePageBlogPosts" do
     @test_id = "2"
     start(@test_id)
     $driver = start_driver({ name: 'Kapow Events - Automated Tests' })
-    $driver.manage.timeouts.implicit_wait = 3
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     if $credentials[ENV['ENVIRONMENT'].to_sym]
       base_url_pieces = @base_url.split('://')

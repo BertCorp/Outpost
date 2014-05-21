@@ -1,4 +1,5 @@
 $environments = { production: 'http://beta.lanternhq.com' }
+$cs = { :name => 'The Starter League', 'platform' => 'OS X 10.8' }
 
 def clear_gmail_inbox
   sign_into_gmail

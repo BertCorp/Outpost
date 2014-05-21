@@ -9,24 +9,30 @@ describe "Organization Owner Can Manage Users Of An Organization" do
 
   before(:all) do
     @test_id = "27"
+    puts ""
+    print "** Starting: #{self.class.description} (Test #{@test_id}) **"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    start(@test_id)
+    $driver = start_driver()
+    start(@test_id)    
+    puts ""
+    print "#{x.example.description}: "
   end
   
   after(:all) do
     # if this is really the end... then quit.
+    puts ""
+    puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
       $driver.quit
-      $outpost.quit if $outpost
     end
   end
   
-  it "test_01_organization_owner_can_manage_users_of_an_organization" do
+  it "Manage Users of an Organization" do
     begin
-      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
-      $driver.manage.timeouts.implicit_wait = 3
-      
       clear_gmail_inbox
       
       login_as_admin

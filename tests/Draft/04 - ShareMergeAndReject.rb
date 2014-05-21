@@ -9,24 +9,34 @@ describe "Share, Merge and Reject" do
 
   before(:all) do
     @test_id = "10"
+    puts "** Starting: #{self.class.description} (Test ##{@test_id}) **"
+    # Prep with variables we need
+    @random_num = rand(1000)
+    print "Set test identifier: #{@random_num}"
+    @share_link = ''
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
+    $driver = start_driver()
+    start(@test_id)
+    puts ""
+    puts "#{x.example.description}"
   end
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit if $driver
+    puts ""
+    puts "** Finished: #{self.class.description} **"
+    #unless $is_test_suite
+      $driver.quit
+    #end
   end
   
-  it "test_4_share_merge_and_reject" do
+  it "Create File to Share" do
     begin
-      random_num = rand(1000)
-
-      $driver = start_driver()
-      $driver.manage.timeouts.implicit_wait = 3
-
-      start(@test_id)
-      # Start on main homepage...
+      # Make sure we start on main homepage...
       $driver.get(@base_url + 'documents')
       # But we don't know which user we are logged in as, so let's just make sure we are logged out.
       if $driver.find_elements(:link_text, "LOGOUT").size.to_i > 0 
@@ -40,7 +50,7 @@ describe "Share, Merge and Reject" do
       
       # just create a new document for this
       $driver.find_element(:id, "new_document_button").click
-      $driver.find_element(:id, "document_content").send_keys "Creating a new document that we will share. #{random_num}"
+      $driver.find_element(:id, "document_content").send_keys "Creating a new document that we will share. #{@random_num}"
       
       save_document
       
@@ -48,8 +58,7 @@ describe "Share, Merge and Reject" do
 
       $driver.find_element(:css, ".document:nth-child(1)").find_element(:link, "SHARE").click
 
-      share_link = nil
-      while share_link == nil
+      while @share_link == ''
         begin
           $wait.until { $driver.find_elements(:id, 'share_url').size > 0 }
         rescue
@@ -58,42 +67,18 @@ describe "Share, Merge and Reject" do
           $driver.find_element(:css, ".document:nth-child(1)").find_element(:link, "SHARE").click
         end
         if $driver.find_elements(:id, 'share_url').size > 0
-          share_link = $driver.find_element(:id, "share_url").text
+          @share_link = $driver.find_element(:id, "share_url").text
         end
       end
-
-      # $driver.find_element(:link, "Or email someone to help edit your document.").click
-      # $driver.find_element(:id, "email_invitation_email").clear
-      # $driver.find_element(:id, "email_invitation_email").send_keys "test+draft_editor@bertcorp.com"
-      # $driver.find_element(:id, "email_invitation_message").clear
-      # $driver.find_element(:id, "email_invitation_message").send_keys "Can you edit this document?"
-      # $driver.find_element(:name, "commit").click
-      # 
-      # $driver.find_element(:css, '#sidebar_content > h5 > a').click
-      
+      puts "Share link: #{@share_link}"
       
       $driver.find_element(:css, '#invite_link > div > a').click
-      sleep(1)
-      
+
       ensure_user_logs_out
-
-      # gmail
-      # $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
-      # $driver.find_element(:id, "Email").clear
-      # $driver.find_element(:id, "Email").send_keys "test@bertcorp.com"
-      # $driver.find_element(:id, "Passwd").clear
-      # $driver.find_element(:id, "Passwd").send_keys "LigReb2013"
-      # $driver.find_element(:id, "signIn").click
-      # 
-      # wait = Selenium::WebDriver::Wait.new(:timeout => 20)
-      # wait.until { ($driver.find_element(:css, "span:contains(\"would like your help editing a document.\"):first")).displayed? == true }
-      # 
-      # $driver.find_element(:css, "span:contains(\"would like your help editing a document.\"):first").click
-      # edit_link = $driver.find_element(:css, "a:contains(\"https://draftin.com/documents/\")").attribute("href")
-      # p edit_link
-      # $driver.get(@base_url + edit_link)
-
-      $driver.get(share_link)
+      
+      puts "Accept and Merge Edits"
+      
+      $driver.get(@share_link)
       #sidebar_content > div > div:nth-child(2) > a
       $driver.find_element(:css, "#sidebar_content div.instruction_copy a").click
       sleep(1)
@@ -102,18 +87,19 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:id, "draft_user_email").send_keys "test+draft_editor@bertcorp.com"
       $driver.find_element(:id, "draft_user_password").send_keys "testcase12"
       $driver.find_element(:name, "commit").click      
+      $wait.until { $driver.find_elements(:id, 'document_content').size > 0 }
       
       if $driver.find_elements(:css, '#done_editing_button').size < 1
         puts "Current location before share link: #{$driver.current_url}"
-        puts "Go to share link: #{share_link}"
-        $driver.get(share_link)
+        puts "Go to share link: #{@share_link}"
+        $driver.get(@share_link)
         sleep(1)
         $driver.find_element(:css, "#sidebar_content div.instruction_copy a").click
         sleep(1)
       end
       
       $driver.find_element(:id, "document_content").clear
-      $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
+      $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{@random_num}"
       
       save_document
       
@@ -146,9 +132,11 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:id, "home_button_drafts").click
       $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
       sleep(1)
-      ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
+      ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{@random_num}"
       
       $driver.find_element(:css, 'i.icon-home').click
+    
+      puts "Reject and Ignore Changes"
       
       ensure_user_logs_out
       
@@ -162,7 +150,7 @@ describe "Share, Merge and Reject" do
       
       $driver.find_element(:link, "EDIT").click
       $driver.find_element(:id, "document_content").clear
-      $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num} Here is another change to this document."
+      $driver.find_element(:id, "document_content").send_keys "I edited the document that i created in the draft composer. I am a friend editing this document. #{@random_num} Here is another change to this document."
 
       save_document
       
@@ -184,7 +172,7 @@ describe "Share, Merge and Reject" do
       $driver.find_element(:link, "VIEW").click
       sleep(1)
       # Verify
-      ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num} Here is another change to this document."
+      ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{@random_num} Here is another change to this document."
       
       $driver.find_element(:css, 'i.icon-home').click
 
@@ -203,7 +191,7 @@ describe "Share, Merge and Reject" do
       sleep(1)
       $driver.find_element(:link, "VIEW").click
       sleep(1)
-      ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{random_num}"
+      ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{@random_num}"
       
       $driver.find_element(:css, 'i.icon-home').click
       

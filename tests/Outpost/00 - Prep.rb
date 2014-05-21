@@ -9,7 +9,6 @@ describe "TestPrep" do
 
   before(:each) do
     $driver = start_driver({ name: 'Draft - Automated Tests' })
-    $driver.manage.timeouts.implicit_wait = 3
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
   end
   

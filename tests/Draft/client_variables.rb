@@ -42,12 +42,12 @@ def start_logged_in
 end
 
 def ensure_user_logs_out
+  $driver.get(@base_url + 'documents')
   while $driver.find_elements(:link, "LOGOUT").size > 0 do
     $driver.find_element(:link, "LOGOUT").click
   end
   close_alert_and_get_its_text(true) if alert_present?
-  
-  sleep(1)
+  $wait.until { $driver.find_elements(:id, 'homepage_titles').size > 0 }
   $driver.find_element(:css, "#homepage_titles > h1").text.should == "WRITE BETTER WITH DRAFT"
   #puts "After logout: #{$driver.current_url}"
 end

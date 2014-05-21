@@ -5,29 +5,34 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Edit a document and save" do
+describe "Edit and save an existing document" do
 
   before(:all) do
     @test_id = "8"
+    print "** Starting: #{self.class.description} (Test ##{@test_id}) **"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
+    $driver = start_driver()
+    start(@test_id)
+    puts ""
+    print "#{x.example.description}: "
   end
   
   after(:all) do
     # if this is really the end... then quit.
+    puts ""
+    puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
-      $driver.quit if $driver
+      $driver.quit
     end
   end
   
-  it "test_2_edit_a_document_and_save" do
+  it "Edit and Save Existing Document" do
     begin
       random_num = rand(1000)
-      
-      $driver = start_driver()
-      $driver.manage.timeouts.implicit_wait = 3
-
-      start(@test_id)
       
       start_logged_in
       

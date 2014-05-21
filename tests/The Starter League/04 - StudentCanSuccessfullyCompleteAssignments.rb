@@ -11,7 +11,6 @@ describe "Student Can Successfully Complete Assignments" do
     @test_id = "30"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    start(@test_id)
   end
   
   after(:all) do
@@ -24,8 +23,9 @@ describe "Student Can Successfully Complete Assignments" do
   
   it "test_04_student_can_successfully_complete_assignments_html" do
     begin
-      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
-      $driver.manage.timeouts.implicit_wait = 3
+      $driver = start_driver()
+      
+      start(@test_id) if @tries.count < 1
       
       login_as_admin
       

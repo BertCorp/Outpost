@@ -11,7 +11,6 @@ describe "Students and Teachers Can Provide Comments" do
     @test_id = "31"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    start(@test_id)
   end
   
   after(:all) do
@@ -24,8 +23,10 @@ describe "Students and Teachers Can Provide Comments" do
   
   it "test_05_students_and_teachers_can_provide_comments_html" do
     begin
-      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
-      $driver.manage.timeouts.implicit_wait = 3
+      $driver = start_driver()
+      
+      start(@test_id) if @tries.count < 1
+      
       random_num = rand(10000).to_s
       puts "Test identifier: #{random_num}"
       
@@ -47,7 +48,8 @@ describe "Students and Teachers Can Provide Comments" do
       # Now, we need the submission assignment
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      
+      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+
       $driver.find_element(:link, "Assignments").click
       $wait.until { $driver.find_elements(:link, "Reorder").size > 0 }
       
@@ -107,7 +109,6 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:name, "commit").click
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
-      sleep(2)
       $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
       $driver.find_element(:link, "Assignments").click
       sleep(2)

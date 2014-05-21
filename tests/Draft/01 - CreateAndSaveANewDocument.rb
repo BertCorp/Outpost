@@ -9,25 +9,30 @@ describe "Create and save a new document" do
 
   before(:all) do
     @test_id = "7"
+    print "** Starting: #{self.class.description} (Test ##{@test_id}) **"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
+    $driver = start_driver()
+    start(@test_id)
+    puts ""
+    print "#{x.example.description}: "
   end
   
   after(:all) do
     # if this is really the end... then quit.
+    puts ""
+    puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
-      $driver.quit if $driver
+      $driver.quit
     end
   end
   
-  it "test_1_create_and_save_a_new_document" do
+  it "Create and Save New Document" do
     begin
       random_num = rand(1000)
-
-      $driver = start_driver({ name: 'Draft - Automated Tests' })
-      $driver.manage.timeouts.implicit_wait = 3
-      
-      start(@test_id)
       
       start_logged_in
 

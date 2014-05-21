@@ -11,7 +11,6 @@ describe "Teacher Can Create A New Assignment" do
     @test_id = "28"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    start(@test_id)
   end
   
   after(:all) do
@@ -24,8 +23,9 @@ describe "Teacher Can Create A New Assignment" do
   
   it "test_02_teacher_can_create_a_new_assignment" do
     begin
-      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
-      $driver.manage.timeouts.implicit_wait = 3
+      $driver = start_driver()
+      
+      start(@test_id) if @tries.count < 1
       
       login_as_admin
       

@@ -11,21 +11,19 @@ describe "Private Discussions Are Private" do
     @test_id = "38"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    start(@test_id)
   end
   
   after(:all) do
     # if this is really the end... then quit.
-    #unless $is_test_suite
-      $driver.quit
-      $outpost.quit if $outpost
-    #end
+    $driver.quit
   end
   
   it "test_06_private_discussions_are_private" do
     begin
-      $driver = start_driver({ :name => 'Starter League - Automated Tests', 'os' => 'OS X', 'os_version' => 'Mavericks' })
-      $driver.manage.timeouts.implicit_wait = 3
+      $driver = start_driver()
+
+      start(@test_id) if @tries.count < 1
+      
       random_num = rand(10000).to_s
       puts "Test identifier: #{random_num}"
       

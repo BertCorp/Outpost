@@ -8,8 +8,11 @@ ENV['LOCAL'] ||= 'true'
 # Outpost Specific Functions
 def start_driver(cs = nil)
   return $driver unless $driver == nil
+  puts ""
+  print "Establishing Selenium Driver: "
   if ENV['LOCAL'] == 'true'
     $driver = Selenium::WebDriver.for :firefox
+    $driver.manage.timeouts.implicit_wait = 3
   else
     cs = $cs unless cs
     if cs['browser']
@@ -29,13 +32,15 @@ def start_driver(cs = nil)
       :url => "http://#{ENV['SL_USERNAME']}:#{ENV['SL_AUTHKEY']}@ondemand.saucelabs.com:80/wd/hub",
       :desired_capabilities => caps
     )
-    $driver.manage().window().maximize()
+    $driver.manage.timeouts.implicit_wait = 3
+    $driver.manage.window.maximize
     #$driver.file_detector = lambda do |args|
     #  str = args.first.to_s
     #  str if File.exist?(str)
     #end
   end
   $wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+  print "." unless $driver == nil
   $driver
 end # setup_driver
 
@@ -44,6 +49,7 @@ def outpost(url)
     url = url.gsub('http://www.outpostqa.com/', 'http://outpost.dev/') if ENV['LOCAL'] == 'true'
     $driver = start_driver($cs)
     $driver.navigate.to url
+    $wait.until { $driver.current_url == url }
   rescue => e
     if e.inspect.include? "Session not started"
       "Session missing. Retrying to restart in 5."
@@ -55,29 +61,26 @@ end
 
 def start(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/start")
-  sleep(2)
 end
 
 def restart(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/restart")
-  sleep(1)
 end
 
 def pass(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Passed")
-  #p "Passed"
 end
 
 def fail(test_id, e)
   require 'uri'
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Failure&message=#{URI.escape(e.inspect)}")
-  p "\nFAILED: #{test_id}"
+  puts ""
+  puts "FAILED: #{test_id}"
   raise
 end
 
 def skip(test_id)
   outpost("http://www.outpostqa.com/admin/tests/#{test_id}/stop?status=Skipped")
-  #p "Skipped"
 end
 
 
