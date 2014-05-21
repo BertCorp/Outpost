@@ -71,8 +71,10 @@ describe "Create and save a new document" do
       puts "Current url: #{$driver.current_url}"
       puts "Exception: #{e.inspect}"
       puts e.backtrace.join("\n")
-      retry if @tries.count < 3 && $is_test_suite
-      puts "Retrying `#{self.class.description}`: #{@tries.count}"
+      if @tries.count < 3 && $is_test_suite
+        puts "Retrying `#{self.class.description}`: #{@tries.count}"
+        retry 
+      end
       puts ""
       fail(@test_id, e)
     end
