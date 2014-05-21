@@ -1,0 +1,23 @@
+<p>Good morning!</p>
+
+<p>We just successfully finished running your tests for the day and everything looks good! If you'd like to view the full report, you can do so here: <%= link_to report_url(@report), report_url(@report) %> </p>
+
+<p>Here are the individual results:</p>
+<ul>
+<% @report.results.order('id ASC').each do |test| %>
+<li><%= test.test_case.title %>: <%= test.status %> <% if test.status == 'Passed' %>(executed in <%= (test.ended_at - test.started_at).round(2) %> seconds)<% end %></li>
+<% end %> 
+</ul>
+<br/>
+<p>If you have any questions please don't hesitate to drop us a note!</p>
+
+<p>
+<br/>
+Thanks,<br/>
+<br/>
+Mark &amp; Zack<br/>
+<br/>
+--<br/>
+Sick of finding bugs and broken user flows? Let's talk. <br/>
+(630) 881-4532 <%= link_to "@outpostqa", "http://twitter.com/outpostqa" %> <%= link_to "www.outpostqa.com", "http://www.outpostqa.com" %><br/>
+</p>

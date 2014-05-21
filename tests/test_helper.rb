@@ -40,7 +40,7 @@ end # setup_driver
 
 def outpost(url)
   begin
-    url = url.gsub('http://www.outpostqa.com/', 'http://localhost:3000/') if ENV['LOCAL'] == 'true'
+    url = url.gsub('http://www.outpostqa.com/', 'http://outpost.dev') if ENV['LOCAL'] == 'true'
     unless $outpost
       if ENV['LOCAL'] == 'true'
         $outpost = Selenium::WebDriver.for :firefox
