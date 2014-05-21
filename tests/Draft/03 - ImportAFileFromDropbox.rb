@@ -11,22 +11,22 @@ describe "Import a file from Dropbox" do
     @test_id = "9"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    start(@test_id)
   end
   
   after(:all) do
     # if this is really the end... then quit.
     unless $is_test_suite
       $driver.quit if $driver
-      $outpost.quit if $outpost
     end
   end
   
   it "test_3_import_a_file_from_dropbox" do
     begin
-      $driver = start_driver({ name: 'Draft - Automated Tests' })
+      $driver = start_driver()
       $driver.manage.timeouts.implicit_wait = 3
       
+      start(@test_id)
+ 
       start_logged_in
       
       begin

@@ -11,14 +11,12 @@ describe "Edit a document and save" do
     @test_id = "8"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    start(@test_id)
   end
   
   after(:all) do
     # if this is really the end... then quit.
     unless $is_test_suite
       $driver.quit if $driver
-      $outpost.quit if $outpost
     end
   end
   
@@ -26,8 +24,10 @@ describe "Edit a document and save" do
     begin
       random_num = rand(1000)
       
-      $driver = start_driver({ name: 'Draft - Automated Tests' })
+      $driver = start_driver()
       $driver.manage.timeouts.implicit_wait = 3
+
+      start(@test_id)
       
       start_logged_in
       

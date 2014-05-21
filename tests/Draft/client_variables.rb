@@ -1,4 +1,5 @@
 $environments = { production: "https://draftin.com/" }
+$cs = { name: 'Draft - Automated Tests' }
 
 def go_home_from_document
   begin

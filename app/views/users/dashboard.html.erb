@@ -23,7 +23,7 @@ Dashboard
 						<% if Rails.env.production? %>
 				   <li><%= link_to "#{e.name}", run_reports_path(company: current_user.company.id, suite: suite.id, environment: e.id) %></li>			
 						<% else %>
-			    <li><%= link_to "#{e.name} (browserstack)", run_reports_path(company: current_user.company.id, suite: suite.id, environment: e.id) %></li>
+			    <li><%= link_to "#{e.name} (saucelabs)", run_reports_path(company: current_user.company.id, suite: suite.id, environment: e.id) %></li>
 			    <li><%= link_to "#{e.name} (locally)", run_reports_path(company: current_user.company.id, suite: suite.id, environment: e.id, local: true) %></li>
 						<% end %>
 					<% end %>

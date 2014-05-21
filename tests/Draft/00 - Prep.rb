@@ -20,7 +20,7 @@ describe "TestPrep" do
   
   it "test_0_prep" do
     begin
-      $driver = start_driver({ name: 'Draft - Automated Tests' })
+      $driver = start_driver()
       $driver.manage.timeouts.implicit_wait = 3
       
 =begin

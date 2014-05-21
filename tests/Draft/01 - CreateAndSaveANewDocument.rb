@@ -11,14 +11,12 @@ describe "Create and save a new document" do
     @test_id = "7"
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
-    start(@test_id)
   end
   
   after(:all) do
     # if this is really the end... then quit.
     unless $is_test_suite
       $driver.quit if $driver
-      $outpost.quit if $outpost
     end
   end
   
@@ -28,6 +26,8 @@ describe "Create and save a new document" do
 
       $driver = start_driver({ name: 'Draft - Automated Tests' })
       $driver.manage.timeouts.implicit_wait = 3
+      
+      start(@test_id)
       
       start_logged_in
 
