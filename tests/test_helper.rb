@@ -45,15 +45,15 @@ def outpost(url)
       if ENV['LOCAL'] == 'true'
         $outpost = Selenium::WebDriver.for :firefox
       else
-        caps = Selenium::WebDriver::Remote::Capabilities.new
-        caps['browser'] = 'Firefox'
-        caps['browser_version'] = '27.0'
-        caps['os'] = 'Windows'
-        caps['os_version'] = '8.1'
-        caps[:name] = "Automated Testing - Outpost URLs"
-        $outpost = Selenium::WebDriver.for(:remote,
-          :url => "http://#{ENV['BS_USERNAME']}:#{ENV['BS_AUTHKEY']}@hub.browserstack.com/wd/hub",
-          :desired_capabilities => caps)
+        caps = get_cap_declaration('firefox')
+        caps["platform"] = 'Windows 8.1'
+        caps["version"] = '27'
+        caps["screen-resolution"] = '1280x1024'
+        $driver = Selenium::WebDriver.for(
+          :remote,
+          :url => "http://#{ENV['SL_USERNAME']}:#{ENV['SL_AUTHKEY']}@ondemand.saucelabs.com:80/wd/hub",
+          :desired_capabilities => caps
+        )
       end
     end
     $outpost.navigate.to url
