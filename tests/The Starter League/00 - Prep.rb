@@ -97,6 +97,60 @@ describe "Test Prep/Cleanup" do
       #fail(@test_id, e)
     end 
   end
+  
+  it "Clean up pending invitations" do
+    begin
+      login_as_admin
+      
+      # Invitation Cleanup
+      $wait.until { $driver.find_elements(:link, "People").size > 0 }
+      $driver.find_element(:link, "People").click
+      
+      if $driver.find_elements(:id, 'pending-invitations-link').size > 0
+        $driver.find_element(:id, 'pending-invitations-link').click
+        $wait.until { $driver.find_elements(:link, "Delete").size > 0 }
+        
+        while $driver.find_elements(:link, "Delete").size > 0 do
+          $driver.find_elements(:link, "Delete").first.click
+          (close_alert_and_get_its_text(true)).should include("Are you sure")
+          # Verify
+          ($driver.find_element(:id, "flash-msg").text).should include("was successfully")
+        end
+      end
+      $driver.find_element(:link, "People").click
+      # verify
+      $driver.find_elements(:id, 'pending-invitations-link').size == 0
+        
+    rescue => e
+      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
+      if e.inspect.include? 'id="flash-msg"'
+        $driver.find_element(:css, '.alert a').click
+        sleep(1)
+        e.ignore
+      end
+      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        puts ""
+        puts "Retry due to Browserstack exception: #{e.inspect}"
+        sleep(10)
+        #restart(@test_id)
+        retry
+      end
+      # otherwise, let's try again
+      @tries << { exception: e.inspect, backtrace: e.backtrace }      
+      puts ""
+      puts "Current url: #{$driver.current_url}"
+      puts "Exception: #{e.inspect}"
+      puts e.backtrace.join("\n")
+      raise
+      #if @tries.count < 3 && $is_test_suite
+      #  puts "Retrying `#{self.class.description}`: #{@tries.count}"
+      #  puts ""
+      #  retry
+      #end
+      #fail(@test_id, e)
+    end
+  end
 
   it "Clean up assignments" do
     begin
