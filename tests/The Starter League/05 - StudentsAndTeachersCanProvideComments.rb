@@ -61,14 +61,16 @@ describe "Students and Teachers Can Provide Comments" do
       assignment_two = nil
       #puts $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').size
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
-        text = elem.find_element(:css, 'td.title > a').text
-        klass = elem.find_element(:css, 'td.actions > a:nth-last-child(1)').attribute('class')
-        unless klass.include?("no-submissions")
-          #puts text
-          if text.include?("Submission Exercise")
-            #puts "SUBMISSION!"
-            assignment_two = text
-            break
+        if elem.find_elements(:css, 'td.actions > a').size > 0
+          text = elem.find_element(:css, 'td.title > a').text
+          klass = elem.find_element(:css, 'td.actions > a:nth-last-child(1)').attribute('class')
+          unless klass.include?("no-submissions")
+            #puts text
+            if text.include?("Submission Exercise")
+              #puts "SUBMISSION!"
+              assignment_two = text
+              break
+            end
           end
         end
       end
@@ -143,19 +145,20 @@ describe "Students and Teachers Can Provide Comments" do
           close_alert_and_get_its_text(true)
         end
         sleep(2)
-        puts $driver.find_element(:link, assignment_two).click
+        $driver.find_element(:link, assignment_two).click
+        sleep(1)
+        puts !element_present?(:id, 'assignment_submission_content')
       end
       
       print "Student can comment on assignment: "
       # Student can comment on a submission assignment
-      type_redactor_field('comment_content', "This is a comment on #{assignment_two}. #{random_num}")
-      #$driver.find_element(:css, "textarea#comment_content").clear
-      #$driver.find_element(:css, "textarea#comment_content").send_keys "This is a comment on " + assignment_two + "."
+      type_redactor_field('comment_content', "This is a student comment on #{assignment_two}. #{random_num}")
+
       $driver.find_element(:name, "commit").click
       # Verify
       ($driver.find_element(:css, "div.assignment-submission-content > div.content").text).should == "This is my first answer to a Lantern exercise. I hope I get it right! #{assignment_two} Now with a change to it!"
       # Verify
-      puts ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "This is a comment on #{assignment_two}. #{random_num}"
+      puts ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "This is a student comment on #{assignment_two}. #{random_num}"
       
       # Student can comment on a resource file.
       print "Student can comment on resource file: "
@@ -201,24 +204,19 @@ describe "Students and Teachers Can Provide Comments" do
       sleep(2)
       # Verify
       $driver.find_elements(:link, "started a discussion (Our class discussion #{random_num}!) in \"Outpost Test Class\"").size.should > 0
-      #($driver.find_element(:link, "started a discussion (Our first class discussion!) in \"Outpost Test Class\"").text).should == "started a discussion (Our first class discussion!) in \"Outpost Test Class\""
       # Verify
       $driver.find_elements(:link, "posted a comment (This is a comment on a resource. #{random_num}) to text-sample1.txt").size.should > 0
-      #($driver.find_element(:link, "posted a comment (This is a comment on a resource.) to text-sample1.txt").text).should == "posted a comment (This is a comment on a resource.) to test_document.rtf"
       # Verify
-      $driver.find_elements(:link, "posted a comment (This is a comment on #{assignment_two}. #{random_num}) to #{assignment_two} - Submission by Outpost").size.should > 0
-      #($driver.find_element(:link, "posted a comment (This is a comment on " + assignment_two + ".) to " + assignment_two + " - Submission by Outpost").text).should == "posted a comment (This is a comment on " + assignment_two + ".) to " + assignment_two + " - Submission by Outpost"
+      $driver.find_elements(:link, "posted a comment (This is a student comment on #{assignment_two[0..."Submission Exercis".length]}...) to #{assignment_two} - Submission by Outpost").size.should > 0
+
       $driver.find_element(:link, "Me").click
       sleep(2)
       # Verify
-      $driver.find_elements(:link, "started a discussion (Our first class discussion! #{random_num}) in \"Outpost Test Class\"").size.should > 0
-      #($driver.find_element(:link, "started a discussion (Our first class discussion!) in \"Outpost Test Class\"").text).should == "started a discussion (Our first class discussion!) in \"Outpost Test Class\""
+      $driver.find_elements(:link, "started a discussion (Our class discussion #{random_num}!) in \"Outpost Test Class\"").size.should > 0
       # Verify
       $driver.find_elements(:link, "posted a comment (This is a comment on a resource. #{random_num}) to text-sample1.txt").size.should > 0
-      #($driver.find_element(:link, "posted a comment (This is a comment on a resource.) to test_document.rtf").text).should == "posted a comment (This is a comment on a resource.) to test_document.rtf"
       # Verify
-      puts $driver.find_elements(:link, "posted a comment (This is a comment on #{assignment_two}....) to #{assignment_two} - Submission by Outpost").size.should > 0
-      #($driver.find_element(:link, "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost").text).should == "posted a comment (This is a comment on exercise #" + assignment_two + ".) to " + assignment_two + " - Submission by Outpost"
+      puts $driver.find_elements(:link, "posted a comment (This is a student comment on #{assignment_two[0..."Submission Exercis".length]}...) to #{assignment_two} - Submission by Outpost").size.should > 0
 
       ensure_user_logs_out
 
@@ -288,7 +286,7 @@ describe "Students and Teachers Can Provide Comments" do
       # Verify
       ($driver.find_element(:css, "div.assignment-submission-content > div.content").text).should == "This is my first answer to a Lantern exercise. I hope I get it right! #{assignment_two} Now with a change to it!"
       # Verify
-      ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "This is a comment on #{assignment_two}. #{random_num}"
+      ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "This is a student comment on #{assignment_two}. #{random_num}"
       
       type_redactor_field('comment_content', "A teacher's comment on an exercise #{random_num}")
       
@@ -301,7 +299,7 @@ describe "Students and Teachers Can Provide Comments" do
       # Verify
       puts ($driver.find_element(:css, ".comments > .comment:nth-last-child(2) > div.comment-content > div.content").text).should == "A teacher's comment on an exercise #{random_num}"
       
-      print "Activities created for admin: "
+      print "Activities created for teacher: "
       $driver.find_elements(:css, ".breadcrumb-navigation a").first.click
       sleep(1)
       $driver.find_element(:link, "← Assignments").click
@@ -316,19 +314,19 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_elements(:link, "posted a comment (The teacher is commenting on the discussion for...) to Our class discussion #{random_num}!").size.should > 0
       #($driver.find_element(:link, "posted a comment (The teacher is commenting on the discussion for...) to Our first class discussion!").text).should == "posted a comment (The teacher is commenting on the discussion for...) to Our first class discussion!"
       # Verify
-      $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher! #{random_num}) to #{document_two}").size.should > 0
+      $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher...) to #{document_two}").size.should > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to " + document_two
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       # Verify
-      $driver.find_elements(:link, "posted a comment (A teacher's comment on an exercise #{random_num}) to #{assignment_two} - Submission by Outpost Student").size.should > 0
+      $driver.find_elements(:link, "posted a comment (A teacher's comment on an exercise #{random_num}) to #{assignment_two} - Submission by Outpost").size.should > 0
       #($driver.find_element(:link, "posted a comment (A teacher's comment on an exercise) to " + assignment_two + " - Submission by Outpost Student").text).should == "posted a comment (A teacher's comment on an exercise​) to " + assignment_two + " - Submission by Outpost Student"
       # Verify
       $driver.find_elements(:link, "posted a comment (The teacher is commenting on the discussion for...) to Our class discussion #{random_num}!").size.should > 0
       #($driver.find_element(:link, "posted a comment (The teacher is commenting on the discussion for...) to Our first class discussion!").text).should == "posted a comment (The teacher is commenting on the discussion for...) to Our first class discussion!"
       # Verify
-      $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher! #{random_num}) to #{document_two}").size.should > 0
+      $driver.find_elements(:link, "posted a comment (This is a comment on an document from a teacher...) to #{document_two}").size.should > 0
       #($driver.find_element(:link, "posted a comment (This is a comment on an document from a teacher!) to " + document_two).text).should == "posted a comment (This is a comment on an document from a teacher!) to " + document_two
       
       pass(@test_id)
