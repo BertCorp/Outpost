@@ -6,24 +6,32 @@ require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "Private Discussions Are Private" do
-
+  
   before(:all) do
     @test_id = "38"
+    print "** Starting: #{self.class.description} (Test ##{@test_id}) **"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
+    $driver = start_driver()
+    start(@test_id)    
+    puts ""
+    puts "#{x.example.description}"
   end
   
   after(:all) do
     # if this is really the end... then quit.
-    $driver.quit
+    puts ""
+    puts "** Finished: #{self.class.description} **"
+    #unless $is_test_suite
+      $driver.quit
+    #end
   end
   
-  it "test_06_private_discussions_are_private" do
+  it "Private Discussions Are Private" do
     begin
-      $driver = start_driver()
-
-      start(@test_id) if @tries.count < 1
-      
       random_num = rand(10000).to_s
       puts "Test identifier: #{random_num}"
       

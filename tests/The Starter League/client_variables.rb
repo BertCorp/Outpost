@@ -4,23 +4,20 @@ $cs = { :name => 'The Starter League', 'platform' => 'OS X 10.8' }
 def clear_gmail_inbox
   sign_into_gmail
   
-  while $driver.find_elements(:css, "table td span b").size > 0 do
+  while $driver.find_elements(:css, "table.F > tbody > tr > td").size > 0 do
     $driver.find_element(:css, "div[data-tooltip=\"Select\"] span").click
     delete_link = $driver.find_element(:css, "div[data-tooltip=\"Delete\"]")
     if delete_link.displayed? == true
       delete_link.click
+      sleep(1)
     end
-    sleep(1)
     $driver.navigate.refresh
-    if alert_present?
-      close_alert_and_get_its_text(true)
-    end
-    sleep(3)
+    close_alert_and_get_its_text(true) if alert_present?
     $wait.until { $driver.find_elements(:css, "div[data-tooltip=\"Select\"] span").size > 0 }    
   end
   
-  if $driver.find_elements(:css, "table td span b").size > 0
-    puts "Emails still in inbox: #{$driver.find_elements(:css, "table td span b").size}"
+  if $driver.find_elements(:css, "table.F > tbody > tr > td").size > 0
+    puts "Emails still in inbox: #{$driver.find_elements(:css, 'table.F > tbody > tr > td').size}"
   end
   
   sign_out_of_gmail
@@ -115,22 +112,21 @@ end
 
 def wait_for_email
   # Click and view the latest invitation email.
-  while $driver.find_elements(:css, "table td span b").size < 1 do
-    sleep(5)
-    if $driver.find_elements(:css, "table td span b").size < 1
+  while $driver.find_elements(:css, "table.F > tbody > tr > td").size < 1 do
+    if $driver.find_elements(:css, "table.F > tbody > tr > td").size < 1
       begin
         extended_wait = Selenium::WebDriver::Wait.new(:timeout => 180) # seconds
-        extended_wait.until { $driver.find_elements(:css, "table td span b").size > 0 }
+        extended_wait.until { $driver.find_elements(:css, "table.F > tbody > tr > td").size > 0 }
       rescue => e
         sleep(5)
-        if $driver.find_elements(:css, "table td span b").size < 1
+        if $driver.find_elements(:css, "table.F > tbody > tr > td").size < 1
           sleep(60 * 5)
           e.ignore
         end
       end
     end
     # still no email? Let's come back another time.
-    if $driver.find_elements(:css, "table td span b").size < 1
+    if $driver.find_elements(:css, "table.F > tbody > tr > td").size < 1
       begin
         raise
       rescue

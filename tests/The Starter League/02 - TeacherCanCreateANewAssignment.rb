@@ -6,27 +6,32 @@ require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "Teacher Can Create A New Assignment" do
-
+  
   before(:all) do
     @test_id = "28"
+    print "** Starting: #{self.class.description} (Test ##{@test_id}) **"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
+    $driver = start_driver()
+    start(@test_id)    
+    puts ""
+    puts "#{x.example.description}"
   end
   
   after(:all) do
     # if this is really the end... then quit.
+    puts ""
+    puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
       $driver.quit
-      $outpost.quit if $outpost
     end
   end
   
-  it "test_02_teacher_can_create_a_new_assignment" do
+  it "Teacher Can Create Assignment" do
     begin
-      $driver = start_driver()
-      
-      start(@test_id) if @tries.count < 1
-      
       login_as_admin
       
       $driver.find_element(:link, "Classes").click
@@ -36,6 +41,7 @@ describe "Teacher Can Create A New Assignment" do
       $driver.find_element(:link, "Add a new assignment").click
       
       assignment_one = "Completion Exercise #" + rand(10000).to_s
+      print "Create assignment (#{assignment_one}): "
       
       $driver.find_element(:id, "assignment_title").clear
       $driver.find_element(:id, "assignment_title").send_keys assignment_one
@@ -56,7 +62,7 @@ describe "Teacher Can Create A New Assignment" do
       # Verify
       ($driver.find_element(:css, "h5").text).should == assignment_one + "\n- change this"
       # Verify
-      ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_one
+      puts ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_one
       $driver.find_element(:link, "← Assignments").click
       $wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
       
@@ -65,6 +71,7 @@ describe "Teacher Can Create A New Assignment" do
       $driver.find_element(:id, "assignment_requires_submission_true").click
 
       assignment_two = "Submission Exercise #" + rand(10000).to_s
+      print "Create assignment (#{assignment_two}): "
 
       $driver.find_element(:id, "assignment_title").clear
       $driver.find_element(:id, "assignment_title").send_keys assignment_two
@@ -82,11 +89,12 @@ describe "Teacher Can Create A New Assignment" do
       # Verify
       ($driver.find_element(:css, "h5").text).should == assignment_two + "\nrequires a submission (private) - change this"
       # Verify
-      ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
+      puts ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
       $driver.find_element(:link, "← Assignments").click
       $wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
       
       # Double check that activity was logged.
+      print "Check activity was logged: "
       $driver.find_element(:link, "Recent Activity").click
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_one + "\"").text).should == "published assignment \"" + assignment_one + "\""

@@ -9,24 +9,29 @@ describe "Students and Teachers Can Provide Comments" do
 
   before(:all) do
     @test_id = "31"
+    print "** Starting: #{self.class.description} (Test ##{@test_id}) **"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
+    $driver = start_driver()
+    start(@test_id)    
+    puts ""
+    puts "#{x.example.description}"
   end
   
   after(:all) do
     # if this is really the end... then quit.
+    puts ""
+    puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
       $driver.quit
-      $outpost.quit if $outpost
     end
   end
   
-  it "test_05_students_and_teachers_can_provide_comments_html" do
+  it "Students and Teachers Can Comment" do
     begin
-      $driver = start_driver()
-      
-      start(@test_id) if @tries.count < 1
-      
       random_num = rand(10000).to_s
       puts "Test identifier: #{random_num}"
       

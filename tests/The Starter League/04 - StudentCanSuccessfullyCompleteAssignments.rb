@@ -6,27 +6,32 @@ require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
 describe "Student Can Successfully Complete Assignments" do
-
+  
   before(:all) do
     @test_id = "30"
+    print "** Starting: #{self.class.description} (Test ##{@test_id}) **"
+  end
+
+  before(:each) do |x|
     @base_url = @base_url_orig = $environments[ENV["ENVIRONMENT"].to_sym]
     @tries = []
+    $driver = start_driver()
+    start(@test_id)    
+    puts ""
+    puts "#{x.example.description}"
   end
   
   after(:all) do
     # if this is really the end... then quit.
+    puts ""
+    puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
       $driver.quit
-      $outpost.quit if $outpost
     end
   end
   
-  it "test_04_student_can_successfully_complete_assignments_html" do
+  it "Student Can Finish Completion Assignment" do
     begin
-      $driver = start_driver()
-      
-      start(@test_id) if @tries.count < 1
-      
       login_as_admin
       
       # First, lets do some prep and get the student's email

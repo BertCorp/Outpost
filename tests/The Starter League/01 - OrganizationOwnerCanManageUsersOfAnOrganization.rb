@@ -9,8 +9,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
 
   before(:all) do
     @test_id = "27"
-    puts ""
-    print "** Starting: #{self.class.description} (Test #{@test_id}) **"
+    print "** Starting: #{self.class.description} (Test ##{@test_id}) **"
   end
 
   before(:each) do |x|
@@ -19,7 +18,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
     $driver = start_driver()
     start(@test_id)    
     puts ""
-    print "#{x.example.description}: "
+    puts "#{x.example.description}"
   end
   
   after(:all) do
@@ -38,10 +37,12 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       login_as_admin
       
       # Invite a new teacher
+      print "Invite teacher: "
       $driver.find_element(:link, "People").click
       $wait.until { $driver.find_elements(:id, "add-people-btn").size > 0 }
       $driver.find_element(:id, "add-people-btn").click
       teacher_email = "test+lantern-t" + rand(1000).to_s + "@outpostqa.com"
+      puts teacher_email
       $driver.find_element(:id, "invitation_emails_").clear
       $driver.find_element(:id, "invitation_emails_").send_keys teacher_email
       $driver.find_element(:id, "invitation_staff").click
@@ -60,7 +61,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
 
         wait_for_email
 
-        $driver.find_elements(:css, "table td span b").find do |subject|
+        $driver.find_elements(:css, "table.F > tbody > tr > td span").find do |subject|
           subject.text == "You're invited to join Outpost"
         end.click
         # Copy and go to the invite link.
@@ -93,7 +94,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       # Verify
       ($driver.find_element(:css, "h4").text).should == "Outpost Teacher (" + teacher_email + ")"
       # Verify
-      ($driver.find_element(:css, "section.enrollments > ul > li > a").text).should == "Outpost Test Class"
+      print "Teacher accepted invite: "
+      puts ($driver.find_element(:css, "section.enrollments > ul > li > a").text).should == "Outpost Test Class"
       
       ensure_user_logs_out
 
@@ -101,9 +103,11 @@ describe "Organization Owner Can Manage Users Of An Organization" do
 
       login_as_admin
       
+      print "Invite student: "
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "add-people-btn").click
       student_email = "test+lantern-s" + rand(1000).to_s + "@outpostqa.com"
+      puts student_email
       $driver.find_element(:id, "invitation_emails_").clear
       $driver.find_element(:id, "invitation_emails_").send_keys student_email
       $driver.find_element(:id, "invitation_enrollments_0_course_id").click
@@ -118,7 +122,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
 
         wait_for_email
 
-        $driver.find_elements(:css, "table td span b").find do |subject|
+        $driver.find_elements(:css, "table.F > tbody > tr > td span").find do |subject|
           subject.text == "You're invited to join Outpost"
         end.click
         # Copy and go to the invite link.
@@ -150,7 +154,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "user_terms_of_service").click
       $driver.find_element(:name, "commit").click
       # Verify
-      ($driver.find_element(:css, "h4").text).should == "Outpost Student (" + student_email + ")"
+      print "Student accepted invite: "
+      puts ($driver.find_element(:css, "h4").text).should == "Outpost Student (" + student_email + ")"
       # Verify
       ($driver.find_element(:css, "h6").text).should == "You're a student in:"
 
@@ -158,6 +163,7 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       
       login_as_admin
       
+      print "Confirming with admin: "
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       # Verify
@@ -168,10 +174,6 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       ($driver.find_element(:css, "h5").text).should == "Here's how your students are progressing in Outpost Test Class"
       # Verify
       ($driver.find_elements(:link, "Student, Outpost").size).should >= 3
-      #$driver.find_element(:link, "Student, Outpost").click
-      #$driver.find_element(:link, "Go back").click
-      # Verify
-      #($driver.find_element(:css, "#profile .user-details h4 a").text).should == student_email
       
       pass(@test_id)
     rescue => e
