@@ -39,38 +39,37 @@ describe "Private Discussions Are Private" do
       login_as_admin
       
       # First, let's do some prep and get the first student's email
+      print "Student A: "
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_elements(:link, "Outpost S.").first.click
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
       student_id = $driver.current_url.split('/').last
-      #puts student_email
+      puts "#{student_email} // #{student_id}"
       
       # Next, let's do some prep and get the second student's email
+      print "Student B: "
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "students").find_elements(:link, "Outpost S.").last.click
       student2_email = $driver.find_element(:css, "#profile h4 > small > a").text
       student2_id = $driver.current_url.split('/').last
+      puts "#{student2_email} // #{student2_id}"
       
       # Next, let's get the teacher's email
+      print "Teacher A: "
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "teaching_staff").find_elements(:link, "Outpost T.").first.click
       teacher_email = $driver.find_element(:css, "#profile h4 > small > a").text
       teacher_id = $driver.current_url.split('/').last
-      #puts teacher_email
+      puts "#{teacher_email} // #{teacher_id}"
 
       # Next, let's get the second teacher's email
+      print "Teacher B: "
       $driver.find_element(:link, "People").click
       $driver.find_element(:id, "teaching_staff").find_elements(:link, "Outpost T.").last.click
       teacher2_email = $driver.find_element(:css, "#profile h4 > small > a").text
       teacher2_id = $driver.current_url.split('/').last
-      #puts teacher_email
-      
-      puts "Student A: #{student_email} // #{student_id}"
-      puts "Student B: #{student2_email} // #{student2_id}"
-      
-      puts "Teacher A: #{teacher_email} // #{teacher_id}"
-      puts "Teacher B: #{teacher2_email} // #{teacher2_id}"
-      
+      puts "#{teacher2_email} // #{teacher2_id}"
+            
       # Ensure that a private discussion is not shown anywhere to a user that doesn’t participant on it.
       # Need: admin, teacher A, teacher B, student A, student B?
       # Have a discussion between admin, student A and teacher A. Teacher B and student B should not be able to see.
@@ -86,7 +85,7 @@ describe "Private Discussions Are Private" do
       # Student A can see discussion
       # Teacher B can NOT see discussion
       # Teacher B can not see discussion
-      
+      print "Admin can create discussion with Student A, Teacher A: "
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       sleep(2)
@@ -110,7 +109,13 @@ describe "Private Discussions Are Private" do
       $driver.find_elements(:id, "subscription_type_none").first.click
       $driver.find_element(:name, "commit").click
       
+      puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
+      
+      discussion1_url = $driver.current_url
+      puts "Discussion url: #{discussion1_url}"
+      
       # confirm admin can see the new discussion
+      print "Admin can see discussion: "
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
@@ -129,16 +134,17 @@ describe "Private Discussions Are Private" do
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
 
-      discussion1_url = $driver.find_element(:link, discussion1_title).attribute('href')
-      puts discussion1_url
+      #discussion1_url = $driver.find_element(:link, discussion1_title).attribute('href')
       
       $driver.find_element(:link, discussion1_title).click
       sleep(1)
       # Verify
-      $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
+      puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
       
       ensure_user_logs_out
       
+      # confirm teacher can see the new discussion
+      print "Teacher A can see discussion: "
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys teacher_email
@@ -146,7 +152,6 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
       
-      # confirm teacher can see the new discussion
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
@@ -168,11 +173,12 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:link, discussion1_title).click
       sleep(1)
       # Verify
-      $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
+      puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
       
       ensure_user_logs_out
       
-      # login as student A
+      # confirm student can see the new discussion
+      print "Student A can see discussion: "
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys student_email
@@ -180,7 +186,6 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
       
-      # confirm student can see the new discussion
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
@@ -202,12 +207,13 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:link, discussion1_title).click
       sleep(1)
       # Verify
-      $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
+      puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
 
       # Now check to make sure people who don't have access can't see the discussion
       ensure_user_logs_out
       
-      # login as teacher B
+      # confirm teacher B can NOT see the new discussion
+      print "Teacher B can NOT see discussion: "
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys teacher2_email
@@ -215,7 +221,6 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
       
-      # confirm student can see the new discussion
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
@@ -237,12 +242,13 @@ describe "Private Discussions Are Private" do
       $driver.get discussion1_url
       sleep(1)
       # Verify
-      $driver.find_element(:css, 'h3').text.should == 'We seem to have lost you in space'
+      puts $driver.find_element(:css, 'h3').text.should == 'We seem to have lost you in space'
       $driver.navigate.back
       
       ensure_user_logs_out
       
-      # login as student B
+      # confirm student B can NOT see the new discussion
+      print "Student B can NOT see discussion: "
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys student2_email
@@ -250,7 +256,6 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
       
-      # confirm student can see the new discussion
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
@@ -272,14 +277,14 @@ describe "Private Discussions Are Private" do
       $driver.get discussion1_url
       sleep(1)
       # Verify
-      $driver.find_element(:css, 'h3').text.should == 'We seem to have lost you in space'
+      puts $driver.find_element(:css, 'h3').text.should == 'We seem to have lost you in space'
       $driver.navigate.back
       
       # Now, let's edit the discussion and replace Student A with Student B and confirm:
       ensure_user_logs_out
       
       login_as_admin
-      
+      print "Admin can edit discussion to include Student B not Student A: "
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click
       $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
@@ -307,9 +312,12 @@ describe "Private Discussions Are Private" do
       select.select_by(:value, teacher_id)
       $driver.find_element(:name, "commit").click
       
+      puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
+      
       ensure_user_logs_out
 
-      # Student B can view the discussion
+      # confirm student B can see the new discussion
+      print "Student B can see discussion: "
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys student2_email
@@ -317,7 +325,6 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
       
-      # confirm student can see the new discussion
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
@@ -339,12 +346,13 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:link, discussion1_title).click
       sleep(1)
       # Verify
-      $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
+      puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
 
       # Now check to make sure people who don't have access can't see the discussion
       ensure_user_logs_out
       
-      # Student A can NOT view the discussion
+      # confirm student A can NOT see the new discussion
+      print "Student A can NOT see discussion: "
       $driver.find_element(:link, "Log in").click
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys student_email
@@ -352,7 +360,6 @@ describe "Private Discussions Are Private" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
       
-      # confirm student can NOT see the new discussion
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
