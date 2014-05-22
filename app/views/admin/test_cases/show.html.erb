@@ -44,7 +44,7 @@
     <th>Ended At</th>
     <th>Summary</th>
   </tr>
-  <% @test_case.results.order('started_at DESC').each do |results| %>
+  <% @test_case.results.order('created_at DESC').each do |results| %>
   <tr class="<%= results.status == "Passed" ? "success" : results.status == "Failed" ? "danger" : "" %>">
     <td><%= results.status %></td>
     <td><%= link_to results.report.started_at.strftime('%Y-%m-%d'), admin_report_path(results.report) %></td>
