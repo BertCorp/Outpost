@@ -165,8 +165,8 @@ describe "Students and Teachers Can Provide Comments" do
       $driver.find_element(:link, "Outpost Test Class").click
       $driver.find_element(:link, "Resources").click
       sleep(2)
-      $wait.until { $driver.find_elements(:link, "text-sample1.txt").size > 0 }
-      $driver.find_element(:link, "text-sample1.txt").click
+      $wait.until { $driver.find_elements(:link, "blanket_of_clouds_1-wallpaper-1024x768.jpg").size > 0 }
+      $driver.find_element(:link, "blanket_of_clouds_1-wallpaper-1024x768.jpg").click
       
       type_redactor_field('comment_content', "This is a comment on a resource. #{random_num}")
       
@@ -205,7 +205,7 @@ describe "Students and Teachers Can Provide Comments" do
       # Verify
       $driver.find_elements(:link, "started a discussion (Our class discussion #{random_num}!) in \"Outpost Test Class\"").size.should > 0
       # Verify
-      $driver.find_elements(:link, "posted a comment (This is a comment on a resource. #{random_num}) to text-sample1.txt").size.should > 0
+      $driver.find_elements(:link, "posted a comment (This is a comment on a resource. #{random_num}) to blanket_of_clouds_1-wallpaper-1024x768.jpg").size.should > 0
       # Verify
       $driver.find_elements(:link, "posted a comment (This is a student comment on #{assignment_two[0..."Submission Exercis".length]}...) to #{assignment_two} - Submission by Outpost").size.should > 0
 
@@ -214,7 +214,7 @@ describe "Students and Teachers Can Provide Comments" do
       # Verify
       $driver.find_elements(:link, "started a discussion (Our class discussion #{random_num}!) in \"Outpost Test Class\"").size.should > 0
       # Verify
-      $driver.find_elements(:link, "posted a comment (This is a comment on a resource. #{random_num}) to text-sample1.txt").size.should > 0
+      $driver.find_elements(:link, "posted a comment (This is a comment on a resource. #{random_num}) to blanket_of_clouds_1-wallpaper-1024x768.jpg").size.should > 0
       # Verify
       puts $driver.find_elements(:link, "posted a comment (This is a student comment on #{assignment_two[0..."Submission Exercis".length]}...) to #{assignment_two} - Submission by Outpost").size.should > 0
 

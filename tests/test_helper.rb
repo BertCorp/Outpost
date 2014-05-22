@@ -34,10 +34,10 @@ def start_driver(cs = nil)
     )
     $driver.manage.timeouts.implicit_wait = 3
     $driver.manage.window.maximize
-    #$driver.file_detector = lambda do |args|
-    #  str = args.first.to_s
-    #  str if File.exist?(str)
-    #end
+    $driver.file_detector = lambda do |args|
+      str = args.first.to_s
+      str if File.exist?(str)
+    end
   end
   $wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
   print "." unless $driver == nil
