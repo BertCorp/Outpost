@@ -67,10 +67,10 @@ describe "Teacher Can Add Resources" do
         sleep(1)
         e.ignore
       end
-      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      # If we get one of the following exceptions, its usually remote server's error, so let's wait a bit and then try again.
       if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         puts ""
-        puts "Retry due to Browserstack exception: #{e.inspect}"
+        puts "Retry due to remote server exception: #{e.inspect}"
         sleep(10)
         restart(@test_id)
         retry
@@ -146,10 +146,10 @@ describe "Teacher Can Add Resources" do
         sleep(1)
         e.ignore
       end
-      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      # If we get one of the following exceptions, its usually remote server's error, so let's wait a bit and then try again.
       if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         puts ""
-        puts "Retry due to Browserstack exception: #{e.inspect}"
+        puts "Retry due to remote server exception: #{e.inspect}"
         sleep(10)
         restart(@test_id)
         retry

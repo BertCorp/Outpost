@@ -91,6 +91,8 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:id, "user_terms_of_service").click
       $driver.find_element(:name, "commit").click
+
+      $wait.until { $driver.find_elements(:css, 'h4').size > 0 }
       # Verify
       ($driver.find_element(:css, "h4").text).should == "Outpost Teacher (" + teacher_email + ")"
       # Verify
@@ -183,10 +185,10 @@ describe "Organization Owner Can Manage Users Of An Organization" do
         sleep(1)
         e.ignore
       end
-      # If we get one of the following exceptions, its usually Browserstack's error, so let's wait a bit and then try again.
+      # If we get one of the following exceptions, its usually remote server's error, so let's wait a bit and then try again.
       if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         puts ""
-        puts "Retry due to Browserstack exception: #{e.inspect}"
+        puts "Retry due to remote server exception: #{e.inspect}"
         sleep(10)
         restart(@test_id)
         retry
