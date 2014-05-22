@@ -92,6 +92,7 @@ describe "Teacher Can Add Resources" do
     
   it "Teacher Can Create Resource" do
     begin
+      login_as_admin
       
       $driver.find_element(:link, "Classes").click
       $driver.find_element(:link, "Outpost Test Class").click

@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Teacher Can Create A New Assignment" do
+describe "Teacher Can Add Assignments" do
   
   before(:all) do
     @test_id = "28"
@@ -30,7 +30,7 @@ describe "Teacher Can Create A New Assignment" do
     end
   end
   
-  it "Teacher Can Create Assignment" do
+  it "Teacher Can Create Assignments" do
     begin
       login_as_admin
       
@@ -94,7 +94,7 @@ describe "Teacher Can Create A New Assignment" do
       $wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
       
       # Double check that activity was logged.
-      print "Check activity was logged: "
+      print "Check activity items were added: "
       $driver.find_element(:link, "Recent Activity").click
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_one + "\"").text).should == "published assignment \"" + assignment_one + "\""
