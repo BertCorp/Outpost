@@ -71,6 +71,7 @@ describe "Student Can Successfully Complete Assignments" do
       
       ensure_user_logs_out
       
+      print "Student can complete first assignment: "
       # Login as student
       $driver.get(@base_url)
       $driver.find_element(:link, "Log in").click
@@ -95,12 +96,14 @@ describe "Student Can Successfully Complete Assignments" do
       $driver.find_element(:name, "complete").click
       sleep(1)
       # Verify
-      ($driver.find_element(:css, "span.done.reviewed").text).should == ""
+      puts ($driver.find_element(:css, "span.done.reviewed").text).should == ""
 
       # Complete second (submission) exercise
       $driver.find_element(:link, assignment_two).click
       answer_one = "Answer #" + rand(11111).to_s
+      puts "Answer to assignment two: #{answer_one}"
       
+      print "Student can complete second assignment: "
       type_redactor_field('assignment_submission_content', "This is my first answer to a Lantern exercise. I hope I get it right! " + answer_one)      
       
       $driver.find_element(:name, "draft").click
@@ -124,7 +127,9 @@ describe "Student Can Successfully Complete Assignments" do
       # Verify
       ($driver.find_element(:css, "div.assignment-submission-content > div.content").text).should == "This is my first answer to a Lantern exercise. I hope I get it right! " + assignment_two + " Now with a change to it!"
       # Verify
-      ($driver.find_element(:css, "div.review-grade > span").text).should == "Your answer is pending review."
+      puts ($driver.find_element(:css, "div.review-grade > span").text).should == "Your answer is pending review."
+
+      print "Activities created for student: "
       $driver.find_element(:link, "Outpost Test Class").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
@@ -140,10 +145,11 @@ describe "Student Can Successfully Complete Assignments" do
       # Verify
       ($driver.find_element(:link, "answered " + assignment_two).text).should == "answered " + assignment_two
       # Verify
-      ($driver.find_element(:link, "completed " + assignment_one).text).should == "completed " + assignment_one
+      puts ($driver.find_element(:link, "completed " + assignment_one).text).should == "completed " + assignment_one
 
       ensure_user_logs_out
       
+      print "Activities created for admin: "
       login_as_admin
       
       $driver.find_element(:link, "Classes").click
