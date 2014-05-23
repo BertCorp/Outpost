@@ -43,23 +43,26 @@ describe "Teacher Can Add Resources" do
       
       $driver.execute_script("document.getElementById('attachment_file').style.height = 'auto';")
       $driver.execute_script("document.getElementById('attachment_file').style.width = 'auto';")
+
       begin
-        $driver.find_element(:id, "attachment_file").send_keys "~/Documents/blanket_of_clouds_1-wallpaper-1024x768.jpg"
+        $driver.find_element(:id, "attachment_file").send_keys "~/Documents/logger.js"
       rescue
-        $driver.find_element(:id, "attachment_file").send_keys "/Users/chef/Documents/blanket_of_clouds_1-wallpaper-1024x768.jpg"        
+        $driver.find_element(:id, "attachment_file").send_keys "/Users/chef/appium/logger.js"        
       end
-      #$driver.find_element(:css, "input.attachment-file-field").clear
-      #$driver.find_element(:css, "input.attachment-file-field").send_keys "~/Dropbox/BertCorp/clients/Lantern/test_document.rtf"
       
       document_one = "Resource #" + rand(10000).to_s
       print " (#{document_one}): "
       type_redactor_field('resource_content', "An uploaded test resource. " + document_one)
       
-      $driver.find_element(:xpath, "(//button[@name='commit'])[2]").click
+      while $driver.find_elements(:css, ".actions > .buttons > button:nth-child(2)").size > 0 do
+        $driver.find_element(:css, ".actions > .buttons > button:nth-child(2)").click
+        sleep(1)
+      end
+      $wait.until { $driver.find_elements(:css, '.title').size > 0 }
       # Verify
-      ($driver.find_element(:css, ".title").text).should == "blanket_of_clouds_1-wallpaper-1024x768.jpg"
+      ($driver.find_element(:css, ".title").text).should == "logger.js"
       # Verify
-      ($driver.find_element(:css, "div.post-content").text).should == "blanket_of_clouds_1-wallpaper-1024x768.jpg (198 KB)\nAn uploaded test resource. " + document_one
+      ($driver.find_element(:css, "div.post-content").text).should == "logger.js (1.31 KB)\nAn uploaded test resource. " + document_one
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
@@ -111,28 +114,33 @@ describe "Teacher Can Add Resources" do
       #$driver.find_element(:css, "textarea.resource-content").send_keys "A written test resource body of content."
       type_redactor_field('resource_content', "A written test resource body of content.")      
       
-      $driver.find_element(:xpath, "(//button[@name='commit'])[2]").click
+      while $driver.find_elements(:css, ".actions > .buttons > button:nth-child(2)").size > 0 do
+        $driver.find_element(:css, ".actions > .buttons > button:nth-child(2)").click
+        sleep(1)
+      end
+      $wait.until { $driver.find_elements(:css, '.title').size > 0 }
+
       # Verify
       ($driver.find_element(:css, ".title").text).should == document_two
       # Verify
       ($driver.find_element(:css, "div.post-content").text).should == "A written test resource body of content."
       $driver.find_element(:link, "Resources").click
-      sleep(2)
+      $wait.until { $driver.find_elements(:link, 'logger.js').size > 0 }
       # Verify
-      ($driver.find_element(:link, "blanket_of_clouds_1-wallpaper-1024x768.jpg").text).should == "blanket_of_clouds_1-wallpaper-1024x768.jpg"
+      ($driver.find_element(:link, "logger.js").text).should == "logger.js"
       # Verify
       ($driver.find_element(:link, document_two + " A written test resource body of content.").text).should == document_two + " A written test resource body of content."
       $driver.find_element(:link, "Recent Activity").click
       sleep(2)
       # Verify
-      ($driver.find_element(:link, "added resource \"blanket_of_clouds_1-wallpaper-1024x768.jpg\" in \"Outpost Test Class\"").text).should == "added resource \"blanket_of_clouds_1-wallpaper-1024x768.jpg\" in \"Outpost Test Class\""
+      ($driver.find_element(:link, "added resource \"logger.js\" in \"Outpost Test Class\"").text).should == "added resource \"logger.js\" in \"Outpost Test Class\""
       # Verify
       ($driver.find_element(:link, "added resource \"" + document_two + "\" in \"Outpost Test Class\"").text).should == "added resource \"" + document_two + "\" in \"Outpost Test Class\""
       $driver.find_element(:link, "Me").click
       sleep(2)
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       # Verify
-      ($driver.find_element(:link, "added resource \"blanket_of_clouds_1-wallpaper-1024x768.jpg\" in \"Outpost Test Class\"").text).should == "added resource \"blanket_of_clouds_1-wallpaper-1024x768.jpg\" in \"Outpost Test Class\""
+      ($driver.find_element(:link, "added resource \"logger.js\" in \"Outpost Test Class\"").text).should == "added resource \"logger.js\" in \"Outpost Test Class\""
       # Verify
       ($driver.find_element(:link, "added resource \"" + document_two + "\" in \"Outpost Test Class\"").text).should == "added resource \"" + document_two + "\" in \"Outpost Test Class\""
 
