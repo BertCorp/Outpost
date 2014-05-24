@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Private Discussions Are Private" do
+describe "06 - Private Discussions Are Private" do
   
   before(:all) do
     @test_id = "38"
@@ -40,32 +40,40 @@ describe "Private Discussions Are Private" do
       
       # First, let's do some prep and get the first student's email
       print "Student A: "
-      $driver.find_element(:link, "People").click
+      click_link "People"
       $driver.find_element(:id, "students").find_elements(:link, "Outpost S.").first.click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
       student_id = $driver.current_url.split('/').last
       puts "#{student_email} // #{student_id}"
       
       # Next, let's do some prep and get the second student's email
       print "Student B: "
-      $driver.find_element(:link, "People").click
+      click_link "People"
       $driver.find_element(:id, "students").find_elements(:link, "Outpost S.").last.click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+      
       student2_email = $driver.find_element(:css, "#profile h4 > small > a").text
       student2_id = $driver.current_url.split('/').last
       puts "#{student2_email} // #{student2_id}"
       
       # Next, let's get the teacher's email
       print "Teacher A: "
-      $driver.find_element(:link, "People").click
+      click_link "People"
       $driver.find_element(:id, "teaching_staff").find_elements(:link, "Outpost T.").first.click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+      
       teacher_email = $driver.find_element(:css, "#profile h4 > small > a").text
       teacher_id = $driver.current_url.split('/').last
       puts "#{teacher_email} // #{teacher_id}"
 
       # Next, let's get the second teacher's email
       print "Teacher B: "
-      $driver.find_element(:link, "People").click
+      click_link "People"
       $driver.find_element(:id, "teaching_staff").find_elements(:link, "Outpost T.").last.click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+
       teacher2_email = $driver.find_element(:css, "#profile h4 > small > a").text
       teacher2_id = $driver.current_url.split('/').last
       puts "#{teacher2_email} // #{teacher2_id}"
@@ -87,13 +95,13 @@ describe "Private Discussions Are Private" do
       # Teacher B can not see discussion
       print "Admin can create discussion with Student A, Teacher A: "
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      sleep(2)
-      $driver.find_element(:link, "Discussions").click
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
-      $driver.find_element(:link, "Start a discussion").click
+      click_link "Outpost Test Class"
+      click_link "Discussions"
+      sleep(1)
+      click_link "Start a discussion"
       
       $driver.find_element(:id, 'discussion_private_true').click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
       $driver.find_element(:id, 'discussion_participant_ids')
       $driver.execute_script("document.getElementById('discussion_participant_ids').style.display = 'block';")
@@ -108,6 +116,7 @@ describe "Private Discussions Are Private" do
       type_redactor_field('discussion_content', discussion1_content)
       $driver.find_elements(:id, "subscription_type_none").first.click
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
       puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
       
@@ -116,28 +125,22 @@ describe "Private Discussions Are Private" do
       
       # confirm admin can see the new discussion
       print "Admin can see discussion: "
-      $driver.find_element(:link, "Me").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      click_link "Me"
       # Verify
       $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should > 0
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      click_link "Outpost Test Class"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      click_link "Discussions"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
 
       #discussion1_url = $driver.find_element(:link, discussion1_title).attribute('href')
       
-      $driver.find_element(:link, discussion1_title).click
-      sleep(1)
+      click_link discussion1_title
       # Verify
       puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
       
@@ -145,33 +148,29 @@ describe "Private Discussions Are Private" do
       
       # confirm teacher can see the new discussion
       print "Teacher A can see discussion: "
-      $driver.find_element(:link, "Log in").click
+      click_link "Log in"
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys teacher_email
       $driver.find_element(:id, "user_password").clear
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
-      $driver.find_element(:link, "Me").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      click_link "Me"
       # Verify
       $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should > 0
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      click_link "Outpost Test Class"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      click_link "Discussions"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, discussion1_title).click
       sleep(1)
+      click_link discussion1_title
       # Verify
       puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
       
@@ -179,33 +178,29 @@ describe "Private Discussions Are Private" do
       
       # confirm student can see the new discussion
       print "Student A can see discussion: "
-      $driver.find_element(:link, "Log in").click
+      click_link "Log in"
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys student_email
       $driver.find_element(:id, "user_password").clear
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
-      $driver.find_element(:link, "Me").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      click_link "Me"
       # Verify
       $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should > 0
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      click_link "Outpost Test Class"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      click_link "Discussions"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, discussion1_title).click
       sleep(1)
+      click_link discussion1_title
       # Verify
       puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
 
@@ -214,31 +209,28 @@ describe "Private Discussions Are Private" do
       
       # confirm teacher B can NOT see the new discussion
       print "Teacher B can NOT see discussion: "
-      $driver.find_element(:link, "Log in").click
+      click_link "Log in"
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys teacher2_email
       $driver.find_element(:id, "user_password").clear
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
-      $driver.find_element(:link, "Me").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      click_link "Me"
       # Verify
       $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should == 0
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      click_link "Outpost Test Class"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should == 0
       
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      click_link "Discussions"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should == 0
       
+      sleep(1)
       $driver.get discussion1_url
       sleep(1)
       # Verify
@@ -249,31 +241,28 @@ describe "Private Discussions Are Private" do
       
       # confirm student B can NOT see the new discussion
       print "Student B can NOT see discussion: "
-      $driver.find_element(:link, "Log in").click
+      click_link "Log in"
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys student2_email
       $driver.find_element(:id, "user_password").clear
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
-      $driver.find_element(:link, "Me").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      click_link "Me"
       # Verify
       $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should == 0
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      click_link "Outpost Test Class"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should == 0
       
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      click_link "Discussions"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should == 0
       
+      sleep(1)
       $driver.get discussion1_url
       sleep(1)
       # Verify
@@ -286,24 +275,20 @@ describe "Private Discussions Are Private" do
       login_as_admin
       print "Admin can edit discussion to include Student B not Student A: "
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      click_link "Outpost Test Class"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      click_link "Discussions"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, discussion1_title).click
       sleep(1)
+      click_link discussion1_title
       # Verify
       $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
       
-      $driver.find_element(:link, "Edit").click
-      
+      click_link "Edit"
       $driver.find_element(:id, 'discussion_participant_ids')
       $driver.execute_script("document.getElementById('discussion_participant_ids').style.display = 'block';")
       select = Selenium::WebDriver::Support::Select.new($driver.find_element(:id, 'discussion_participant_ids'))
@@ -311,6 +296,7 @@ describe "Private Discussions Are Private" do
       select.select_by(:value, student2_id)
       select.select_by(:value, teacher_id)
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
       puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
       
@@ -318,33 +304,29 @@ describe "Private Discussions Are Private" do
 
       # confirm student B can see the new discussion
       print "Student B can see discussion: "
-      $driver.find_element(:link, "Log in").click
+      click_link "Log in"
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys student2_email
       $driver.find_element(:id, "user_password").clear
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
-      $driver.find_element(:link, "Me").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      click_link "Me"
       # Verify
       $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should > 0
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      click_link "Outpost Test Class"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      click_link "Discussions"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should > 0
       
-      $driver.find_element(:link, discussion1_title).click
       sleep(1)
+      click_link discussion1_title
       # Verify
       puts $driver.find_element(:css, 'h3.subject').text.should =~ /^#{discussion1_title}/
 
@@ -353,39 +335,32 @@ describe "Private Discussions Are Private" do
       
       # confirm student A can NOT see the new discussion
       print "Student A can NOT see discussion: "
-      $driver.find_element(:link, "Log in").click
+      click_link "Log in"
       $driver.find_element(:id, "user_email").clear
       $driver.find_element(:id, "user_email").send_keys student_email
       $driver.find_element(:id, "user_password").clear
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
-      $driver.find_element(:link, "Me").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
-      
+      click_link "Me"
       # Verify
       $driver.find_elements(:link, "started a discussion (#{discussion1_title}) in \"Outpost Test Class\"").size.should == 0
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $wait.until { $driver.find_elements(:link, "See all activity...").size > 0 }
+      click_link "Outpost Test Class"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should == 0
       
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Learn how to start a discussion through email").size > 0 }
+      click_link "Discussions"
       # Verify
       $driver.find_elements(:link, discussion1_title).size.should == 0
       
+      sleep(1)
       $driver.get discussion1_url
       sleep(1)
       # Verify
       $driver.find_element(:css, 'h3').text.should == 'We seem to have lost you in space'
-      $driver.navigate.back
-      
-      ensure_user_logs_out
       
       pass(@test_id)
     rescue => e

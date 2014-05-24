@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Test Prep/Cleanup" do
+describe "00 - Test Prep/Cleanup" do
   
   before(:all) do
     print "** Starting: #{self.class.description} **"
@@ -33,9 +33,7 @@ describe "Test Prep/Cleanup" do
       login_as_admin
       
       # People Cleanup
-      $wait.until { $driver.find_elements(:link, "People").size > 0 }
-      $driver.find_element(:link, "People").click
-      $wait.until { $driver.find_elements(:id, "teaching_staff").size > 0 }
+      click_link "People"
       # Leave one teacher account (and one admin) in the system.
       while $driver.find_elements(:css, '#teaching_staff li').size > 3 do
         #puts "Teachers: " + $driver.find_elements(:css, '#teaching_staff li').size.to_s
@@ -53,7 +51,7 @@ describe "Test Prep/Cleanup" do
         #puts "Students: " + $driver.find_elements(:css, '#students li').size.to_s
         #puts $driver.find_element(:link, "Outpost S.").attribute('href')
         # Verify
-        $driver.find_element(:link, "Outpost S.").click
+        click_link "Outpost S."
         $driver.find_element(:link, "Delete user").click
         (close_alert_and_get_its_text(true)).should include("Are you sure")
         # Verify
@@ -62,9 +60,9 @@ describe "Test Prep/Cleanup" do
       end
       
       # Verify
-      $driver.find_element(:id, 'teaching_staff').find_elements(:link, "Outpost T.").size <= 1
+      $driver.find_element(:id, 'teaching_staff').find_elements(:link, "Outpost T.").size.should <= 2
       # Verify
-      $driver.find_element(:id, 'students').find_elements(:link, "Outpost S.").size <= 1
+      $driver.find_element(:id, 'students').find_elements(:link, "Outpost S.").size.should <= 2
       # Warning: verifyTextNotPresent may require manual changes
       #$driver.find_element(:css, "BODY").text.should_not =~ /^[\s\S]*link=Outpost S\.[\s\S]*$/
     rescue => e
@@ -103,8 +101,7 @@ describe "Test Prep/Cleanup" do
       login_as_admin
       
       # Invitation Cleanup
-      $wait.until { $driver.find_elements(:link, "People").size > 0 }
-      $driver.find_element(:link, "People").click
+      click_link "People"
       
       if $driver.find_elements(:id, 'pending-invitations-link').size > 0
         $driver.find_element(:id, 'pending-invitations-link').click
@@ -117,9 +114,9 @@ describe "Test Prep/Cleanup" do
           ($driver.find_element(:id, "flash-msg").text).should include("was successfully")
         end
       end
-      $driver.find_element(:link, "People").click
+      click_link "People" unless $driver.current_url.include? '/people'
       # verify
-      $driver.find_elements(:id, 'pending-invitations-link').size == 0
+      $driver.find_elements(:id, 'pending-invitations-link').size.should == 0
         
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
@@ -158,29 +155,26 @@ describe "Test Prep/Cleanup" do
       
       # go to assignments page
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $driver.find_element(:link, "Assignments").click
-      $wait.until { $driver.find_elements(:id, "assignments").size > 0 }
+      click_link "Outpost Test Class"
+      click_link "Assignments"
       
       # loop through .assignment and leave the newest 10 
       #assignment_899 > td.title > a
       while $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size > 10 do
         $driver.find_element(:css, '#assignments > .curriculum-items > tbody > tr:nth-child(1) > td.title > a').click
-        sleep(2)
-        $wait.until { $driver.find_elements(:link, "change this").size > 0 }
-        $driver.find_element(:link, "change this").click
-        sleep(1)
+        click_link "change this"
+        
         $wait.until { $driver.find_elements(:link, "Delete this assignment").size > 0 }
         $driver.find_element(:link, "Delete this assignment").click
         (close_alert_and_get_its_text(true)).should include("Are you sure")
         sleep(1)
         # Verify
         ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
-        $driver.find_element(:link, "Assignments").click
-        $wait.until { $driver.find_elements(:link, "Reorder").size > 0 }
+
+        click_link "Assignments"
       end
       # Verify
-      $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size <= 10
+      $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size.should <= 10
 
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
@@ -219,10 +213,8 @@ describe "Test Prep/Cleanup" do
       
       # Delete Resources
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $driver.find_element(:link, "Resources").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:id, "resources").size > 0 }
+      click_link "Outpost Test Class"
+      click_link "Resources"
       
       # loop through .assignment and leave the newest 5
       while $driver.find_elements(:css, '#resources > table > tbody > tr').size > 5 do
@@ -235,12 +227,10 @@ describe "Test Prep/Cleanup" do
             ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
           end
         end
-        $driver.find_element(:link, "Resources").click
-        sleep(1)
-        $wait.until { $driver.find_elements(:id, "resources").size > 0 }
+        click_link "Resources" unless $driver.current_url.include? '/resources'
       end
       # Verify
-      $driver.find_elements(:css, '#resources > table > tbody > tr').size <= 5
+      $driver.find_elements(:css, '#resources > table > tbody > tr').size.should <= 5
       
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
@@ -275,16 +265,13 @@ describe "Test Prep/Cleanup" do
   
   it "Clean up discussions" do
     begin
-      ensure_user_logs_out
+      #ensure_user_logs_out
       login_as_admin
       
       # Delete Resources
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $driver.find_element(:link, "Discussions").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:id, "course-content").size > 0 }
-      
+      click_link "Outpost Test Class"
+      click_link "Discussions"      
       # loop through .assignment and leave the newest 5
       # #course-content > table > tbody > tr:nth-child(6)
       while $driver.find_elements(:css, '#course-content > .discussions-table > tbody > tr').size > 5 do
@@ -298,15 +285,11 @@ describe "Test Prep/Cleanup" do
             ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
           end
         end
-        $driver.find_element(:link, "Discussions").click
-        sleep(1)
-        $wait.until { $driver.find_elements(:id, "course-content").size > 0 }
+        click_link "Discussions" unless $driver.current_url.include? "/discussions"
       end
       # Verify
-      $driver.find_elements(:css, '#course-content > .discussions-table > .tbody > tr').size <= 5
-      
-      ensure_user_logs_out
-      
+      $driver.find_elements(:css, '#course-content > .discussions-table > .tbody > tr').size.should <= 5
+            
     rescue => e
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'

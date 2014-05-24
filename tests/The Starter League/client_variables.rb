@@ -1,4 +1,4 @@
-$environments = { production: 'http://beta.lanternhq.com' }
+$environments = { production: 'http://beta.lanternhq.com/' }
 $cs = { :name => 'The Starter League', 'platform' => 'OS X 10.8' }
 
 def clear_gmail_inbox
@@ -12,7 +12,7 @@ def clear_gmail_inbox
       sleep(1)
     end
     $driver.navigate.refresh
-    close_alert_and_get_its_text(true) if alert_present?
+    close_alert_and_get_its_text(true)
     $wait.until { $driver.find_elements(:css, "div[data-tooltip=\"Select\"] span").size > 0 }    
   end
   
@@ -21,6 +21,35 @@ def clear_gmail_inbox
   end
   
   sign_out_of_gmail
+end
+
+def click_link(link_text)
+  begin
+    $wait.until { $driver.find_elements(:link, link_text).size > 0 }
+    desired_url = $driver.find_element(:link, link_text).attribute('href')
+    initial_url = $driver.current_url
+    if (desired_url != initial_url) && !desired_url.include?("#")
+      while $driver.current_url == initial_url do
+        $driver.find_element(:link, link_text).click
+      end
+    else
+      $driver.find_element(:link, link_text).click
+      sleep(1)
+    end
+    $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+  rescue => e
+    # Most times, if we get an element not found error, it's because the page hasn't finished loading properly.
+    if e.inspect.include? "NoSuchElementError"
+      # So let's wait a few seconds and try again.
+      puts "Link (#{link_text}) not present. Sleeping for 3 and retrying."
+      sleep(3)
+      $drive.get initial_url
+      while $driver.current_url == initial_url do
+        $driver.find_element(:link, link_text).click
+      end
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+    end
+  end
 end
 
 def ensure_user_logs_out
@@ -36,12 +65,8 @@ def ensure_user_logs_out
 end
 
 def login_as_admin
-  $driver.get(@base_url)
-  if alert_present?
-    close_alert_and_get_its_text(true)
-  end
-  $wait.until { $driver.find_elements(:link, "Log in").size > 0 }
-  $driver.find_element(:link, "Log in").click
+  $driver.get(@base_url + 'start')
+  close_alert_and_get_its_text(true)
   
   # we aren't logged in until we are home! /start
   while $driver.find_elements(:link, 'test@outpostqa.com').size < 1 do
@@ -71,7 +96,6 @@ def login_as_admin
   # kill any flash notifications
   $driver.find_element(:css, '.alert a').click if $driver.find_elements(:id, 'flash-msg').size > 0
 end
-
 
 def sign_into_gmail
   $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"

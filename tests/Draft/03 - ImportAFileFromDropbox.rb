@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Import a file from Dropbox" do
+describe "03 - Import a file from Dropbox" do
 
   before(:all) do
     @test_id = "9"

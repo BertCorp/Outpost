@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Create and save a new document" do
+describe "01 - Create and save a new document" do
 
   before(:all) do
     @test_id = "7"
@@ -57,7 +57,9 @@ describe "Create and save a new document" do
       end
       # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="IModalOverlay"'
-        puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
+        if $driver.find_element(:css, '.ic_close_modal').displayed?
+          puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
+        end
         sleep(3)
         e.ignore
       end

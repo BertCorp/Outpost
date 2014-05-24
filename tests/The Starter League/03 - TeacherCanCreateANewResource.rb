@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Teacher Can Add Resources" do
+describe "03 - Teacher Can Add Resources" do
   
   before(:all) do
     @test_id = "29"
@@ -35,11 +35,12 @@ describe "Teacher Can Add Resources" do
       login_as_admin
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      $driver.find_element(:link, "Resources").click
-      $driver.find_element(:css, "#resources .left").find_element(:link, "File").click
-      
+      click_link "Outpost Test Class"
+      click_link "Resources"
       sleep(1)
+      $driver.find_element(:css, "#resources .left").find_element(:link, "File").click
+      sleep(1)
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
       $driver.execute_script("document.getElementById('attachment_file').style.height = 'auto';")
       $driver.execute_script("document.getElementById('attachment_file').style.width = 'auto';")
@@ -98,12 +99,10 @@ describe "Teacher Can Add Resources" do
       login_as_admin
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Add a text document").size > 0 }
-      $driver.find_element(:link, "Resources").click
-      $wait.until { $driver.find_elements(:link, "Text document").size > 0 }
-      $driver.find_element(:link, "Text document").click
+      click_link "Outpost Test Class"
+      click_link "Resources"
+      sleep(1)
+      click_link "Text document"
       
       document_two = "Resource #" + rand(10000).to_s
       print " (#{document_two}): "
@@ -124,27 +123,22 @@ describe "Teacher Can Add Resources" do
       ($driver.find_element(:css, ".title").text).should == document_two
       # Verify
       ($driver.find_element(:css, "div.post-content").text).should == "A written test resource body of content."
-      $driver.find_element(:link, "Resources").click
+      click_link "Resources"
       $wait.until { $driver.find_elements(:link, 'logger.js').size > 0 }
       # Verify
       ($driver.find_element(:link, "logger.js").text).should == "logger.js"
       # Verify
       ($driver.find_element(:link, document_two + " A written test resource body of content.").text).should == document_two + " A written test resource body of content."
-      $driver.find_element(:link, "Recent Activity").click
-      sleep(2)
+      click_link "Recent Activity"
       # Verify
       ($driver.find_element(:link, "added resource \"logger.js\" in \"Outpost Test Class\"").text).should == "added resource \"logger.js\" in \"Outpost Test Class\""
       # Verify
       ($driver.find_element(:link, "added resource \"" + document_two + "\" in \"Outpost Test Class\"").text).should == "added resource \"" + document_two + "\" in \"Outpost Test Class\""
-      $driver.find_element(:link, "Me").click
-      sleep(2)
-      $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
+      click_link "Me"
       # Verify
       ($driver.find_element(:link, "added resource \"logger.js\" in \"Outpost Test Class\"").text).should == "added resource \"logger.js\" in \"Outpost Test Class\""
       # Verify
       ($driver.find_element(:link, "added resource \"" + document_two + "\" in \"Outpost Test Class\"").text).should == "added resource \"" + document_two + "\" in \"Outpost Test Class\""
-
-      ensure_user_logs_out
       
       pass(@test_id)
     rescue => e

@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Organization Owner Can Manage Users Of An Organization" do
+describe "01 - Organization Owner Can Manage Users Of An Organization" do
 
   before(:all) do
     @test_id = "27"
@@ -38,10 +38,10 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       
       # Invite a new teacher
       print "Invite teacher: "
-      $driver.find_element(:link, "People").click
+      click_link "People"
       $wait.until { $driver.find_elements(:id, "add-people-btn").size > 0 }
       $driver.find_element(:id, "add-people-btn").click
-      teacher_email = "test+lantern-t" + rand(1000).to_s + "@outpostqa.com"
+      teacher_email = "test+lantern-t" + rand(10000).to_s + "@outpostqa.com"
       puts teacher_email
       $driver.find_element(:id, "invitation_emails_").clear
       $driver.find_element(:id, "invitation_emails_").send_keys teacher_email
@@ -76,11 +76,10 @@ describe "Organization Owner Can Manage Users Of An Organization" do
           puts "Teacher invite link is missing! Try again."
         end
       end
+      
+      print "Teacher accepted invite: "
       $driver.get teacher_invite_link
-      if alert_present?
-        close_alert_and_get_its_text(true)
-      end
-
+      close_alert_and_get_its_text(true)
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
       $driver.find_element(:id, "user_last_name").clear
@@ -91,12 +90,11 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:id, "user_terms_of_service").click
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
 
-      $wait.until { $driver.find_elements(:css, 'h4').size > 0 }
       # Verify
       ($driver.find_element(:css, "h4").text).should == "Outpost Teacher (" + teacher_email + ")"
       # Verify
-      print "Teacher accepted invite: "
       puts ($driver.find_element(:css, "section.enrollments > ul > li > a").text).should == "Outpost Test Class"
       
       ensure_user_logs_out
@@ -106,14 +104,15 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       login_as_admin
       
       print "Invite student: "
-      $driver.find_element(:link, "People").click
+      click_link "People"
       $driver.find_element(:id, "add-people-btn").click
-      student_email = "test+lantern-s" + rand(1000).to_s + "@outpostqa.com"
+      student_email = "test+lantern-s" + rand(10000).to_s + "@outpostqa.com"
       puts student_email
       $driver.find_element(:id, "invitation_emails_").clear
       $driver.find_element(:id, "invitation_emails_").send_keys student_email
       $driver.find_element(:id, "invitation_enrollments_0_course_id").click
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
       
       ensure_user_logs_out
       
@@ -140,10 +139,9 @@ describe "Organization Owner Can Manage Users Of An Organization" do
         end
       end
       
+      print "Student accepted invite: "
       $driver.get student_invite_link
-      if alert_present?
-        close_alert_and_get_its_text(true)
-      end
+      close_alert_and_get_its_text(true)
       $driver.get student_invite_link if $driver.current_url != student_invite_link
       $driver.find_element(:id, "user_first_name").clear
       $driver.find_element(:id, "user_first_name").send_keys "Outpost"
@@ -155,8 +153,9 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "user_password").send_keys "test12"
       $driver.find_element(:id, "user_terms_of_service").click
       $driver.find_element(:name, "commit").click
+      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+      
       # Verify
-      print "Student accepted invite: "
       puts ($driver.find_element(:css, "h4").text).should == "Outpost Student (" + student_email + ")"
       # Verify
       ($driver.find_element(:css, "h6").text).should == "You're a student in:"
@@ -167,11 +166,12 @@ describe "Organization Owner Can Manage Users Of An Organization" do
       
       print "Confirming with admin: "
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
+      click_link "Outpost Test Class"
       # Verify
       ($driver.find_element(:link, "See an overview of your students' progress").text).should == "See an overview of your students' progress"
-      $driver.find_element(:link, "See an overview of your students' progress").click
-      $wait.until { $driver.find_elements(:link, "Export to Excel").size > 0 }
+
+      click_link "See an overview of your students' progress"
+      sleep(2)
       # Verify
       ($driver.find_element(:css, "h5").text).should == "Here's how your students are progressing in Outpost Test Class"
       # Verify

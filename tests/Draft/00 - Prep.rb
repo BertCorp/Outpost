@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Test Prep/Cleanup" do
+describe "00 - Test Prep/Cleanup" do
   
   before(:all) do
     print "** Starting: #{self.class.description} **"

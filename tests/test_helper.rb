@@ -27,6 +27,7 @@ def start_driver(cs = nil)
     caps["platform"] ||= 'OS X 10.8'
     caps["version"] ||= ''
     caps["screen-resolution"] ||= '1280x1024'
+    caps["public"] = "share"
     $driver = Selenium::WebDriver.for(
       :remote,
       :url => "http://#{ENV['SL_USERNAME']}:#{ENV['SL_AUTHKEY']}@ondemand.saucelabs.com:80/wd/hub",
@@ -39,7 +40,7 @@ def start_driver(cs = nil)
       str if File.exist?(str)
     end
   end
-  $wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+  $wait = Selenium::WebDriver::Wait.new(:timeout => 15) # seconds
   print "." unless $driver == nil
   $driver
 end # setup_driver
@@ -99,12 +100,14 @@ rescue Selenium::WebDriver::Error::NoAlertPresentError
 end
 
 def close_alert_and_get_its_text(accept)
-  alert = $driver.switch_to().alert()
-  alert_text = alert.text
-  if (accept) then
-    alert.accept()
-  else
-    alert.dismiss()
+  if alert_present?
+    alert = $driver.switch_to.alert
+    alert_text = alert.text
+    if (accept) then
+      alert.accept
+    else
+      alert.dismiss
+    end
+    alert_text
   end
-  alert_text
 end

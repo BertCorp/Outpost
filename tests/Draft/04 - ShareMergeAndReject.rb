@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Share, Merge and Reject" do
+describe "04 - Share, Merge and Reject" do
 
   before(:all) do
     @test_id = "10"

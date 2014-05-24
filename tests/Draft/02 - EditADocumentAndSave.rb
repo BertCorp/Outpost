@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Edit and save an existing document" do
+describe "02 - Edit and save an existing document" do
 
   before(:all) do
     @test_id = "8"

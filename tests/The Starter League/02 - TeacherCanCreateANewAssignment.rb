@@ -5,7 +5,7 @@ require 'rspec/expectations'
 require "./tests/test_helper"
 require File.dirname(__FILE__) + '/client_variables.rb'
 
-describe "Teacher Can Add Assignments" do
+describe "02 - Teacher Can Add Assignments" do
   
   before(:all) do
     @test_id = "28"
@@ -35,10 +35,10 @@ describe "Teacher Can Add Assignments" do
       login_as_admin
       
       $driver.find_element(:link, "Classes").click
-      $driver.find_element(:link, "Outpost Test Class").click
+      click_link "Outpost Test Class"
       
       # Add a new completion assignment
-      $driver.find_element(:link, "Add a new assignment").click
+      click_link "Add a new assignment"
       
       assignment_one = "Completion Exercise #" + rand(10000).to_s
       print "Create assignment (#{assignment_one}): "
@@ -49,25 +49,24 @@ describe "Teacher Can Add Assignments" do
       
       type_redactor_field('assignment_task_content', "Test content for " + assignment_one)
       
-      $driver.find_element(:link, "Publish...").click
+      click_link "Publish..."
       $driver.find_element(:name, "publish_and_notify").click
       sleep(1)
       # Vertify
       ($driver.find_elements(:css, ".alert-danger").size).should == 0
       # Verify
       ($driver.find_element(:link, assignment_one).text).should == assignment_one
-      $driver.find_element(:link, assignment_one).click
+      click_link assignment_one
       
       $wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
       # Verify
       ($driver.find_element(:css, "h5").text).should == assignment_one + "\n- change this"
       # Verify
       puts ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_one
-      $driver.find_element(:link, "← Assignments").click
-      $wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
+      click_link "← Assignments"
       
       # Add a new submission assigment
-      $driver.find_element(:link, "Add a new assignment").click
+      click_link "Add a new assignment"
       $driver.find_element(:id, "assignment_requires_submission_true").click
 
       assignment_two = "Submission Exercise #" + rand(10000).to_s
@@ -79,30 +78,28 @@ describe "Teacher Can Add Assignments" do
 
       type_redactor_field('assignment_task_content', "Test content for " + assignment_two)
 
-      $driver.find_element(:link, "Publish...").click
+      click_link "Publish..."
       $driver.find_element(:name, "publish_and_notify").click
       # Verify
       ($driver.find_element(:link, assignment_two).text).should == assignment_two
-      $driver.find_element(:link, assignment_two).click
+      click_link assignment_two
 
       $wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
       # Verify
       ($driver.find_element(:css, "h5").text).should == assignment_two + "\nrequires a submission (private) - change this"
       # Verify
       puts ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
-      $driver.find_element(:link, "← Assignments").click
-      $wait.until { $driver.find_elements(:link, "Add a new assignment").size > 0 }
+      click_link "← Assignments"
       
       # Double check that activity was logged.
       print "Check activity items were added: "
-      $driver.find_element(:link, "Recent Activity").click
+      click_link "Recent Activity"
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_one + "\"").text).should == "published assignment \"" + assignment_one + "\""
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_two + "\"").text).should == "published assignment \"" + assignment_two + "\""
       # Check that activity was logged for logged in user.
-      $driver.find_element(:link, "Me").click
-      sleep(2)
+      click_link "Me"
       $wait.until { $driver.find_elements(:link, "Update your personal info").size > 0 }
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_one + "\"").text).should == "published assignment \"" + assignment_one + "\""
