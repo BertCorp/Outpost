@@ -66,6 +66,12 @@ describe "00 - Test Prep/Cleanup" do
       # Warning: verifyTextNotPresent may require manual changes
       #$driver.find_element(:css, "BODY").text.should_not =~ /^[\s\S]*link=Outpost S\.[\s\S]*$/
     rescue => e
+      # Ignore any modal windows that popped up that might be causing us an issue.
+      if e.inspect.include? 'UnhandledAlertError'
+        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        sleep(1)
+        e.ignore
+      end
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
         $driver.find_element(:css, '.alert a').click
@@ -119,6 +125,12 @@ describe "00 - Test Prep/Cleanup" do
       $driver.find_elements(:id, 'pending-invitations-link').size.should == 0
         
     rescue => e
+      # Ignore any modal windows that popped up that might be causing us an issue.
+      if e.inspect.include? 'UnhandledAlertError'
+        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        sleep(1)
+        e.ignore
+      end
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
         $driver.find_element(:css, '.alert a').click
@@ -177,6 +189,12 @@ describe "00 - Test Prep/Cleanup" do
       $driver.find_elements(:css, '#assignments > .curriculum-items > tbody > tr').size.should <= 10
 
     rescue => e
+      # Ignore any modal windows that popped up that might be causing us an issue.
+      if e.inspect.include? 'UnhandledAlertError'
+        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        sleep(1)
+        e.ignore
+      end
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
         $driver.find_element(:css, '.alert a').click
@@ -233,6 +251,12 @@ describe "00 - Test Prep/Cleanup" do
       $driver.find_elements(:css, '#resources > table > tbody > tr').size.should <= 5
       
     rescue => e
+      # Ignore any modal windows that popped up that might be causing us an issue.
+      if e.inspect.include? 'UnhandledAlertError'
+        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        sleep(1)
+        e.ignore
+      end
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
         $driver.find_element(:css, '.alert a').click
@@ -291,6 +315,12 @@ describe "00 - Test Prep/Cleanup" do
       $driver.find_elements(:css, '#course-content > .discussions-table > .tbody > tr').size.should <= 5
             
     rescue => e
+      # Ignore any modal windows that popped up that might be causing us an issue.
+      if e.inspect.include? 'UnhandledAlertError'
+        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        sleep(1)
+        e.ignore
+      end
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
         $driver.find_element(:css, '.alert a').click

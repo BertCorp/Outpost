@@ -164,6 +164,12 @@ describe "04 - Student Can Successfully Complete Assignments" do
       
       pass(@test_id)
     rescue => e
+      # Ignore any modal windows that popped up that might be causing us an issue.
+      if e.inspect.include? 'UnhandledAlertError'
+        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        sleep(1)
+        e.ignore
+      end
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       if e.inspect.include? 'id="flash-msg"'
         $driver.find_element(:css, '.alert a').click
