@@ -37,8 +37,7 @@ describe "04 - Student Can Successfully Complete Assignments" do
       # First, lets do some prep and get the student's email
       click_link "People"
       $driver.find_element(:id, "students").find_element(:link, "Outpost S.").click
-      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
-      
+      $wait.until { $driver.find_elements(:css, "#profile h4 > small > a").size > 0 }
       student_email = $driver.find_element(:css, "#profile h4 > small > a").text
       puts "Student: #{student_email}"
       
@@ -169,9 +168,12 @@ describe "04 - Student Can Successfully Complete Assignments" do
         puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
         sleep(1)
         e.ignore
-      end
-      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
-      if e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'StaleElementReferenceError'
+        # Sometimes our timing is off. Chill for a second.
+        sleep(2)
+        e.ignore
+      elsif e.inspect.include? 'id="flash-msg"'
+        # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
         e.ignore

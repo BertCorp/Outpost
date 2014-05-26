@@ -11,16 +11,16 @@ def clear_gmail_inbox
       delete_link.click
       sleep(1)
     end
-    $driver.navigate.refresh
-    close_alert_and_get_its_text(true)
-    $wait.until { $driver.find_elements(:css, "div[data-tooltip=\"Select\"] span").size > 0 }    
+    #$driver.navigate.refresh
+    #close_alert_and_get_its_text(true)
+    #$wait.until { $driver.find_elements(:css, "div[data-tooltip=\"Select\"] span").size > 0 }    
   end
   
-  if $driver.find_elements(:css, "table.F > tbody > tr > td").size > 0
-    puts "Emails still in inbox: #{$driver.find_elements(:css, 'table.F > tbody > tr > td').size}"
-  end
+  #if $driver.find_elements(:css, "table.F > tbody > tr > td").size > 0
+  #  puts "Emails still in inbox: #{$driver.find_elements(:css, 'table.F > tbody > tr > td').size}"
+  #end
   
-  sign_out_of_gmail
+  #sign_out_of_gmail
 end
 
 def click_link(link_text)
@@ -39,7 +39,21 @@ def click_link(link_text)
     $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
   rescue => e
     # Most times, if we get an element not found error, it's because the page hasn't finished loading properly.
-    if e.inspect.include? "NoSuchElementError"
+    # Ignore any modal windows that popped up that might be causing us an issue.
+    if e.inspect.include? 'UnhandledAlertError'
+      puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+      sleep(1)
+      e.ignore
+    elsif e.inspect.include? 'StaleElementReferenceError'
+      # Sometimes our timing is off. Chill for a second.
+      sleep(2)
+      e.ignore
+    elsif e.inspect.include? 'id="flash-msg"'
+      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
+      $driver.find_element(:css, '.alert a').click
+      sleep(1)
+      e.ignore
+    elsif e.inspect.include? "NoSuchElementError"
       # So let's wait a few seconds and try again.
       puts "Link (#{link_text}) not present. Sleeping for 3 and retrying."
       sleep(3)
@@ -47,6 +61,7 @@ def click_link(link_text)
       while $driver.current_url == initial_url do
         $driver.find_element(:link, link_text).click
       end
+      sleep(1)
       $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
     end
   end
@@ -54,9 +69,12 @@ end
 
 def ensure_user_logs_out
   #puts "Before logout: #{$driver.current_url}"
-  if $driver.find_elements(:id, 'flash-msg').size > 0
-    $driver.find_element(:css, '.alert a').click
-    sleep(1)
+  begin
+    if $driver.find_elements(:id, 'flash-msg').size > 0
+      $driver.find_element(:css, '.alert a').click
+      sleep(1)
+    end
+  rescue
   end
   while $driver.find_elements(:link, "Logout").size > 0 do
     $driver.find_element(:link, "Logout").click
@@ -70,20 +88,6 @@ def login_as_admin
   
   # we aren't logged in until we are home! /start
   while $driver.find_elements(:link, 'test@outpostqa.com').size < 1 do
-    # Homepage: http://lanternhq.com/
-    if $driver.find_elements(:link, "Learn more").size > 0
-      $driver.find_element(:link, "Log in").click
-    # Logged in somewhere else on the site
-    elsif $driver.find_elements(:link, "Logout").size > 0
-      ensure_user_logs_out
-    end
-    # Not the login page
-    if $driver.find_elements(:link, "Forgot your password?").size < 0
-      $driver.get(@base_url)
-      $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
-      $driver.find_element(:link, "Log in").click
-      $wait.until { $driver.find_elements(:link, "Forgot your password?").size > 0 }
-    end
     # On the login page: /login and need to login:
     if $driver.find_elements(:id, "user_email").size > 0
       $driver.find_element(:id, "user_email").clear
@@ -91,6 +95,19 @@ def login_as_admin
       $driver.find_element(:id, "user_password").clear
       $driver.find_element(:id, "user_password").send_keys "LigReb2013"
       $driver.find_element(:name, "commit").click
+      $wait.until { $driver.find_elements(:link, 'test@outpostqa.com').size > 0 }
+    elsif $driver.find_elements(:link, "Learn more").size > 0
+      # Homepage: http://lanternhq.com/
+      $driver.find_element(:link, "Log in").click
+    elsif $driver.find_elements(:link, "Logout").size > 0
+      # Logged in somewhere else on the site
+      ensure_user_logs_out
+    elsif $driver.find_elements(:link, "Forgot your password?").size <= 0
+      # Not the login page
+      $driver.get(@base_url)
+      $wait.until { $driver.find_elements(:link, "Learn more").size > 0 }
+      $driver.find_element(:link, "Log in").click
+      $wait.until { $driver.find_elements(:link, "Forgot your password?").size > 0 }
     end
   end
   # kill any flash notifications
@@ -98,21 +115,21 @@ def login_as_admin
 end
 
 def sign_into_gmail
-  $driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
-  if alert_present?
-    close_alert_and_get_its_text(true)
-  end
+  #$driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
+  $driver.get "https://mail.google.com/mail/#inbox"
+  close_alert_and_get_its_text(true)
   sleep(1)
-  if $driver.find_elements(:link, "test@bertcorp.com").size > 0 || $driver.find_elements(:link, "Sign out").size > 0
-    sign_out_of_gmail
+  if $driver.find_elements(:id, 'account-test@bertcorp.com').size > 0
+    $driver.find_elements(:css, '#account-test@bertcorp.com > button').click
+  elsif $driver.find_elements(:id, "Passwd").size > 0
+    if $driver.find_element(:id, "Email").displayed?
+      $driver.find_element(:id, "Email").clear
+      $driver.find_element(:id, "Email").send_keys "test@bertcorp.com"
+    end
+    $driver.find_element(:id, "Passwd").clear
+    $driver.find_element(:id, "Passwd").send_keys "LigReb2013"
+    $driver.find_element(:id, "signIn").click
   end
-  if $driver.find_element(:id, "Email").displayed?
-    $driver.find_element(:id, "Email").clear
-    $driver.find_element(:id, "Email").send_keys "test@bertcorp.com"
-  end
-  $driver.find_element(:id, "Passwd").clear
-  $driver.find_element(:id, "Passwd").send_keys "LigReb2013"
-  $driver.find_element(:id, "signIn").click
 end
 
 def sign_out_of_gmail

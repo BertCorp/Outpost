@@ -56,7 +56,6 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
       
       teacher_invite_link = nil
       while teacher_invite_link == nil
-        sleep(5)
         sign_into_gmail
 
         wait_for_email
@@ -74,6 +73,8 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
 
         if teacher_invite_link == nil
           puts "Teacher invite link is missing! Try again."
+        else
+          clear_gmail_inbox
         end
       end
       
@@ -99,8 +100,6 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
       
       ensure_user_logs_out
 
-      clear_gmail_inbox
-
       login_as_admin
       
       print "Invite student: "
@@ -118,7 +117,6 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
       
       student_invite_link = nil
       while student_invite_link == nil
-        sleep(5)
         sign_into_gmail
 
         wait_for_email
@@ -184,9 +182,12 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
         puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
         sleep(1)
         e.ignore
-      end
-      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
-      if e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'StaleElementReferenceError'
+        # Sometimes our timing is off. Chill for a second.
+        sleep(2)
+        e.ignore
+      elsif e.inspect.include? 'id="flash-msg"'
+        # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
         e.ignore

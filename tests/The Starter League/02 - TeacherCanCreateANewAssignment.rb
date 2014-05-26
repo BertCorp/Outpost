@@ -92,7 +92,7 @@ describe "02 - Teacher Can Add Assignments" do
       click_link "← Assignments"
       
       # Double check that activity was logged.
-      print "Check activity items were added: "
+      print "Activities created for admin: "
       click_link "Recent Activity"
       # Verify
       ($driver.find_element(:link, "published assignment \"" + assignment_one + "\"").text).should == "published assignment \"" + assignment_one + "\""
@@ -113,9 +113,12 @@ describe "02 - Teacher Can Add Assignments" do
         puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
         sleep(1)
         e.ignore
-      end
-      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
-      if e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'StaleElementReferenceError'
+        # Sometimes our timing is off. Chill for a second.
+        sleep(2)
+        e.ignore
+      elsif e.inspect.include? 'id="flash-msg"'
+        # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
         e.ignore
