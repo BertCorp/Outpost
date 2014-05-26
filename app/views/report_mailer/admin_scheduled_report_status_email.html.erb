@@ -1,0 +1,15 @@
+<p>Hellloooooooooo!</p>
+
+<p>The latest scheduled report for <%= @report.company.name %> has finished running. </p>
+
+<p>
+Report URL: <%= link_to report_url(@report), report_url(@report) %><br/>
+Results: <%= @report.status %>
+</p>
+
+<pre><%= @output %></pre>
+
+
+<p>Good job,</p>
+
+<p>The Outpost Automation Robot</p>
