@@ -50,7 +50,7 @@ describe "04 - Student Can Successfully Complete Assignments" do
       assignment_two = nil
       #puts $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').size
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
-        if elem.find_elements(:css, 'td.actions > a').size == 1
+        if elem.find_elements(:css, 'td.actions > a').size.to_i == 1
           text = elem.find_element(:css, 'td.title > a').text
           klass = elem.find_element(:css, 'td.actions > a:nth-child(1)').attribute('class')
           if klass.include?("no-submissions")

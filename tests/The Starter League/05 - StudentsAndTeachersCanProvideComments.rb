@@ -65,7 +65,7 @@ describe "05 - Students and Teachers Can Provide Comments" do
       assignment_two = nil
       #puts $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').size
       $driver.find_elements(:css, '.curriculum-items > tbody > tr.assignment').each do |elem| 
-        if elem.find_elements(:css, 'td.actions > a').size > 0
+        if elem.find_elements(:css, 'td.actions > a').size.to_i > 0
           text = elem.find_element(:css, 'td.title > a').text
           klass = elem.find_element(:css, 'td.actions > a:nth-last-child(1)').attribute('class')
           unless klass.include?("no-submissions")
