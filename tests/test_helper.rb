@@ -7,42 +7,47 @@ ENV['LOCAL'] ||= 'true'
 
 # Outpost Specific Functions
 def start_driver(cs = nil)
-  return $driver unless $driver == nil
-  puts ""
-  print "Establishing Selenium Driver: "
-  if ENV['LOCAL'] == 'true'
-    $driver = Selenium::WebDriver.for :firefox
-    $driver.manage.timeouts.implicit_wait = 3
-  else
-    cs = $cs unless cs
-    if cs['browser']
-      browser = cs['browser']
-      cs.delete('browser')
+  begin
+    return $driver unless $driver == nil
+    puts ""
+    print "Establishing Selenium Driver: "
+    if ENV['LOCAL'] == 'true'
+      $driver = Selenium::WebDriver.for :firefox
+      $driver.manage.timeouts.implicit_wait = 3
+    else
+      cs = $cs unless cs
+      if cs['browser']
+        browser = cs['browser']
+        cs.delete('browser')
+      end
+      browser ||= 'Chrome'
+      caps = get_cap_declaration(browser)
+      cs.each do |k,v|
+        caps[k] = v
+      end
+      caps["platform"] ||= 'OS X 10.8'
+      caps["version"] ||= ''
+      caps["screen-resolution"] ||= '1280x1024'
+      caps["public"] = "share"
+      $driver = Selenium::WebDriver.for(
+        :remote,
+        :url => "http://#{ENV['SL_USERNAME']}:#{ENV['SL_AUTHKEY']}@ondemand.saucelabs.com:80/wd/hub",
+        :desired_capabilities => caps
+      )
+      $driver.manage.timeouts.implicit_wait = 3
+      $driver.manage.window.maximize
+      $driver.file_detector = lambda do |args|
+        str = args.first.to_s
+        str if File.exist?(str)
+      end
     end
-    browser ||= 'Chrome'
-    caps = get_cap_declaration(browser)
-    cs.each do |k,v|
-      caps[k] = v
-    end
-    caps["platform"] ||= 'OS X 10.8'
-    caps["version"] ||= ''
-    caps["screen-resolution"] ||= '1280x1024'
-    caps["public"] = "share"
-    $driver = Selenium::WebDriver.for(
-      :remote,
-      :url => "http://#{ENV['SL_USERNAME']}:#{ENV['SL_AUTHKEY']}@ondemand.saucelabs.com:80/wd/hub",
-      :desired_capabilities => caps
-    )
-    $driver.manage.timeouts.implicit_wait = 3
-    $driver.manage.window.maximize
-    $driver.file_detector = lambda do |args|
-      str = args.first.to_s
-      str if File.exist?(str)
-    end
+    $wait = Selenium::WebDriver::Wait.new(:timeout => 15) # seconds
+    print "." unless $driver == nil
+    $driver
+  rescue => e
+    $driver = nil
+    start_driver(cs)
   end
-  $wait = Selenium::WebDriver::Wait.new(:timeout => 15) # seconds
-  print "." unless $driver == nil
-  $driver
 end # setup_driver
 
 def outpost(url)
