@@ -65,8 +65,21 @@ describe "03 - Teacher Can Add Resources" do
       # Verify
       ($driver.find_element(:css, "div.post-content").text).should == "logger.js (1.31 KB)\nAn uploaded test resource. " + document_one
     rescue => e
-      # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
-      if e.inspect.include? 'id="flash-msg"'
+      if e.inspect.include?("Selenium::WebDriver::Error::UnknownError") || e.inspect.include?("has already finished")
+        $driver = nil
+        $driver = start_driver()
+        e.ignore
+      elsif e.inspect.include? 'UnhandledAlertError'
+        # Ignore any modal windows that popped up that might be causing us an issue.
+        puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
+        sleep(1)
+        e.ignore
+      elsif e.inspect.include? 'StaleElementReferenceError'
+        # Sometimes our timing is off. Chill for a second.
+        sleep(2)
+        e.ignore
+      elsif e.inspect.include? 'id="flash-msg"'
+        # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
         e.ignore
@@ -142,8 +155,12 @@ describe "03 - Teacher Can Add Resources" do
       
       pass(@test_id)
     rescue => e
-      # Ignore any modal windows that popped up that might be causing us an issue.
-      if e.inspect.include? 'UnhandledAlertError'
+      if e.inspect.include?("Selenium::WebDriver::Error::UnknownError") || e.inspect.include?("has already finished")
+        $driver = nil
+        $driver = start_driver()
+        e.ignore
+      elsif e.inspect.include? 'UnhandledAlertError'
+        # Ignore any modal windows that popped up that might be causing us an issue.
         puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
         sleep(1)
         e.ignore

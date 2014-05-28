@@ -45,7 +45,7 @@ namespace :company do
       test.ended_at = Time.now
       test.save!
     end
-    report.status = ((output == '') || output.include?('FAILED:')) ? "Under Review" : "Completed"
+    report.status = ((output == '') || output.include?('FAILED:') || output.include?("Failures:")) ? "Under Review" : "Completed"
     report.results.each do |test|
       report.status = 'Under Review' unless ['Passed', 'Skipped'].include? test.status
     end

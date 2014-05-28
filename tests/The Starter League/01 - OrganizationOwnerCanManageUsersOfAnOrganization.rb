@@ -177,8 +177,12 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
       
       pass(@test_id)
     rescue => e
-      # Ignore any modal windows that popped up that might be causing us an issue.
-      if e.inspect.include? 'UnhandledAlertError'
+      if e.inspect.include?("Selenium::WebDriver::Error::UnknownError") || e.inspect.include?("has already finished")
+        $driver = nil
+        $driver = start_driver()
+        e.ignore
+      elsif e.inspect.include? 'UnhandledAlertError'
+        # Ignore any modal windows that popped up that might be causing us an issue.
         puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
         sleep(1)
         e.ignore

@@ -47,21 +47,23 @@ describe "00 - Test Prep/Cleanup" do
       
       ensure_user_logs_out
     rescue => e
-      if e.inspect.include? 'UnhandledAlertError'
+      if e.inspect.include?("Selenium::WebDriver::Error::UnknownError") || e.inspect.include?("has already finished")
+        $driver = nil
+        $driver = start_driver()
+        e.ignore
+      elsif e.inspect.include? 'UnhandledAlertError'
         puts "Closed unexpected alert: #{close_alert_and_get_its_text(true)}"
         sleep(1)
         e.ignore
-      end
-      # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
-      if e.inspect.include? 'id="IModalOverlay"'
+      elsif e.inspect.include? 'id="IModalOverlay"'
+        # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
         if $driver.find_element(:css, '.ic_close_modal').displayed?
           puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
         end
         sleep(3)
         e.ignore
-      end
-      # If we get one of the following exceptions, its usually remote server's error, so let's wait a bit and then try again.
-      if ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+      elsif ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
+        # If we get one of the following exceptions, its usually remote server's error, so let's wait a bit and then try again.
         puts ""
         puts "Retry due to remote server exception: #{e.inspect}"
         sleep(10)
