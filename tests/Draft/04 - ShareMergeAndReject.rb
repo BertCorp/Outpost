@@ -22,7 +22,7 @@ describe "04 - Share, Merge and Reject" do
     $driver = start_driver()
     start(@test_id)
     puts ""
-    puts "#{x.example.description}"
+    print "#{x.example.description}"
   end
   
   after(:all) do
@@ -53,6 +53,7 @@ describe "04 - Share, Merge and Reject" do
       $driver.find_element(:id, "document_content").send_keys "Creating a new document that we will share. #{@random_num}"
       
       save_document
+      puts ": ."
       
       go_home_from_document
 
@@ -76,7 +77,7 @@ describe "04 - Share, Merge and Reject" do
 
       ensure_user_logs_out
       
-      puts "Accept and Merge Edits"
+      print "Accept and Merge Edits: "
       
       $driver.get(@share_link)
       #sidebar_content > div > div:nth-child(2) > a
@@ -132,11 +133,11 @@ describe "04 - Share, Merge and Reject" do
       $driver.find_element(:id, "home_button_drafts").click
       $driver.find_element(:css, ".document:nth-child(1) .row-fluid .span9 a.btn").click
       sleep(1)
-      ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{@random_num}"
+      puts ($driver.find_element(:css, "#document_container > div > p").text).should == "I edited the document that i created in the draft composer. I am a friend editing this document. #{@random_num}"
       
       $driver.find_element(:css, 'i.icon-home').click
     
-      puts "Reject and Ignore Changes"
+      print "Reject and Ignore Changes: "
       
       ensure_user_logs_out
       
