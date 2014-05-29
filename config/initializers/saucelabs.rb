@@ -102,5 +102,11 @@ SL_BROWSERS = {
 		version: '10.0',
 		platform: 'Windows 7',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
+	},
+	'IE11' => {
+		browser: 'IE',
+		version: '11.0',
+		platform: 'Windows 7',
+		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	}
 }
