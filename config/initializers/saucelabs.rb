@@ -4,21 +4,21 @@ ENV['SL_AUTHKEY'] ||= '6e7d8e99-318e-477f-8658-83b167f523d6'
 
 
 def get_cap_declaration(browser = 'Firefox')
-  if browser.downcase == 'firefox'
+  if browser.downcase.include? 'firefox'
     Selenium::WebDriver::Remote::Capabilities.firefox
-  elsif browser.downcase == 'chrome'
+  elsif browser.downcase.include? 'chrome'
     Selenium::WebDriver::Remote::Capabilities.chrome
   elsif browser.downcase.include?('ie') || browser.downcase.include?('internet explorer')
     Selenium::WebDriver::Remote::Capabilities.internet_explorer
-  elsif browser.downcase == 'safari'
+  elsif browser.downcase.include? 'safari'
     Selenium::WebDriver::Remote::Capabilities.safari
-  elsif browser.downcase == 'opera'
+  elsif browser.downcase.include? 'opera'
     Selenium::WebDriver::Remote::Capabilities.opera
-  elsif browser.downcase == 'iphone'
+  elsif browser.downcase.include? 'iphone'
     Selenium::WebDriver::Remote::Capabilities.iphone
-  elsif browser.downcase == 'ipad'
+  elsif browser.downcase.include? 'ipad'
     Selenium::WebDriver::Remote::Capabilities.ipad
-  elsif browser.downcase == 'android'
+  elsif browser.downcase.include? 'android'
     Selenium::WebDriver::Remote::Capabilities.android
   else # default to Firefox if we can't find what they want
     Selenium::WebDriver::Remote::Capabilities.firefox
@@ -61,50 +61,50 @@ end
 
 SL_BROWSERS = {
 	'Chrome (Mac)' => {
-		browser: 'Chrome',
-		plaform: 'OS X 10.6',
+		browser_name: 'Chrome',
+		platform: 'OS X 10.6',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	},	
   'Chrome (PC)' => {
-		browser: 'Chrome',
+		browser_name: 'Chrome',
 		platform: 'Windows 7',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	},
 	'Firefox (Mac)' => {
-		browser: 'Firefox',
+		browser_name: 'Firefox',
 		platform: 'OS X 10.6',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	},
 	'Firefox (PC)' => {
-		browser: 'Firefox',
+		browser_name: 'Firefox',
 		platform: 'Windows 7',
 		resolution: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	},
 	'Safari' => {
-		browser: 'Safari',
+		browser_name: 'Safari',
 		platform: 'OS X 10.6',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	},
 	'IE8' => {
-		browser: 'IE',
+		browser_name: 'IE',
 		version: '8.0',
 		platform: 'Windows 7',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	},
 	'IE9' => {
-		browser: 'IE',
+		browser_name: 'IE',
 		version: '9.0',
 		platform: 'Windows 7',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	},
 	'IE10' => {
-		browser: 'IE',
+		browser_name: 'IE',
 		version: '10.0',
 		platform: 'Windows 7',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]
 	},
 	'IE11' => {
-		browser: 'IE',
+		browser_name: 'IE',
 		version: '11.0',
 		platform: 'Windows 7',
 		resolutions: ["800x600", "1024x768", "1280x1024", "1440x900", "1920x1200"]

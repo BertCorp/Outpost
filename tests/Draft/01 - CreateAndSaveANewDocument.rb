@@ -60,9 +60,7 @@ describe "01 - Create and save a new document" do
         e.ignore
       elsif e.inspect.include? 'id="IModalOverlay"'
         # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
-        if $driver.find_element(:css, '.ic_close_modal').displayed?
-          puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
-        end
+        $driver.navigate.refresh
         sleep(3)
         e.ignore
       elsif ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
