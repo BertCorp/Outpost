@@ -6,9 +6,9 @@ $to_test = [
   { browser: 'Chrome (Mac)', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
   { browser: 'Safari', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}'},
   { browser: 'IE8', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
-  #{ browser: 'IE9', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
-  #{ browser: 'IE10', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
-  #{ browser: 'IE11', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'IE9', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'IE10', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'IE11', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
 
   { resolution: "800x600", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
   { resolution: "1024x768", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
@@ -66,7 +66,7 @@ def establish_driver(test)
     caps.platform = SL_BROWSERS[test[:browser]][:platform]
     caps.version = SL_BROWSERS[test[:browser]][:version] if SL_BROWSERS[test[:browser]][:version]
     caps['screen-resolution'] = (test[:resolution]) ? test[:resolution] : "1280x1024"
-    caps["iedriver-version"] = "x64_2.41.0" if test[:browser].downcase.include? 'ie'
+    caps["iedriver-version"] = "x64_2.41.0" if test[:browser].downcase.include?('ie') && test[:browser].downcase != 'ie9'
     caps[:name] = "Review Trackers - #{test[:resolution]}"
     puts "#{test[:browser]} @ #{test[:resolution]} **"
   end
@@ -132,7 +132,11 @@ def take_screenshot(test, name, info)
           puts step.inspect
           if step['send_keys']
             puts step['send_keys'].inspect
-            $driver.find_element(:css, step['send_keys'].keys.first).send_keys(step['send_keys'].values.first)
+            if test[:browser].downcase.include? 'ie'
+              $driver.execute_script("document.getElementById('#{step['send_keys'].keys.first.gsub('#', '')}').value = '#{step['send_keys'].values.first}';")
+            else
+              $driver.find_element(:css, step['send_keys'].keys.first).send_keys(step['send_keys'].values.first)
+            end
           elsif step['click']
             $driver.find_element(:css, step['click']).click
             $wait.until { $driver.current_url.chomp('/') != $login[:url].chomp('/') }
