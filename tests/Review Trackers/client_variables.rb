@@ -2,19 +2,19 @@ $environments = { production: 'http://reviewtrackers.com' }
 $cs = { :name => 'Review Trackers' }
 
 $to_test = [
-  #{ browser: 'Firefox (Mac)', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
-  #{ browser: 'Chrome (Mac)', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
-  #{ browser: 'Safari', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}'},
-  #{ browser: 'IE8', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
-  #{ browser: 'IE9', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
-  #{ browser: 'IE10', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
-  #{ browser: 'IE11', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'Firefox (Mac)', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'Chrome (Mac)', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'Safari', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}'},
+  { browser: 'IE8', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'IE9', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'IE10', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
+  { browser: 'IE11', resolution: '1280x1024', name: '{{name}}/{{browser}}-{{resolution}}' },
 
-  #{ resolution: "800x600", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
-  #{ resolution: "1024x768", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
+  { resolution: "800x600", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
+  { resolution: "1024x768", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
   #{ resolution: "1280x1024", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
-  #{ resolution: "1440x900", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
-  #{ resolution: "1920x1200", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' }#,
+  { resolution: "1440x900", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
+  { resolution: "1920x1200", browser: 'Firefox (Mac)', name: '{{name}}/{{resolution}}-{{browser}}' },
 
   { device: 'iPhone', version: '7.1', name: '{{name}}/{{device}}-{{version}}' },
   { device: 'iPad', version: '7.1', name: '{{name}}/{{device}}-{{version}}' }
@@ -79,7 +79,10 @@ def establish_driver(test)
     :desired_capabilities => caps
   )
   $driver.manage.timeouts.implicit_wait = 3
-  $driver.manage.window.maximize
+  begin
+    $driver.manage.window.maximize
+  rescue
+  end
   $driver
 end
 
@@ -103,6 +106,7 @@ def take_screenshot(test, name, info)
   begin
     $driver = establish_driver(test)
     $driver.get info[:url]
+    sleep(2)
     puts "Initial URL: #{$driver.current_url}"
 
     # Check to see if we need to be signed in to access this page
@@ -111,9 +115,11 @@ def take_screenshot(test, name, info)
       if (info[:login] === true)
         puts "User requested login"
         $driver.get $login[:url]
+        sleep(2)
       elsif ($login[:url].chomp('/') != $driver.current_url.chomp('/'))
         puts "Page needs to be logged in"
         $driver.get $login[:url]
+        sleep(2)
       end
 
       if ($login[:url].chomp('/') == $driver.current_url.chomp('/'))
@@ -132,7 +138,10 @@ def take_screenshot(test, name, info)
       else
         puts "Already logged in"
       end
-      $driver.get info[:url] if $driver.current_url.chomp('/') != info[:url].chomp('/')
+      if $driver.current_url.chomp('/') != info[:url].chomp('/')
+        $driver.get info[:url]
+        sleep(2)
+      end
     end
 
     $driver.save_screenshot screenshot_path(test, name)
