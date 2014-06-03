@@ -95,7 +95,7 @@ describe "03 - Import a file from Dropbox" do
         e.ignore
       elsif e.inspect.include? 'id="IModalOverlay"'
         # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
-        $driver.navigate.refresh
+        $driver.execute_script("document.getElementById('IModalOverlay').style.display = 'none';")
         sleep(3)
         e.ignore
       elsif ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect

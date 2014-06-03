@@ -45,8 +45,13 @@ def start_driver(cs = nil)
     print "." unless $driver == nil
     $driver
   rescue => e
+    print "F (Retrying: #{e.inspect})"
     $driver = nil
-    start_driver(cs)
+    if e.inspect.include? "code=402"
+      raise
+    else
+      start_driver(cs)
+    end
   end
 end # setup_driver
 

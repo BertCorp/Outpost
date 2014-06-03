@@ -24,7 +24,7 @@ describe "00 - Test Prep/Cleanup" do
     puts ""
     puts "** Finished: #{self.class.description} **"
     unless $is_test_suite
-      $driver.quit
+      $driver.quit if $driver
     end
   end
   
@@ -36,7 +36,7 @@ describe "00 - Test Prep/Cleanup" do
       count.times do
         begin
           $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
-          $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE DOCUMENT").click
+          $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE").click
           $driver.switch_to.alert.accept
           sleep(1)
         rescue
@@ -56,9 +56,7 @@ describe "00 - Test Prep/Cleanup" do
         e.ignore
       elsif e.inspect.include? 'id="IModalOverlay"'
         # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
-        if $driver.find_element(:css, '.ic_close_modal').displayed?
-          puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
-        end
+        $driver.execute_script("document.getElementById('IModalOverlay').style.display = 'none';")
         sleep(3)
         e.ignore
       elsif ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
@@ -88,7 +86,7 @@ describe "00 - Test Prep/Cleanup" do
       count.times do
         begin
           $driver.find_element(:css, ".document:nth-child(1) button.dropdown-toggle").click
-          $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE DOCUMENT").click
+          $driver.find_element(:css, '.document:nth-child(1) .dropdown-menu').find_element(:link, "DELETE").click
           $driver.switch_to.alert.accept
           sleep(1)
         rescue
@@ -108,7 +106,7 @@ describe "00 - Test Prep/Cleanup" do
         e.ignore
       elsif e.inspect.include? 'id="IModalOverlay"'
         # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
-        $driver.navigate.refresh
+        $driver.execute_script("document.getElementById('IModalOverlay').style.display = 'none';")
         sleep(3)
         e.ignore
       elsif ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
