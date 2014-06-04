@@ -59,10 +59,17 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
         sign_into_gmail
 
         wait_for_email
-
-        $driver.find_elements(:css, "table.F > tbody > tr > td span").find do |subject|
-          subject.text == "You're invited to join Outpost"
-        end.click
+        
+        begin
+          $driver.find_elements(:css, "table.F > tbody > tr > td span").find do |subject|
+            subject.text == "You're invited to join Outpost"
+          end.click
+        rescue
+          sleep(10)
+          $driver.find_elements(:css, "table.F > tbody > tr > td span").find do |subject|
+            subject.text == "You're invited to join Outpost"
+          end.click
+        end
         # Copy and go to the invite link.
         if $driver.find_elements(:link, 'Click here to create your account').size < 1
           puts "Multiple emails potentially found! Trying to click expander image: #{$driver.find_elements(:css, "div[data-tooltip=\"Show trimmed content\"] img").size > 0}"
@@ -121,9 +128,16 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
 
         wait_for_email
 
-        $driver.find_elements(:css, "table.F > tbody > tr > td span").find do |subject|
-          subject.text == "You're invited to join Outpost"
-        end.click
+        begin
+          $driver.find_elements(:css, "table.F > tbody > tr > td span").find do |subject|
+            subject.text == "You're invited to join Outpost"
+          end.click
+        rescue
+          sleep(10)
+          $driver.find_elements(:css, "table.F > tbody > tr > td span").find do |subject|
+            subject.text == "You're invited to join Outpost"
+          end.click
+        end
         # Copy and go to the invite link.
         if $driver.find_elements(:link, 'Click here to create your account').size < 1
           puts "Multiple emails potentially found! Trying to click expander image: #{$driver.find_elements(:css, "div[data-tooltip=\"Show trimmed content\"] img").size > 0}"
@@ -165,8 +179,7 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
       print "Confirming with admin: "
       $driver.find_element(:link, "Classes").click
       click_link "Outpost Test Class"
-      # Verify
-      ($driver.find_element(:link, "See an overview of your students' progress").text).should == "See an overview of your students' progress"
+      $wait.until { $driver.find_elements(:link, "See an overview of your students' progress").size > 0 }
 
       click_link "See an overview of your students' progress"
       sleep(2)
