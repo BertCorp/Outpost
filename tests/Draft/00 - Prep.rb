@@ -56,9 +56,12 @@ describe "00 - Test Prep/Cleanup" do
         e.ignore
       elsif e.inspect.include? 'id="IModalOverlay"'
         # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
-        $driver.execute_script("document.getElementById('IModalOverlay').style.display = 'none';")
-        sleep(3)
-        e.ignore
+        if @tries.count < 2
+          $driver.execute_script("document.getElementById('IModalOverlay').style.display = 'none';")
+          @tries << e
+          sleep(3)
+          e.ignore
+        end
       elsif ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         # If we get one of the following exceptions, its usually remote server's error, so let's wait a bit and then try again.
         puts ""
@@ -106,9 +109,12 @@ describe "00 - Test Prep/Cleanup" do
         e.ignore
       elsif e.inspect.include? 'id="IModalOverlay"'
         # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
-        $driver.execute_script("document.getElementById('IModalOverlay').style.display = 'none';")
-        sleep(3)
-        e.ignore
+        if @tries.count < 2
+          $driver.execute_script("document.getElementById('IModalOverlay').style.display = 'none';")
+          @tries << e
+          sleep(3)
+          e.ignore
+        end
       elsif ["#<Net::ReadTimeout: Net::ReadTimeout>", "#<Errno::ECONNREFUSED: Connection refused - connect(2)>", "#<EOFError: end of file reached>"].include? e.inspect
         # If we get one of the following exceptions, its usually remote server's error, so let's wait a bit and then try again.
         puts ""

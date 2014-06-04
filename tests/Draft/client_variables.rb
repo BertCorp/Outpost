@@ -53,9 +53,7 @@ def ensure_user_logs_out
   rescue => e
     # For Draft, we have this pesky Intercom modal that causes issues. If we ever run into it, ignore it and just carry on.
     if e.inspect.include? 'id="IModalOverlay"'
-      if $driver.find_element(:css, '.ic_close_modal').displayed?
-        puts "Closed Intercom modal: #{$driver.find_element(:css, '.ic_close_modal').click}"
-      end
+      $driver.execute_script("document.getElementById('IModalOverlay').style.display = 'none';")
       sleep(3)
       e.ignore
     end
