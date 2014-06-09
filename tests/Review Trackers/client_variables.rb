@@ -132,7 +132,7 @@ def take_screenshot(test, name, info)
           puts step.inspect
           if step['send_keys']
             puts step['send_keys'].inspect
-            if test[:browser].downcase.include? 'ie'
+            if test[:browser] && test[:browser].downcase.include?('ie')
               $driver.execute_script("document.getElementById('#{step['send_keys'].keys.first.gsub('#', '')}').value = '#{step['send_keys'].values.first}';")
             else
               $driver.find_element(:css, step['send_keys'].keys.first).send_keys(step['send_keys'].values.first)
