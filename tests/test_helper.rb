@@ -13,7 +13,7 @@ def start_driver(cs = nil)
     print "Establishing Selenium Driver: "
     if ENV['LOCAL'] == 'true'
       $driver = Selenium::WebDriver.for :firefox
-      $driver.manage.timeouts.implicit_wait = 3
+      $driver.manage.timeouts.implicit_wait = 30
     else
       cs = $cs unless cs
       if cs['browser']

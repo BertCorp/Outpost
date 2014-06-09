@@ -80,7 +80,7 @@ def establish_driver(test)
     :url => "http://#{ENV['SL_USERNAME']}:#{ENV['SL_AUTHKEY']}@ondemand.saucelabs.com:80/wd/hub",
     :desired_capabilities => caps
   )
-  $driver.manage.timeouts.implicit_wait = 3
+  $driver.manage.timeouts.implicit_wait = 30
   begin
     $driver.manage.window.maximize
   rescue
