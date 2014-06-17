@@ -78,7 +78,7 @@ describe "03 - Teacher Can Add Resources" do
         # Sometimes our timing is off. Chill for a second.
         sleep(2)
         e.ignore
-      elsif e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'class="flash-msg"'
         # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
@@ -168,7 +168,7 @@ describe "03 - Teacher Can Add Resources" do
         # Sometimes our timing is off. Chill for a second.
         sleep(2)
         e.ignore
-      elsif e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'class="flash-msg"'
         # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)

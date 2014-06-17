@@ -39,17 +39,17 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
       # Invite a new teacher
       print "Invite teacher: "
       click_link "People"
-      $wait.until { $driver.find_elements(:id, "add-people-btn").size > 0 }
-      $driver.find_element(:id, "add-people-btn").click
+      $wait.until { $driver.find_elements(:link, "Invite admins").size > 0 }
+      $driver.find_element(:link, "Invite admins").click
       teacher_email = "test+lantern-t" + rand(10000).to_s + "@outpostqa.com"
       puts teacher_email
       $driver.find_element(:id, "invitation_emails_").clear
       $driver.find_element(:id, "invitation_emails_").send_keys teacher_email
-      $driver.find_element(:id, "invitation_staff").click
-      $driver.find_element(:id, "invitation_enrollments_0_course_id").click
-      $driver.find_element(:id, "invitation_enrollments_0_role").find_elements( :tag_name => "option" ).find do |option|
-        option.text == "teacher"
-      end.click
+      #$driver.find_element(:id, "invitation_staff").click
+      #$driver.find_element(:id, "invitation_enrollments_0_course_id").click
+      #$driver.find_element(:id, "invitation_enrollments_0_role").find_elements( :tag_name => "option" ).find do |option|
+      #  option.text == "teacher"
+      #end.click
       $driver.find_element(:name, "commit").click
 
       ensure_user_logs_out
@@ -96,18 +96,15 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
       $driver.find_element(:id, "user_email").send_keys teacher_email
       $driver.find_element(:id, "user_password").clear
       $driver.find_element(:id, "user_password").send_keys "test12"
-      $driver.find_element(:id, "user_terms_of_service").click
+      #$driver.find_element(:id, "user_terms_of_service").click
       $driver.find_element(:name, "commit").click
-      $wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+      #$wait.until { !$driver.find_element(:id, 'ajax-status').displayed? }
+      $driver.find_element(:link, "Skip this step").click
 
       # Verify
       ($driver.find_element(:css, "h4").text).should == "Outpost Teacher (" + teacher_email + ")"
       # Verify
       puts ($driver.find_element(:css, "section.enrollments > ul > li > a").text).should == "Outpost Test Class"
-      
-      ensure_user_logs_out
-
-      login_as_admin
       
       print "Invite student: "
       click_link "People"
@@ -203,7 +200,7 @@ describe "01 - Organization Owner Can Manage Users Of An Organization" do
         # Sometimes our timing is off. Chill for a second.
         sleep(2)
         e.ignore
-      elsif e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'class="flash-msg"'
         # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)

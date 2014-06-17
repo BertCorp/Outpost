@@ -104,14 +104,13 @@ end
 
 def alert_present?()
   $driver.switch_to.alert
-  true
 rescue Selenium::WebDriver::Error::NoAlertPresentError
   false
 end
 
 def close_alert_and_get_its_text(accept)
-  if alert_present?
-    alert = $driver.switch_to.alert
+  if alert = alert_present?
+    #alert = $driver.switch_to.alert
     alert_text = alert.text
     if (accept) then
       alert.accept

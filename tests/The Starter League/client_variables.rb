@@ -48,7 +48,7 @@ def click_link(link_text)
       # Sometimes our timing is off. Chill for a second.
       sleep(2)
       e.ignore
-    elsif e.inspect.include? 'id="flash-msg"'
+    elsif e.inspect.include? 'class="flash-msg"'
       # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
       $driver.find_element(:css, '.alert a').click
       sleep(1)
@@ -70,7 +70,7 @@ end
 def ensure_user_logs_out
   #puts "Before logout: #{$driver.current_url}"
   begin
-    if $driver.find_elements(:id, 'flash-msg').size > 0
+    if $driver.find_elements(:class, 'flash-msg').size > 0
       $driver.find_element(:css, '.alert a').click
       sleep(1)
     end
@@ -84,10 +84,11 @@ end
 
 def login_as_admin
   $driver.get(@base_url + 'start')
-  close_alert_and_get_its_text(true)
+  #close_alert_and_get_its_text(true)
   
   # we aren't logged in until we are home! /start
   while $driver.find_elements(:link, 'test@outpostqa.com').size < 1 do
+    sleep(1)
     # On the login page: /login and need to login:
     if $driver.find_elements(:id, "user_email").size > 0
       $driver.find_element(:id, "user_email").clear
@@ -111,13 +112,13 @@ def login_as_admin
     end
   end
   # kill any flash notifications
-  $driver.find_element(:css, '.alert a').click if $driver.find_elements(:id, 'flash-msg').size > 0
+  $driver.find_element(:css, '.alert a').click if $driver.find_elements(:class, "flash-msg").size > 0
 end
 
 def sign_into_gmail
   #$driver.get "https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=en"
   $driver.get "https://mail.google.com/mail/#inbox"
-  close_alert_and_get_its_text(true)
+  #close_alert_and_get_its_text(true)
   sleep(1)
   if $driver.find_elements(:id, 'account-test@bertcorp.com').size > 0
     $driver.find_elements(:css, '#account-test@bertcorp.com > button').click
@@ -135,9 +136,7 @@ end
 def sign_out_of_gmail
   $driver.find_element(:link, "test@bertcorp.com").click
   $driver.find_element(:link, "Sign out").click
-  if alert_present?
-    close_alert_and_get_its_text(true)
-  end
+  close_alert_and_get_its_text(true)
   $wait.until { $driver.find_elements(:link, "test@bertcorp.com").size < 1 }
 end
 

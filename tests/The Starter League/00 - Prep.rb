@@ -43,7 +43,7 @@ describe "00 - Test Prep/Cleanup" do
         $driver.find_element(:link, "Delete user").click
         (close_alert_and_get_its_text(true)).should include("Are you sure")
         # Verify
-        ($driver.find_element(:id, "flash-msg").text).should include("was successfully removed")
+        ($driver.find_element(:class, "flash-msg").text).should include("was successfully removed")
         #$driver.navigate.back      
       end
       # Leave one student account in the system.
@@ -55,7 +55,7 @@ describe "00 - Test Prep/Cleanup" do
         $driver.find_element(:link, "Delete user").click
         (close_alert_and_get_its_text(true)).should include("Are you sure")
         # Verify
-        ($driver.find_element(:id, "flash-msg").text).should include("was successfully removed")
+        ($driver.find_element(:class, "flash-msg").text).should include("was successfully removed")
         #$driver.navigate.back
       end
       
@@ -79,7 +79,7 @@ describe "00 - Test Prep/Cleanup" do
         # Sometimes our timing is off. Chill for a second.
         sleep(2)
         e.ignore
-      elsif e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'class="flash-msg"'
         # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
@@ -124,7 +124,7 @@ describe "00 - Test Prep/Cleanup" do
           $driver.find_elements(:link, "Delete").first.click
           (close_alert_and_get_its_text(true)).should include("Are you sure")
           # Verify
-          ($driver.find_element(:id, "flash-msg").text).should include("was successfully")
+          ($driver.find_element(:class, "flash-msg").text).should include("was successfully")
         end
       end
       click_link "People" unless $driver.current_url.include? '/people'
@@ -145,7 +145,7 @@ describe "00 - Test Prep/Cleanup" do
         # Sometimes our timing is off. Chill for a second.
         sleep(2)
         e.ignore
-      elsif e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'class="flash-msg"'
         # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
@@ -195,7 +195,7 @@ describe "00 - Test Prep/Cleanup" do
         (close_alert_and_get_its_text(true)).should include("Are you sure")
         sleep(1)
         # Verify
-        ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+        ($driver.find_element(:class, "flash-msg").text).should include("was successfuly deleted")
 
         click_link "Assignments"
       end
@@ -216,7 +216,7 @@ describe "00 - Test Prep/Cleanup" do
         # Sometimes our timing is off. Chill for a second.
         sleep(2)
         e.ignore
-      elsif e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'class="flash-msg"'
         # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
@@ -263,7 +263,7 @@ describe "00 - Test Prep/Cleanup" do
           $driver.find_element(:link, "Delete").click
           (close_alert_and_get_its_text(true)).should include("Are you sure")
           if element_present?(:id, "flash-msg")
-            ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+            ($driver.find_element(:class, "flash-msg").text).should include("was successfuly deleted")
           end
         end
         click_link "Resources" unless $driver.current_url.include? '/resources'
@@ -285,7 +285,7 @@ describe "00 - Test Prep/Cleanup" do
         # Sometimes our timing is off. Chill for a second.
         sleep(2)
         e.ignore
-      elsif e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'class="flash-msg"'
         # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
@@ -334,7 +334,7 @@ describe "00 - Test Prep/Cleanup" do
           sleep(1)
           (close_alert_and_get_its_text(true)).should include("Are you sure")
           if element_present?(:id, "flash-msg")
-            ($driver.find_element(:id, "flash-msg").text).should include("was successfuly deleted")
+            ($driver.find_element(:class, "flash-msg").text).should include("was successfuly deleted")
           end
         end
         click_link "Discussions" unless $driver.current_url.include? "/discussions"
@@ -356,7 +356,7 @@ describe "00 - Test Prep/Cleanup" do
         # Sometimes our timing is off. Chill for a second.
         sleep(2)
         e.ignore
-      elsif e.inspect.include? 'id="flash-msg"'
+      elsif e.inspect.include? 'class="flash-msg"'
         # For Lantern, we have the pesky flash notification covering the logout. If we ever run into it, ignore it and just carry on.
         $driver.find_element(:css, '.alert a').click
         sleep(1)
