@@ -60,7 +60,7 @@ describe "02 - Teacher Can Add Assignments" do
       
       $wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
       # Verify
-      ($driver.find_element(:css, "h5").text).should == assignment_one + "\n- change this"
+      ($driver.find_element(:css, "h5").text).should.include? assignment_one
       # Verify
       puts ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_one
       click_link "← Assignments"
@@ -86,7 +86,8 @@ describe "02 - Teacher Can Add Assignments" do
 
       $wait.until { $driver.find_elements(:link, "← Assignments").size > 0 }
       # Verify
-      ($driver.find_element(:css, "h5").text).should == assignment_two + "\nrequires a submission (private) - change this"
+      ($driver.find_element(:css, "h5").text).should.include? assignment_two
+      ($driver.find_element(:css, "h5").text).should.include? "(private)"
       # Verify
       puts ($driver.find_element(:css, "div.content").text).should == "Test content for " + assignment_two
       click_link "← Assignments"
